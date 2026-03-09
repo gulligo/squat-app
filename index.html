@@ -691,6 +691,39 @@ document.body.appendChild(document.getElementById('mainBtn'));
 document.getElementById('tog-sound').classList.toggle('on',settings.sound);
 document.getElementById('tog-cheer').classList.toggle('on',settings.cheer);
 updateAll();
+  // 1. TTS 음성 출력 함수
+function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ko-KR'; // 한국어 설정
+    utterance.rate = 0.8;    // 속도를 조금 느리게 조절
+    window.speechSynthesis.speak(utterance);
+}
+
+// 2. 센서 움직임 감지 (가속도 센서 활용)
+let count = 0;
+let lastUpdate = 0;
+window.addEventListener('devicemotion', (event) => {
+    const acc = event.accelerationIncludingGravity;
+    const movement = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
+
+    // 움직임 임계값 설정 (센서 값 변화가 20 이상일 때)
+    if (movement > 20 && (Date.now() - lastUpdate) > 1000) {
+        count++;
+        lastUpdate = Date.now();
+        
+        // 횟수별 응원 메시지 및 카운트
+        if (count % 100 === 0) {
+            speak("오빠 힘내");
+        } else if (count % 50 === 0) {
+            speak("용용이 오빠 화이팅");
+        } else {
+            speak(count.toString());
+        }
+        
+        // 화면에 숫자 업데이트
+        document.getElementById('counter').innerText = count;
+    }
+});
 </script>
 </body>
 </html>
