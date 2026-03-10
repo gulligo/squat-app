@@ -692,6 +692,15 @@ document.body.appendChild(document.getElementById('mainBtn'));
 document.getElementById('tog-sound').classList.toggle('on',settings.sound);
 document.getElementById('tog-cheer').classList.toggle('on',settings.cheer);
   // [강제 초기화] 오늘 날짜가 아니면 무조건 로컬 데이터와 화면을 0으로 덮어씀
+  // 날짜가 바뀌었을 때 데이터를 아예 삭제하거나 0으로 초기화
+const 오늘 = new Date().toLocaleDateString();
+if (localStorage.getItem('exerciseDate') !== 오늘) {
+    localStorage.clear(); // [주의] 로컬 데이터를 전부 비웁니다. 만약 다른 설정도 지워진다면 아래 주석을 참고하세요.
+    localStorage.setItem('exerciseDate', 오늘);
+    localStorage.setItem('todayCount', 0);
+    localStorage.setItem('squatCount', 0);
+    location.reload(); // 강제 새로고침
+}
 if (localStorage.getItem('exerciseDate') !== new Date().toLocaleDateString()) {
     localStorage.setItem('squatCount', 0);
     localStorage.setItem('todayCount', 0);
