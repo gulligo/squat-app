@@ -691,9 +691,13 @@ document.body.appendChild(document.getElementById('mainBtn'));
 // 설정 토글 초기화
 document.getElementById('tog-sound').classList.toggle('on',settings.sound);
 document.getElementById('tog-cheer').classList.toggle('on',settings.cheer);
-  updateAll(); // 기존 함수 호출
-
-// 날짜 확인 후 리셋
+  // [강제 초기화] 오늘 날짜가 아니면 무조건 로컬 데이터와 화면을 0으로 덮어씀
+if (localStorage.getItem('exerciseDate') !== new Date().toLocaleDateString()) {
+    localStorage.setItem('squatCount', 0);
+    localStorage.setItem('todayCount', 0);
+    localStorage.setItem('exerciseDate', new Date().toLocaleDateString());
+    location.reload(); // 강제 새로고침 발생
+}
 const 오늘 = new Date().toLocaleDateString();
 if (localStorage.getItem('exerciseDate') !== 오늘) {
     localStorage.setItem('squatCount', 0);
