@@ -690,17 +690,15 @@ document.body.appendChild(document.getElementById('mainBtn'));
 
 // 설정 토글 초기화
 document.getElementById('tog-sound').classList.toggle('on',settings.sound);
-document.getElementById('tog-cheer').classList.toggle('on',settings.cheer);
-  // 1. 날짜 확인 및 초기화 (가장 먼저 실행)
+document.getElementById('tog-cheer').classList.toggle('on',settings.cheer)
+  // 날짜 확인 후 오늘이 아니면 리셋
 const 오늘 = new Date().toLocaleDateString();
 if (localStorage.getItem('exerciseDate') !== 오늘) {
-    localStorage.setItem('todayCount', 0);
     localStorage.setItem('squatCount', 0);
+    localStorage.setItem('todayCount', 0);
     localStorage.setItem('exerciseDate', 오늘);
+    location.reload(); 
 }
 
-// 2. 초기화된 데이터를 바탕으로 화면 갱신
+// 화면 갱신
 updateAll();
-</script>
-</body>
-</html>
