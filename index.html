@@ -692,12 +692,14 @@ document.body.appendChild(document.getElementById('mainBtn'));
 document.getElementById('tog-sound').classList.toggle('on',settings.sound);
 document.getElementById('tog-cheer').classList.toggle('on',settings.cheer);
 updateAll();
-  // 날짜 체크 및 리셋
+  // 날짜 확인 후 데이터와 화면 모두 초기화
 const 오늘 = new Date().toLocaleDateString();
-const 저장된날짜 = localStorage.getItem('exerciseDate');
-if (저장된날짜 !== 오늘) {
-    localStorage.setItem('squatCount', 0);
+const 마지막날짜 = localStorage.getItem('exerciseDate');
+
+if (마지막날짜 !== 오늘) {
+    localStorage.setItem('todayCount', 0);
     localStorage.setItem('exerciseDate', 오늘);
+    // 0으로 바꾼 뒤 화면에도 바로 반영
     document.getElementById('todayCount').innerText = 0;
 }
 </script>
