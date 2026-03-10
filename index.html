@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>💜 스쿼트 트래커</title>
+<title>용이 스쿼트</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic:wght@400;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -735,19 +735,3 @@ window.addEventListener('devicemotion', (event) => {
         document.querySelector('.text-5xl').innerText = count;
     }
 });
-</script>
-    function showPage(pageId, btn) {
-    // 1. 기존 페이지들 숨기고 선택한 페이지 보여주는 기존 로직 (이미 있을 겁니다)
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    document.getElementById(pageId).style.display = 'block';
-
-    // 2. 버튼 제어 로직 (이것만 추가하세요!)
-    const floatingBtn = document.querySelector('.squat-btn'); // 버튼의 클래스명 확인
-    if (pageId === 'main') { // 메인 페이지 아이디가 'main'인 경우
-        floatingBtn.style.display = 'block';
-    } else {
-        floatingBtn.style.display = 'none'; // 나머지는 숨기기
-    }
-}
-</body>
-</html>
