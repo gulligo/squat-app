@@ -293,12 +293,35 @@ body{font-family:'Nanum Gothic',sans-serif;background:#f9f5ff;color:#333;min-hei
 <div class="page" id="page-settings">
   <div class="settings-card">
     <h3>🔔 카운트 소리</h3>
-    <div class="setting-row">
-      <span>버튼 클릭 소리</span>
-      <div class="toggle-sw on" id="tog-sound" onclick="toggleSet('sound')"></div>
-    </div>
-    <div class="setting-row">
-      <span>50/100개 응원 토스트</span>
+    <div class="settings-card">
+<h3>🎙️ 목소리 / 진동</h3>
+
+<div class="setting-row">
+<span>여자 목소리</span>
+<input type="radio" name="voiceMode" value="female" checked>
+</div>
+
+<div class="setting-row">
+<span>남자 목소리</span>
+<input type="radio" name="voiceMode" value="male">
+</div>
+
+<div class="setting-row">
+<span>아기 목소리</span>
+<input type="radio" name="voiceMode" value="baby">
+</div>
+
+<div class="setting-row">
+<span>무음</span>
+<div class="toggle-sw" id="tog-mute" onclick="toggleSet('mute')"></div>
+</div>
+
+<div class="setting-row">
+<span>진동</span>
+<div class="toggle-sw on" id="tog-vibrate" onclick="toggleSet('vibrate')"></div>
+</div>
+
+</div>
       <div class="toggle-sw on" id="tog-cheer" onclick="toggleSet('cheer')"></div>
     </div>
   </div>
