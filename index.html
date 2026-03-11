@@ -68,3 +68,275 @@ document.getElementById("count").innerText=count;
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>용용이 스쿼트</title>
+
+<style>
+
+body{
+font-family:sans-serif;
+background:#f4f4f4;
+margin:0;
+text-align:center;
+}
+
+.top{
+background:#fff;
+padding:10px;
+font-size:20px;
+font-weight:bold;
+}
+
+.tabs{
+display:flex;
+justify-content:space-around;
+background:#fff;
+padding:10px 0;
+border-bottom:1px solid #ddd;
+}
+
+.page{
+display:none;
+padding:20px;
+}
+
+.page.active{
+display:block;
+}
+
+#count{
+font-size:80px;
+margin-top:40px;
+}
+
+.mainBtn{
+width:160px;
+height:160px;
+border-radius:50%;
+background:#ff6b9a;
+border:none;
+color:#fff;
+font-size:20px;
+margin-top:30px;
+}
+
+.settings-card{
+background:#fff;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+}
+
+.setting-row{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
+}
+
+.toggle{
+width:50px;
+height:24px;
+background:#ccc;
+border-radius:20px;
+position:relative;
+}
+
+.toggle.on{
+background:#8a5cff;
+}
+
+.toast{
+position:fixed;
+bottom:120px;
+left:50%;
+transform:translateX(-50%);
+background:#000;
+color:#fff;
+padding:10px 16px;
+border-radius:20px;
+opacity:0;
+transition:0.3s;
+}
+
+.toast.show{
+opacity:1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top">💪 용용이 스쿼트</div>
+
+<div class="tabs">
+<div onclick="showPage('main')">스쿼트</div>
+<div onclick="showPage('settings')">설정</div>
+</div>
+
+<div id="main" class="page active">
+
+<div id="count">0</div>
+
+<button class="mainBtn" onclick="addSquat()">스쿼트</button>
+
+</div>
+
+<div id="settings" class="page">
+
+<div class="settings-card">
+
+<h3>목소리</h3>
+
+<div class="setting-row">
+여자
+<input type="radio" name="voice" onclick="setVoice('female')" checked>
+</div>
+
+<div class="setting-row">
+남자
+<input type="radio" name="voice" onclick="setVoice('male')">
+</div>
+
+<div class="setting-row">
+아기
+<input type="radio" name="voice" onclick="setVoice('baby')">
+</div>
+
+</div>
+
+<div class="settings-card">
+
+<h3>기능</h3>
+
+<div class="setting-row">
+진동
+<div id="vibrate" class="toggle on" onclick="toggle('vibrate')"></div>
+</div>
+
+<div class="setting-row">
+무음
+<div id="mute" class="toggle" onclick="toggle('mute')"></div>
+</div>
+
+<div class="setting-row">
+자동카운트
+<div id="auto" class="toggle" onclick="toggleAuto()"></div>
+</div>
+
+</div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+
+let count=0
+let voice="female"
+let auto=false
+let last=0
+
+function showPage(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+document.getElementById(id).classList.add("active")
+}
+
+function addSquat(){
+
+let now=Date.now()
+if(now-last<300)return
+last=now
+
+count++
+document.getElementById("count").innerText=count
+
+if(!document.getElementById("mute").classList.contains("on")){
+
+let msg=new SpeechSynthesisUtterance(count)
+
+if(voice=="male"){msg.pitch=0.8}
+if(voice=="baby"){msg.pitch=1.8}
+
+speechSynthesis.speak(msg)
+
+}
+
+if(document.getElementById("vibrate").classList.contains("on")){
+navigator.vibrate(40)
+}
+
+if(count%20==0){
+showToast(randomMent())
+}
+
+if(count==100)showToast("100! 오늘 느낌 좋다!")
+if(count==200)showToast("200! 하체 불타는 중!")
+if(count==300)showToast("300! 오늘 날아다닌다!")
+
+}
+
+function setVoice(v){
+voice=v
+}
+
+function toggle(id){
+document.getElementById(id).classList.toggle("on")
+}
+
+function showToast(t){
+
+let toast=document.getElementById("toast")
+toast.innerText=t
+toast.classList.add("show")
+
+setTimeout(()=>{toast.classList.remove("show")},1500)
+
+}
+
+function randomMent(){
+
+let arr=[
+"용용이 오빠 화이팅!",
+"다리 힘 꽉!",
+"오빠 쩔어!",
+"오늘 폼 좋다!",
+"끝까지 간다!",
+"벌써 느낌 와?",
+"오빠 코피 나겠어!"
+]
+
+return arr[Math.floor(Math.random()*arr.length)]
+
+}
+
+function toggleAuto(){
+auto=!auto
+document.getElementById("auto").classList.toggle("on")
+}
+
+window.addEventListener("devicemotion",e=>{
+
+if(!auto)return
+
+let a=e.accelerationIncludingGravity
+
+let total=Math.abs(a.x)+Math.abs(a.y)+Math.abs(a.z)
+
+let now=Date.now()
+
+if(total>30 && now-last>1500){
+addSquat()
+}
+
+})
+
+</script>
+
+</body>
+</html>
