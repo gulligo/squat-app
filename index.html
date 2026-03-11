@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스쿼트 카운터</title>
+
+<style>
+body{
+font-family:sans-serif;
+text-align:center;
+background:#111;
+color:white;
+}
+
+h1{
+font-size:40px;
+margin-top:40px;
+}
+
+#count{
+font-size:80px;
+margin:40px;
+}
+
+button{
+font-size:30px;
+padding:20px 40px;
+margin:10px;
+border:none;
+border-radius:10px;
+}
+
+.add{background:#28a745;color:white;}
+.reset{background:#dc3545;color:white;}
+</style>
+
+</head>
+
+<body>
+
+<h1>스쿼트</h1>
+
+<div id="count">0</div>
+
+<button class="add" onclick="add()">+1</button>
+<button class="reset" onclick="reset()">리셋</button>
+
+<script>
+
+let count=0;
+
+function add(){
+count++;
+document.getElementById("count").innerText=count;
+
+if(count%20===0){
+alert("20개 달성!");
+}
+}
+
+function reset(){
+count=0;
+document.getElementById("count").innerText=count;
+}
+
+</script>
+
+</body>
+</html>
