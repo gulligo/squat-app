@@ -761,11 +761,11 @@ window.addEventListener('devicemotion', function(e){
   const diff = Math.abs(mag - prevMag);
   prevMag = mag;
   const nowMs = Date.now();
-  if(diff > 7 && autoArmed && nowMs - lastAutoCount > 1500){
+  if(diff > 5.2 && autoArmed && nowMs - lastAutoCount > 1500){
     lastAutoCount = nowMs;
     autoArmed = false;
     addSquat('auto');
-    setTimeout(()=>{ autoArmed = true; }, 700);
+    setTimeout(()=>{ autoArmed = true; }, 800);
   }
 });
 
@@ -774,7 +774,12 @@ document.addEventListener('visibilitychange', function(){
     prevMag = null;
   }
 });
-
+function speakSlow(text){
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.rate = 0.8;
+  msg.pitch = 1;
+  speechSynthesis.speak(msg);
+}
 initSettingUI();
 updateAll();
 </script>
