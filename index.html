@@ -10,8 +10,8 @@
 body{font-family:'Nanum Gothic',sans-serif;background:#f9f5ff;color:#333;min-height:100vh;overflow-x:hidden;}
 
 .top-tabs{display:flex;background:#fff;border-bottom:2px solid #e9d5ff;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px #0001;}
-.top-tabs button{flex:1;padding:11px 2px;font-family:'Jua',sans-serif;font-size:12px;background:none;border:none;color:#bbb;cursor:pointer;}
-.top-tabs button.active{color:#a855f7;border-bottom:3px solid #a855f7;}
+.top-tabs button{flex:1;padding:18px 6px;font-family:'Jua',sans-serif;font-size:16px;background:none;border:none;color:#666;cursor:pointer;font-weight:700;}
+.top-tabs button.active{color:#7c3aed;border-bottom:4px solid #7c3aed;font-weight:800;}
 
 .progress-bars{background:#fff;padding:12px 16px 10px;border-bottom:1px solid #f0e6ff;}
 .bar-section{margin-bottom:10px;}
@@ -156,7 +156,7 @@ body{font-family:'Nanum Gothic',sans-serif;background:#f9f5ff;color:#333;min-hei
   <button onclick="showPage('calendar',this)">📅 달력</button>
   <button onclick="showPage('chart',this)">📊 그래프</button>
   <button onclick="showPage('stats',this)">🏆 통계</button>
-  <button onclick="showPage('past',this)">📝 기록입력</button>
+  
   <button onclick="showPage('settings',this)">⚙️ 설정</button>
 </div>
 
@@ -363,6 +363,7 @@ function addSquat(){
   const now2 = Date.now();
   if(now2 - lastTap < 300) return;
   lastTap = now2;
+  if (navigator.vibrate) navigator.vibrate(40);
   const k = todayKey();
   if(!data[k]) data[k] = 0;
   data[k] += 1;
