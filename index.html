@@ -751,21 +751,57 @@ function initSettingUI(){
   if(vm) vm.checked = true;
 }
 
+let squatPhase = 0;
+let lastAutoCount = 0;
+let baseMag = null;
+let phaseTime = 0;
+
 window.addEventListener('devicemotion', function(e){
   if(!settings.autoCount) return;
   if(document.hidden) return;
+
   const acc = e.accelerationIncludingGravity;
   if(!acc) return;
-  const mag = Math.sqrt((acc.x||0)*(acc.x||0) + (acc.y||0)*(acc.y||0) + (acc.z||0)*(acc.z||0));
-  if(prevMag === null){ prevMag = mag; return; }
-  const diff = Math.abs(mag - prevMag);
-  prevMag = mag;
+
+  const x = acc.x || 0;
+  const y = acc.y || 0;
+  const z = acc.z || 0;
+
+  const mag = Math.sqrt(x*x + y*y + z*z);
   const nowMs = Date.now();
-  if(diff > 5.2 && autoArmed && nowMs - lastAutoCount > 1500){
+
+  if(baseMag === null){
+    baseMag = mag;
+    return;
+  }
+
+  // 현재 자세 변화에 천천히 적응하는 기준값
+  baseMag = baseMag * 0.85 + mag * 0.15;
+  const delta = mag - baseMag;
+
+  // 1단계: 내려가는 동작 감지
+  if(squatPhase === 0 && delta < -1.4){
+    squatPhase = 1;
+    phaseTime = nowMs;
+    return;
+  }
+
+  // 2단계: 올라오는 동작 감지 -> 1회 카운트
+  if(
+    squatPhase === 1 &&
+    delta > 1.4 &&
+    nowMs - phaseTime > 180 &&
+    nowMs - lastAutoCount > 850
+  ){
     lastAutoCount = nowMs;
-    autoArmed = false;
+    squatPhase = 0;
     addSquat('auto');
-    setTimeout(()=>{ autoArmed = true; }, 800);
+    return;
+  }
+
+  // 너무 오래 지나면 초기화
+  if(squatPhase === 1 && nowMs - phaseTime > 1800){
+    squatPhase = 0;
   }
 });
 
