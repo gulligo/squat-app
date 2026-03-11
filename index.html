@@ -552,13 +552,20 @@ function renderCal(){
   Object.keys(data).forEach(k=>{if(k.startsWith(ym)){msum+=data[k];if(data[k]>maxVal)maxVal=data[k];}});
   document.getElementById('calMonthTotal').textContent=msum.toLocaleString();
   const grid=document.getElementById('calGrid'); grid.innerHTML='';
-  ['월','화','수','목','금','토','일'].forEach(d=>{
+  ['일','월','화','수','목','금','토',].forEach(d=>{
     const el=document.createElement('div');el.className='cal-dow';el.textContent=d;grid.appendChild(el);
   });
   const firstDay=new Date(calYear,calMonth,1).getDay();
   const offset=firstDay===0?6:firstDay-1;
   const days=new Date(calYear,calMonth+1,0).getDate();
   const todayStr=todayKey();
+  const today = data[todayStr] || 0;
+  const todayCheck = new Date().toDateString();
+const savedDate = localStorage.getItem("dateCheck");
+
+if(savedDate !== todayCheck){
+    localStorage.setItem("dateCheck", todayCheck);
+}
   for(let i=0;i<offset;i++){const el=document.createElement('div');el.className='cal-day';grid.appendChild(el);}
   for(let d=1;d<=days;d++){
     const key=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
