@@ -359,6 +359,11 @@ function playClick(){
 
 function save(){ localStorage.setItem('squat_v10', JSON.stringify(data)); updateAll(); }
 
+  function speakNumber(n){
+  const msg = new SpeechSynthesisUtterance(n.toString());
+  msg.lang = "ko-KR";
+  speechSynthesis.speak(msg);
+}
 function addSquat(){
   const now2 = Date.now();
   if(now2 - lastTap < 300) return;
@@ -367,6 +372,9 @@ function addSquat(){
   const k = todayKey();
   if(!data[k]) data[k] = 0;
   data[k] += 1;
+
+  speakNumber(data[k]);
+  
   save();
   playClick();
   const el = document.getElementById('todayCount');
