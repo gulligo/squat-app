@@ -543,7 +543,9 @@ function addSquat(amount=1){
   const after = getCount(day);
 
   if(data.settings.sound && data.settings.voice!=='mute'){
-    speak(String(after));
+    if(after % EVENT_STEP !== 0){
+  speak(String(after));
+}
   }
 
   if(data.settings.cheer){
