@@ -1,0 +1,63 @@
+Html
+코드 복사
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>용용이 스쿼트</title>
+
+<style>
+body{
+font-family:sans-serif;
+background:#f7f2fb;
+margin:0;
+text-align:center;
+}
+
+h1{
+color:#7a3cff;
+margin-top:40px;
+}
+
+#count{
+font-size:120px;
+font-weight:900;
+color:#7a3cff;
+}
+
+button{
+width:200px;
+height:200px;
+border-radius:100px;
+border:none;
+font-size:22px;
+background:#ffb6d9;
+color:white;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>용용이 스쿼트</h1>
+
+<div id="count">0</div>
+
+<button onclick="add()">스쿼트</button>
+
+<script>
+
+let count=0
+
+function add(){
+count++
+document.getElementById("count").innerText=count
+}
+
+</script>
+
+</body>
+</html>
