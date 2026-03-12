@@ -1,1 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>용용이 스쿼트</title>
 
+<style>
+body{
+margin:0;
+font-family:sans-serif;
+background:#f6f3fb;
+}
+
+.top{
+display:flex;
+background:white;
+border-bottom:2px solid #e7dcf6;
+}
+
+.top button{
+flex:1;
+padding:12px;
+border:none;
+background:white;
+font-weight:bold;
+}
+
+.top button.active{
+border-bottom:4px solid #8d4dff;
+color:#8d4dff;
+}
+
+.page{
+display:none;
+padding:10px;
+}
+
+.page.active{
+display:block;
+}
+
+.card{
+background:white;
+padding:12px;
+border-radius:15px;
+margin-bottom:10px;
+}
+
+.big{
+font-size:70px;
+font-weight:bold;
+text-align:center;
+color:#8d4dff;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.grid .card{
+text-align:center;
+}
+
+.calendar{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:4px;
+}
+
+.day{
+height:70px;
+background:#faf7ff;
+border-radius:10px;
+text-align:center;
+padding-top:6px;
+font-size:12px;
+}
+
+.circle{
+background:#f3cfd7;
+border-radius:50%;
+width:30px;
+height:30px;
+line-height:30px;
+margin:auto;
+}
+
+.graph{
+display:flex;
+align-items:flex-end;
+height:140px;
+gap:8px;
+}
+
+.bar{
+width:20px;
+background:#8d4dff;
+border-radius:5px 5px 0 0;
+}
+
+.float{
+position:fixed;
+bottom:20px;
+right:20px;
+width:160px;
+height:160px;
+border-radius:80px;
+border:none;
+overflow:hidden;
+}
+
+.float img{
+width:100%;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="top">
+<button class="tab active" data="home">스쿼트</button>
+<button class="tab" data="calendar">달력</button>
+<button class="tab" data="graph">그래프</button>
+<button class="tab" data="stats">통계</button>
+</div>
+
+<div id="home" class="page active">
+
+<div class="card">
+오늘 목표
+<div id="today">0</div>
+</div>
+
+<div class="card big" id="count">
+0
+</div>
+
+<div class="grid">
+
+<div class="card">
+한달 평균
+<div id="mavg">0</div>
+</div>
+
+<div class="card">
+연 평균
+<div id="yavg">0</div>
+</div>
+
+<div class="card">
+총 평균
+<div id="aavg">0</div>
+</div>
+
+<div class="card">
+최대
+<div id="max">0</div>
+</div>
+
+</div>
+
+</div>
+
+
+<div id="calendar" class="page">
+
+<div class="calendar" id="calendarGrid"></div>
+
+</div>
+
+
+<div id="graph" class="page">
+
+<div class="graph" id="graphBox"></div>
+
+</div>
+
+
+<div id="stats" class="page">
+
+<div class="card">
+전체 합계
+<div id="total">0</div>
+</div>
+
+</div>
+
+
+<button class="float" id="btn">
+<img src="icon.png">
+</button>
+
+
+<script>
+
+const KEY="squat_data"
+
+let data=JSON.parse(localStorage.getItem(KEY)||"{}")
+
+function today(){
+
+let d=new Date()
+
+return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+
+}
+
+function add(){
+
+let t=today()
+
+data[t]=(data[t]||0)+1
+
+localStorage.setItem(KEY,JSON.stringify(data))
+
+render()
+
+speak(data[t])
+
+if(data[t]%20==0){
+
+eventVoice()
+
+}
+
+}
+
+function speak(n){
+
+let u=new SpeechSynthesisUtterance(n)
+
+speechSynthesis.speak(u)
+
+}
+
+function eventVoice(){
+
+let arr=[
+"좋아",
+"계속해",
+"멋지다",
+"좋다",
+"힘내"
+]
+
+let u=new SpeechSynthesisUtterance(arr[Math.floor(Math.random()*arr.length)])
+
+speechSynthesis.speak(u)
+
+}
+
+function render(){
+
+let t=today()
+
+let todayCount=data[t]||0
+
+document.getElementById("count").innerText=todayCount
+
+document.getElementById("today").innerText=todayCount
+
+let total=0
+let max=0
+
+for(let k in data){
+
+total+=data[k]
+
+if(data[k]>max)max=data[k]
+
+}
+
+document.getElementById("total").innerText=total
+
+document.getElementById("max").innerText=max
+
+renderCalendar()
+
+renderGraph()
+
+}
+
+function renderCalendar(){
+
+let grid=document.getElementById("calendarGrid")
+
+grid.innerHTML=""
+
+for(let i=1;i<=31;i++){
+
+let div=document.createElement("div")
+
+div.className="day"
+
+let c=data["2026-3-"+i]||0
+
+if(c>0){
+
+div.innerHTML="<div class='circle'>"+i+"</div>"+c
+
+}else{
+
+div.innerText=i
+
+}
+
+grid.appendChild(div)
+
+}
+
+}
+
+function renderGraph(){
+
+let g=document.getElementById("graphBox")
+
+g.innerHTML=""
+
+let max=0
+
+for(let k in data){
+
+if(data[k]>max)max=data[k]
+
+}
+
+for(let k in data){
+
+let b=document.createElement("div")
+
+b.className="bar"
+
+b.style.height=(data[k]/max*120)+"px"
+
+g.appendChild(b)
+
+}
+
+}
+
+document.getElementById("btn").onclick=add
+
+document.querySelectorAll(".tab").forEach(t=>{
+
+t.onclick=()=>{
+
+document.querySelectorAll(".tab").forEach(a=>a.classList.remove("active"))
+
+t.classList.add("active")
+
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+
+document.getElementById(t.getAttribute("data")).classList.add("active")
+
+}
+
+})
+
+render()
+
+</script>
+
+</body>
+</html>
