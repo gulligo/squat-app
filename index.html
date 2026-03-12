@@ -15,11 +15,10 @@
   --primary:#8d4dff;
   --primary2:#c48bff;
   --text:#333;
-  --muted:#8d7f99;
   --orange:#ff8a2a;
   --green:#19c37d;
-  --soft-pink:#f6d7de;
-  --soft-pink-2:#f3c9d3;
+  --soft-pink:#f3d1da;
+  --soft-pink-2:#efc4d0;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
@@ -49,7 +48,7 @@ body{
   color:var(--primary);
   border-bottom:4px solid var(--primary);
 }
-.page{display:none;padding:14px 14px 160px}
+.page{display:none;padding:14px 14px 170px}
 .page.active{display:block}
 .card{
   background:var(--card);
@@ -60,7 +59,12 @@ body{
 }
 .goal-row{margin-bottom:14px}
 .goal-head{font-size:14px;color:#999;margin-bottom:6px}
-.goal-line{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.goal-line{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
 .goal-num{font-size:20px;font-weight:900}
 .goal-input{
   width:92px;
@@ -91,11 +95,15 @@ body{
 }
 .hero{
   text-align:center;
-  padding:28px 14px 18px;
+  padding:22px 10px 10px;
 }
-.hero-label{font-size:14px;color:#bbb;margin-bottom:8px}
+.hero-label{
+  font-size:14px;
+  color:#b8adc6;
+  margin-bottom:8px;
+}
 .hero-count{
-  font-size:110px;
+  font-size:96px;
   line-height:1;
   color:var(--primary);
   font-weight:900;
@@ -105,47 +113,50 @@ body{
   color:#9d74d4;
   font-weight:800;
 }
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid3{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mini-title{font-size:14px;color:#b0a2bc;margin-bottom:10px}
-.mini-value{font-size:34px;font-weight:900;line-height:1.1}
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.mini-title{
+  font-size:14px;
+  color:#b0a2bc;
+  margin-bottom:10px;
+}
+.mini-value{
+  font-size:32px;
+  font-weight:900;
+  line-height:1.1;
+}
 .orange{color:var(--orange)}
 .green{color:var(--green)}
 .purple{color:var(--primary)}
+.center{text-align:center}
+.small{font-size:12px;color:#b7aabc}
 .streak{
   display:grid;
   grid-template-columns:1fr 1px 1fr;
   align-items:center;
   gap:12px;
 }
-.divider{height:76px;background:#eee}
-.center{text-align:center}
-.small{font-size:12px;color:#b7aabc}
-.btn-hide-row{display:flex;justify-content:center;margin:8px 0 16px}
-.btn-hide{
+.divider{
+  height:76px;
+  background:#eee;
+}
+.main-btn-row{
+  display:flex;
+  justify-content:center;
+  margin:8px 0 0;
+}
+.main-btn{
   border:none;
-  background:#f0e5fb;
-  color:var(--primary);
-  padding:12px 18px;
+  background:linear-gradient(90deg,var(--primary),var(--primary2));
+  color:#fff;
+  font-size:24px;
+  font-weight:900;
+  padding:18px 34px;
   border-radius:999px;
-  font-weight:800;
-  font-size:14px;
-}
-.main-wrap{display:flex;justify-content:center;margin-top:10px}
-.squat-btn{
-  width:240px;
-  height:240px;
-  border-radius:50%;
-  border:8px solid #fff;
-  box-shadow:0 0 0 8px #ffd2ef,0 10px 28px rgba(236,72,153,.22);
-  overflow:hidden;
-  background:#fff;
-}
-.squat-btn img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+  box-shadow:0 8px 20px rgba(141,77,255,.25);
 }
 .settings-list .row{
   display:flex;
@@ -176,7 +187,12 @@ body{
 }
 .toggle.on{background:var(--primary)}
 .toggle.on::after{left:26px}
-.voice-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.voice-row,.graph-tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
 .chip{
   border:none;
   padding:10px 14px;
@@ -185,76 +201,52 @@ body{
   color:#666;
   font-weight:700;
 }
-.chip.active{background:var(--primary);color:#fff}
-
-.section-title{font-size:18px;font-weight:900;margin:0 0 12px}
-.calendar-card-title{
+.chip.active{
+  background:var(--primary);
+  color:#fff;
+}
+.section-title{
   font-size:18px;
   font-weight:900;
-  margin-bottom:8px;
+  margin:0 0 12px;
 }
-.calendar-streak{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:16px;
-  gap:12px;
-}
-.calendar-streak .box{
-  flex:1;
-  background:#fbf8ff;
-  border:1px solid #f0e8f8;
-  border-radius:18px;
-  padding:12px 10px;
-  text-align:center;
-}
-.calendar-streak .label{
-  font-size:13px;
-  color:#9d8cad;
-  margin-bottom:4px;
-}
-.calendar-streak .value{
-  font-size:28px;
-  font-weight:900;
-  color:var(--orange);
-}
+
+/* 달력 */
+.cal-heads,
 .calendar-grid{
   display:grid;
   grid-template-columns:repeat(7,1fr);
-  gap:10px 6px;
+  gap:8px 6px;
 }
 .cal-head{
   text-align:center;
   font-size:13px;
   color:#7b6888;
   font-weight:800;
-  margin-bottom:4px;
 }
 .day{
-  min-height:110px;
+  min-height:104px;
   border-radius:16px;
   background:#fcfbfe;
   padding:6px 2px 8px;
   text-align:center;
 }
 .day.empty{background:transparent}
-.day-num{
-  font-size:14px;
-  font-weight:800;
-  color:#555;
-  margin-bottom:6px;
-}
-.day-num.today{color:var(--primary)}
-.bubble-wrap{
-  height:62px;
+.day-bubble-wrap{
+  height:58px;
   display:flex;
   align-items:center;
   justify-content:center;
 }
-.bubble{
+.day-bubble{
   border-radius:50%;
   background:linear-gradient(180deg,var(--soft-pink),var(--soft-pink-2));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#5f4d69;
+  font-weight:900;
+  font-size:18px;
 }
 .day-count{
   margin-top:6px;
@@ -264,30 +256,44 @@ body{
   min-height:16px;
 }
 
+/* 그래프 */
 .chartWrap{
   display:flex;
   align-items:flex-end;
-  gap:8px;
-  height:220px;
+  gap:10px;
+  height:240px;
   overflow-x:auto;
+  padding-top:8px;
 }
-.barItem{min-width:30px;text-align:center}
+.barItem{
+  min-width:42px;
+  text-align:center;
+}
+.barVal{
+  font-size:10px;
+  color:#aaa;
+  margin-bottom:4px;
+}
 .barCol{
   width:100%;
   background:linear-gradient(180deg,var(--primary2),var(--primary));
   border-radius:10px 10px 4px 4px;
-  min-height:6px;
+  min-height:8px;
 }
-.barLbl{font-size:11px;color:#888;margin-top:6px}
-.barVal{font-size:10px;color:#aaa;margin-bottom:4px}
+.barLbl{
+  font-size:11px;
+  color:#888;
+  margin-top:6px;
+}
 
+/* 이동 버튼 */
 .floating{
   position:fixed;
   right:18px;
   bottom:28px;
   z-index:99;
-  width:170px;
-  height:170px;
+  width:180px;
+  height:180px;
   border-radius:50%;
   border:none;
   box-shadow:0 8px 24px rgba(0,0,0,.18);
@@ -301,10 +307,11 @@ body{
 }
 .floating.hidden{opacity:.25}
 
+/* 알림 */
 .notice{
   position:fixed;
   left:50%;
-  bottom:180px;
+  bottom:195px;
   transform:translateX(-50%);
   background:rgba(34,34,34,.92);
   color:#fff;
@@ -402,45 +409,34 @@ body{
     </div>
   </div>
 
-  <div class="btn-hide-row">
-    <button id="hideFloatBtn" class="btn-hide">👆 버튼 숨기기</button>
-  </div>
-
-  <div class="main-wrap">
-    <button id="mainBtn" class="squat-btn" aria-label="스쿼트 버튼">
-      <img src="icon.png" alt="용용이">
-    </button>
+  <div class="main-btn-row">
+    <button id="mainBtn" class="main-btn">스쿼트 +1</button>
   </div>
 </div>
 
 <div id="calendar" class="page">
   <div class="card">
-    <div class="calendar-card-title">이번 달 기록</div>
-    <div class="calendar-streak">
-      <div class="box">
-        <div class="label">현재 연속</div>
-        <div id="calCurrentStreak" class="value">0</div>
-      </div>
-      <div class="box">
-        <div class="label">최고 연속</div>
-        <div id="calBestStreak" class="value">0</div>
-      </div>
-    </div>
-    <div id="calendarHeads" class="calendar-grid" style="margin-bottom:8px"></div>
+    <div class="section-title">이번 달 기록</div>
+    <div id="calendarHeads" class="cal-heads" style="margin-bottom:8px"></div>
     <div id="calendarGrid" class="calendar-grid"></div>
   </div>
 </div>
 
 <div id="graph" class="page">
   <div class="card">
-    <h3 class="section-title">최근 7일 그래프</h3>
+    <div class="section-title">그래프</div>
+    <div class="graph-tabs">
+      <button class="chip active graph-chip" data-graph="day">일</button>
+      <button class="chip graph-chip" data-graph="month">달</button>
+      <button class="chip graph-chip" data-graph="year">년</button>
+    </div>
     <div id="chartWrap" class="chartWrap"></div>
   </div>
 </div>
 
 <div id="stats" class="page">
   <div class="card">
-    <h3 class="section-title">기록 요약</h3>
+    <div class="section-title">기록 요약</div>
     <div class="grid2">
       <div class="card center" style="margin:0">
         <div class="mini-title">오늘</div>
@@ -473,7 +469,7 @@ body{
       <button id="togSound" class="toggle on"></button>
     </div>
     <div class="row">
-      <div>응원 문구 표시</div>
+      <div>이벤트 멘트</div>
       <button id="togCheer" class="toggle on"></button>
     </div>
     <div class="row">
@@ -483,27 +479,25 @@ body{
     <div class="row" style="display:block">
       <div>목소리</div>
       <div class="voice-row">
-        <button class="chip active" data-voice="female">여자</button>
-        <button class="chip" data-voice="male">남자</button>
-        <button class="chip" data-voice="baby">아기</button>
-        <button class="chip" data-voice="mute">무음</button>
+        <button class="chip active voice-chip" data-voice="female">여자</button>
+        <button class="chip voice-chip" data-voice="male">남자</button>
+        <button class="chip voice-chip" data-voice="baby">아기</button>
+        <button class="chip voice-chip" data-voice="mute">무음</button>
       </div>
     </div>
   </div>
 </div>
 
-<button id="floatBtn" class="floating" aria-label="스쿼트 버튼">
+<button id="floatBtn" class="floating" aria-label="이동 버튼">
   <img src="icon.png" alt="용용이">
 </button>
 
 <div id="notice" class="notice"></div>
 
 <script>
-const KEY = 'yongyong_squat_fixed_v1';
+const KEY = 'yongyong_squat_final_v3';
 
-function deepClone(obj){
-  return JSON.parse(JSON.stringify(obj));
-}
+function clone(v){ return JSON.parse(JSON.stringify(v)); }
 
 const defaultData = {
   records: {
@@ -539,11 +533,12 @@ const defaultData = {
     vibrate: true,
     voice: 'female'
   },
-  floatHidden: false
+  graphMode: 'day'
 };
 
 const data = loadData();
 
+let currentPage = 'home';
 let isDragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
@@ -558,18 +553,80 @@ let auto = {
   lastCount: 0
 };
 
+const FEMALE_LINES = [
+  "여자 멘트 1",
+  "여자 멘트 2",
+  "여자 멘트 3",
+  "여자 멘트 4",
+  "여자 멘트 5"
+];
+
+const MALE_LINES = [
+  "좋아 계속 간다!",
+  "자세 유지!",
+  "호흡 맞춰!",
+  "힘 더 써!",
+  "아직 멀었다!",
+  "리듬 좋다!",
+  "좋아 그대로!",
+  "힘 남았다!",
+  "지금 좋다!",
+  "계속 간다!",
+  "그렇게 할 거냐!",
+  "자세 다시!",
+  "허리 펴!",
+  "집중 안 하냐!",
+  "제대로 해!",
+  "지금이 고비다!",
+  "끝까지 밀어!",
+  "멈추지 마!",
+  "버텨라!",
+  "마지막까지 간다!"
+];
+
+const BABY_LINES = [
+  "좋아요!",
+  "짱이에요!",
+  "잘했어요!",
+  "멋져요!",
+  "대단해요!",
+  "최고예요!",
+  "계속해요!",
+  "잘하고 있어요!"
+];
+
 const tabs = document.querySelectorAll('.tab');
 const pages = document.querySelectorAll('.page');
 const mainBtn = document.getElementById('mainBtn');
 const floatBtn = document.getElementById('floatBtn');
 const notice = document.getElementById('notice');
 
+const EVENT_COUNTS = [20, 40, 60, 80];
+
 tabs.forEach(btn=>{
   btn.addEventListener('click', ()=>{
+    currentPage = btn.dataset.page;
     tabs.forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     pages.forEach(p=>p.classList.remove('active'));
-    document.getElementById(btn.dataset.page).classList.add('active');
+    document.getElementById(currentPage).classList.add('active');
+    updateFloatingVisibility();
+  });
+});
+
+document.querySelectorAll('.graph-chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    data.graphMode = chip.dataset.graph;
+    saveData();
+    render();
+  });
+});
+
+document.querySelectorAll('.voice-chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    data.settings.voice = chip.dataset.voice;
+    saveData();
+    render();
   });
 });
 
@@ -588,6 +645,35 @@ document.getElementById('monthGoalInput').addEventListener('change', e=>{
   render();
 });
 
+document.getElementById('togAuto').addEventListener('click', ()=>{
+  data.settings.autoCount = !data.settings.autoCount;
+  saveData();
+  render();
+});
+
+document.getElementById('togSound').addEventListener('click', ()=>{
+  data.settings.sound = !data.settings.sound;
+  saveData();
+  render();
+});
+
+document.getElementById('togCheer').addEventListener('click', ()=>{
+  data.settings.cheer = !data.settings.cheer;
+  saveData();
+  render();
+});
+
+document.getElementById('togVibrate').addEventListener('click', ()=>{
+  data.settings.vibrate = !data.settings.vibrate;
+  saveData();
+  render();
+});
+
+mainBtn.addEventListener('click', addSquat);
+floatBtn.addEventListener('click', ()=>{
+  if(!isDragging && currentPage === 'home') addSquat();
+});
+
 function ymd(d=new Date()){
   const y = d.getFullYear();
   const m = String(d.getMonth()+1).padStart(2,'0');
@@ -604,6 +690,72 @@ function setCount(day, count){
   if(data.records[day] === 0) delete data.records[day];
 }
 
+function loadData(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return clone(defaultData);
+    const parsed = JSON.parse(raw);
+    return {
+      ...clone(defaultData),
+      ...parsed,
+      records: { ...defaultData.records, ...(parsed.records || {}) },
+      settings: { ...defaultData.settings, ...(parsed.settings || {}) }
+    };
+  }catch(e){
+    return clone(defaultData);
+  }
+}
+
+function saveData(){
+  localStorage.setItem(KEY, JSON.stringify(data));
+}
+
+function randomFrom(arr){
+  if(!arr || arr.length === 0) return '';
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function getEventLine(n){
+  if(data.settings.voice === 'male') return randomFrom(MALE_LINES);
+  if(data.settings.voice === 'baby') return randomFrom(BABY_LINES);
+  return randomFrom(FEMALE_LINES);
+}
+
+function speak(text){
+  if(!data.settings.sound) return;
+  if(data.settings.voice === 'mute') return;
+
+  try{
+    speechSynthesis.cancel();
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = 'ko-KR';
+
+    if(data.settings.voice === 'male'){
+      msg.pitch = 0.82;
+      msg.rate = 0.78;
+    }else if(data.settings.voice === 'baby'){
+      msg.pitch = 1.42;
+      msg.rate = 0.88;
+    }else{
+      msg.pitch = 1.05;
+      msg.rate = 0.80;
+    }
+
+    const voices = speechSynthesis.getVoices();
+    const ko = voices.find(v => v.lang && v.lang.toLowerCase().includes('ko'));
+    if(ko) msg.voice = ko;
+
+    speechSynthesis.speak(msg);
+  }catch(e){}
+}
+
+function showNotice(text){
+  notice.textContent = text;
+  notice.classList.add('show');
+  clearTimeout(showNotice.t);
+  showNotice.t = setTimeout(()=>notice.classList.remove('show'), 1600);
+}
+
 function addSquat(){
   const day = ymd();
   setCount(day, getCount(day) + 1);
@@ -618,42 +770,18 @@ function addSquat(){
     speak(String(n));
   }
 
-  if(data.settings.cheer && n > 0 && n % 20 === 0){
-    showNotice('좋아요!');
+  if(data.settings.cheer && EVENT_COUNTS.includes(n)){
+    const line = getEventLine(n);
+    if(line){
+      showNotice(line);
+      if(data.settings.sound && data.settings.voice !== 'mute'){
+        setTimeout(()=>speak(line), 250);
+      }
+    }
   }
 
   saveData();
   render();
-}
-
-mainBtn.addEventListener('click', ()=>addSquat());
-floatBtn.addEventListener('click', ()=>{ if(!isDragging) addSquat(); });
-
-function loadData(){
-  try{
-    const raw = localStorage.getItem(KEY);
-    if(!raw) return deepClone(defaultData);
-
-    const parsed = JSON.parse(raw);
-    return {
-      ...deepClone(defaultData),
-      ...parsed,
-      records: {
-        ...defaultData.records,
-        ...(parsed.records || {})
-      },
-      settings: {
-        ...defaultData.settings,
-        ...(parsed.settings || {})
-      }
-    };
-  }catch(e){
-    return deepClone(defaultData);
-  }
-}
-
-function saveData(){
-  localStorage.setItem(KEY, JSON.stringify(data));
 }
 
 function monthDays(base=new Date()){
@@ -670,9 +798,7 @@ function monthTotal(date=new Date()){
   const m = date.getMonth() + 1;
   let sum = 0;
   for(const k in data.records){
-    if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)){
-      sum += data.records[k];
-    }
+    if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)) sum += data.records[k];
   }
   return sum;
 }
@@ -692,29 +818,21 @@ function allTotal(){
 
 function dayMax(){
   let max = 0;
-  for(const k in data.records){
-    if(data.records[k] > max) max = data.records[k];
-  }
+  for(const k in data.records) if(data.records[k] > max) max = data.records[k];
   return max;
 }
 
 function calcStreaks(){
   const keys = Object.keys(data.records).filter(k=>data.records[k] > 0).sort();
-  if(keys.length === 0) return {current:0, best:0};
+  if(keys.length === 0) return {current:0,best:0};
 
-  let best = 1;
-  let cur = 1;
-
+  let best = 1, cur = 1;
   for(let i=1;i<keys.length;i++){
     const prev = new Date(keys[i-1]);
     const curr = new Date(keys[i]);
     const diff = (curr - prev) / 86400000;
-    if(diff === 1){
-      cur++;
-      best = Math.max(best, cur);
-    }else{
-      cur = 1;
-    }
+    if(diff === 1){ cur++; best = Math.max(best, cur); }
+    else cur = 1;
   }
 
   let current = 0;
@@ -722,14 +840,10 @@ function calcStreaks(){
   for(let i=0;;i++){
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    if(getCount(ymd(d)) > 0){
-      current++;
-    }else{
-      break;
-    }
+    if(getCount(ymd(d)) > 0) current++;
+    else break;
   }
-
-  return {current, best};
+  return {current,best};
 }
 
 function weekTotal(){
@@ -745,8 +859,8 @@ function weekTotal(){
 
 function bubbleSize(count, max){
   if(count <= 0) return 0;
-  const minSize = 24;
-  const maxSize = 58;
+  const minSize = 30;
+  const maxSize = 60;
   const ratio = Math.sqrt(count / Math.max(1, max));
   return Math.round(minSize + (maxSize - minSize) * ratio);
 }
@@ -754,7 +868,6 @@ function bubbleSize(count, max){
 function renderCalendar(){
   const heads = document.getElementById('calendarHeads');
   const grid = document.getElementById('calendarGrid');
-
   heads.innerHTML = '';
   grid.innerHTML = '';
 
@@ -770,8 +883,9 @@ function renderCalendar(){
   const m = base.getMonth();
   const firstDay = new Date(y, m, 1).getDay();
   const days = monthDays(base);
-  const thisMonthCounts = days.map(d => getCount(ymd(d)));
-  const maxCount = Math.max(1, ...thisMonthCounts);
+  const counts = days.map(d => getCount(ymd(d)));
+  const maxCount = Math.max(1, ...counts);
+  const todayKey = ymd();
 
   for(let i=0;i<firstDay;i++){
     const empty = document.createElement('div');
@@ -779,48 +893,45 @@ function renderCalendar(){
     grid.appendChild(empty);
   }
 
-  const todayKey = ymd();
-
   days.forEach(d=>{
-    const dayKey = ymd(d);
-    const count = getCount(dayKey);
+    const key = ymd(d);
+    const count = getCount(key);
+
     const el = document.createElement('div');
     el.className = 'day';
 
-    const num = document.createElement('div');
-    num.className = 'day-num' + (dayKey === todayKey ? ' today' : '');
-    num.textContent = d.getDate();
-
     const wrap = document.createElement('div');
-    wrap.className = 'bubble-wrap';
+    wrap.className = 'day-bubble-wrap';
 
-    if(count > 0){
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      const size = bubbleSize(count, maxCount);
-      bubble.style.width = size + 'px';
-      bubble.style.height = size + 'px';
-      wrap.appendChild(bubble);
+    const bubble = document.createElement('div');
+    bubble.className = 'day-bubble';
+    bubble.style.width = (count > 0 ? bubbleSize(count, maxCount) : 34) + 'px';
+    bubble.style.height = (count > 0 ? bubbleSize(count, maxCount) : 34) + 'px';
+    bubble.textContent = d.getDate();
+
+    if(key === todayKey){
+      bubble.style.outline = '3px solid #8d4dff';
+      bubble.style.outlineOffset = '1px';
     }
+
+    if(count === 0){
+      bubble.style.background = '#f7f3fa';
+      bubble.style.color = '#b6a8c4';
+    }
+
+    wrap.appendChild(bubble);
 
     const cnt = document.createElement('div');
     cnt.className = 'day-count';
     cnt.textContent = count > 0 ? count + '개' : '';
 
-    el.appendChild(num);
     el.appendChild(wrap);
     el.appendChild(cnt);
     grid.appendChild(el);
   });
-
-  const streak = calcStreaks();
-  document.getElementById('calCurrentStreak').textContent = streak.current + '일';
-  document.getElementById('calBestStreak').textContent = streak.best + '일';
 }
 
-function renderChart(){
-  const wrap = document.getElementById('chartWrap');
-  wrap.innerHTML = '';
+function getDailySeries(){
   const today = new Date();
   const arr = [];
   for(let i=6;i>=0;i--){
@@ -828,18 +939,72 @@ function renderChart(){
     d.setDate(today.getDate() - i);
     arr.push({label:`${d.getMonth()+1}/${d.getDate()}`, value:getCount(ymd(d))});
   }
+  return arr;
+}
+
+function getMonthlySeries(){
+  const arr = [];
+  const today = new Date();
+  for(let i=5;i>=0;i--){
+    const d = new Date(today.getFullYear(), today.getMonth()-i, 1);
+    const y = d.getFullYear();
+    const m = d.getMonth()+1;
+    let sum = 0;
+    for(const k in data.records){
+      if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)) sum += data.records[k];
+    }
+    arr.push({label:`${m}월`, value:sum});
+  }
+  return arr;
+}
+
+function getYearlySeries(){
+  const arr = [];
+  const today = new Date();
+  for(let i=2;i>=0;i--){
+    const y = today.getFullYear() - i;
+    let sum = 0;
+    for(const k in data.records){
+      if(k.startsWith(String(y))) sum += data.records[k];
+    }
+    arr.push({label:`${y}`, value:sum});
+  }
+  return arr;
+}
+
+function renderChart(){
+  const wrap = document.getElementById('chartWrap');
+  wrap.innerHTML = '';
+
+  document.querySelectorAll('.graph-chip').forEach(ch=>{
+    ch.classList.toggle('active', ch.dataset.graph === data.graphMode);
+  });
+
+  let arr = [];
+  if(data.graphMode === 'month') arr = getMonthlySeries();
+  else if(data.graphMode === 'year') arr = getYearlySeries();
+  else arr = getDailySeries();
+
   const max = Math.max(1, ...arr.map(x=>x.value));
   arr.forEach(item=>{
-    const h = Math.max(6, Math.round((item.value / max) * 150));
+    const h = Math.max(8, Math.round((item.value / max) * 170));
     const div = document.createElement('div');
     div.className = 'barItem';
-    div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
+    div.innerHTML = `
+      <div class="barVal">${item.value}</div>
+      <div class="barCol" style="height:${h}px"></div>
+      <div class="barLbl">${item.label}</div>
+    `;
     wrap.appendChild(div);
   });
 }
 
-function setToggle(id, on){
+function setToggle(id,on){
   document.getElementById(id).classList.toggle('on', !!on);
+}
+
+function updateFloatingVisibility(){
+  floatBtn.style.display = currentPage === 'home' ? 'block' : 'none';
 }
 
 function render(){
@@ -858,6 +1023,7 @@ function render(){
   Object.keys(data.records).forEach(d=>{
     if(!firstDate || d < firstDate) firstDate = d;
   });
+
   let totalDays = 1;
   if(firstDate){
     totalDays = Math.floor((now - new Date(firstDate)) / 86400000) + 1;
@@ -889,68 +1055,28 @@ function render(){
 
   const todayPct = Math.min(100, Math.round((today / Math.max(1, data.todayGoal)) * 100));
   const monthPct = Math.min(100, Math.round((mTotal / Math.max(1, data.monthGoal)) * 100));
-
   document.getElementById('todayBar').style.width = todayPct + '%';
   document.getElementById('monthBar').style.width = monthPct + '%';
   document.getElementById('monthPercent').textContent = monthPct + '%';
-
-  floatBtn.classList.toggle('hidden', data.floatHidden);
-  document.getElementById('hideFloatBtn').textContent = data.floatHidden ? '👆 버튼 보이기' : '👆 버튼 숨기기';
 
   setToggle('togAuto', data.settings.autoCount);
   setToggle('togSound', data.settings.sound);
   setToggle('togCheer', data.settings.cheer);
   setToggle('togVibrate', data.settings.vibrate);
 
-  document.querySelectorAll('.chip').forEach(chip=>{
+  document.querySelectorAll('.voice-chip').forEach(chip=>{
     chip.classList.toggle('active', chip.dataset.voice === data.settings.voice);
   });
 
   renderCalendar();
   renderChart();
+  updateFloatingVisibility();
 }
-
-document.getElementById('hideFloatBtn').addEventListener('click', ()=>{
-  data.floatHidden = !data.floatHidden;
-  saveData();
-  render();
-});
-
-document.getElementById('togAuto').addEventListener('click', ()=>{
-  data.settings.autoCount = !data.settings.autoCount;
-  saveData();
-  render();
-});
-
-document.getElementById('togSound').addEventListener('click', ()=>{
-  data.settings.sound = !data.settings.sound;
-  saveData();
-  render();
-});
-
-document.getElementById('togCheer').addEventListener('click', ()=>{
-  data.settings.cheer = !data.settings.cheer;
-  saveData();
-  render();
-});
-
-document.getElementById('togVibrate').addEventListener('click', ()=>{
-  data.settings.vibrate = !data.settings.vibrate;
-  saveData();
-  render();
-});
-
-document.querySelectorAll('.chip').forEach(chip=>{
-  chip.addEventListener('click', ()=>{
-    data.settings.voice = chip.dataset.voice;
-    saveData();
-    render();
-  });
-});
 
 window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
   if(document.hidden) return;
+  if(currentPage !== 'home') return;
 
   const acc = e.accelerationIncludingGravity;
   if(!acc) return;
@@ -971,7 +1097,7 @@ window.addEventListener('devicemotion', function(e){
   auto.base = auto.base * 0.992 + mag * 0.008;
   const delta = mag - auto.base;
 
-  // 내려갈 때는 절대 카운트 안 함
+  // 내려갈 때는 카운트 안 함
   if(auto.phase === 0){
     if(delta < -2.2){
       auto.phase = 1;
@@ -981,7 +1107,7 @@ window.addEventListener('devicemotion', function(e){
     return;
   }
 
-  // 충분히 내려간 후, 다시 올라와서 끝났을 때만 1개
+  // 충분히 내려간 뒤, 다시 올라와 동작이 끝났을 때만 1개
   if(auto.phase === 1){
     if(now - auto.lowTime > 2500){
       auto.phase = 0;
@@ -1011,47 +1137,13 @@ document.addEventListener('visibilitychange', ()=>{
   }
 });
 
-function speak(text){
-  if(!data.settings.sound) return;
-  if(data.settings.voice === 'mute') return;
-
-  try{
-    speechSynthesis.cancel();
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = 'ko-KR';
-
-    if(data.settings.voice === 'male'){
-      msg.pitch = 0.8;
-      msg.rate = 0.78;
-    }else if(data.settings.voice === 'baby'){
-      msg.pitch = 1.45;
-      msg.rate = 0.86;
-    }else{
-      msg.pitch = 1.05;
-      msg.rate = 0.80;
-    }
-
-    const voices = speechSynthesis.getVoices();
-    const ko = voices.find(v => v.lang && v.lang.toLowerCase().includes('ko'));
-    if(ko) msg.voice = ko;
-
-    speechSynthesis.speak(msg);
-  }catch(e){}
-}
-
-function showNotice(text){
-  notice.textContent = text;
-  notice.classList.add('show');
-  clearTimeout(showNotice.t);
-  showNotice.t = setTimeout(()=>notice.classList.remove('show'), 1500);
-}
-
 (function(){
   const btn = floatBtn;
   btn.style.right = '18px';
   btn.style.bottom = '28px';
 
   btn.addEventListener('touchstart', e=>{
+    if(currentPage !== 'home') return;
     isDragging = false;
     const t = e.touches[0];
     dragStartX = t.clientX;
@@ -1062,6 +1154,7 @@ function showNotice(text){
   }, {passive:true});
 
   btn.addEventListener('touchmove', e=>{
+    if(currentPage !== 'home') return;
     const t = e.touches[0];
     const dx = t.clientX - dragStartX;
     const dy = t.clientY - dragStartY;
@@ -1072,8 +1165,8 @@ function showNotice(text){
 
     if(isDragging){
       e.preventDefault();
-      btn.style.left = Math.max(0, Math.min(window.innerWidth - 170, btnStartX + dx)) + 'px';
-      btn.style.top = Math.max(0, Math.min(window.innerHeight - 170, btnStartY + dy)) + 'px';
+      btn.style.left = Math.max(0, Math.min(window.innerWidth - 180, btnStartX + dx)) + 'px';
+      btn.style.top = Math.max(0, Math.min(window.innerHeight - 180, btnStartY + dy)) + 'px';
       btn.style.right = 'auto';
       btn.style.bottom = 'auto';
     }
