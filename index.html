@@ -463,19 +463,19 @@ function setCount(day,count){
 }
 
 function loadData(){
-  try{
-    const raw = localStorage.getItem(KEY);
-    if(!raw) return clone(defaultData);
-    const parsed = JSON.parse(raw);
-    return {
-      ...clone(defaultData),
-      ...parsed,
-      records:{...defaultData.records,...(parsed.records||{})},
-      settings:{...defaultData.settings,...(parsed.settings||{})}
-    };
-  }catch(e){
-    return clone(defaultData);
-  }
+  function loadData() {
+    try {
+        const raw = localStorage.getItem(KEY);
+        if (!raw) return { ...defaultData };
+        const parsed = JSON.parse(raw);
+        return {
+            records: { ...defaultData.records, ...(parsed.records || {}) },
+            settings: { ...defaultData.settings, ...(parsed.settings || {}) }
+        };
+    } catch (e) {
+        return { ...defaultData };
+    }
+}
 }
 
 function saveData(){
