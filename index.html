@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스쿼트</title>
 
+<style>
+body{
+font-family:sans-serif;
+text-align:center;
+background:#f7f7fb;
+}
+
+h1{
+margin-top:40px;
+}
+
+#count{
+font-size:80px;
+margin:30px;
+}
+
+button{
+font-size:30px;
+padding:20px 40px;
+border:none;
+border-radius:15px;
+background:#4c8bff;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>스쿼트 카운터</h1>
+
+<div id="count">0</div>
+
+<button onclick="add()">+10</button>
+
+<script>
+
+let c=0;
+
+function add(){
+c+=10;
+document.getElementById("count").innerText=c;
+}
+
+</script>
+
+</body>
+</html>
