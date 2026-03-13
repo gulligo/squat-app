@@ -556,7 +556,7 @@ function addSquat(amount=1){
       if(line){
         showNotice(line);
         if(data.settings.sound && data.settings.voice!=='mute'){
-          setTimeout(()=>speak(line),250);
+          speak(line);
         }
       }
     }
