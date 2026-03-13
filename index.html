@@ -64,7 +64,7 @@ body{
   width:82px;height:32px;border-radius:12px;border:2px solid var(--line);
   text-align:center;font-size:15px;font-weight:800;color:#444;background:#faf7ff;
 }
-.bar{height:4px;background:transparent;overflow:hidden}
+.bar{height:8px;background:transparent;overflow:hidden}
 .bar>div{
   height:100%;width:0%;border-radius:999px;
   background:linear-gradient(90deg,var(--primary),var(--primary2));
@@ -173,7 +173,6 @@ body{
       <div id="todayGoalNow" class="goal-num">0</div>
       <span>/</span>
       <input id="todayGoalInput" class="goal-input" type="number" min="1" value="300" />
-      <span>개</span>
       <div id="todayPercent" class="goal-num orange" style="margin-left:auto;font-size:15px">0%</div>
     </div>
     <div class="bar"><div id="todayBar"></div></div>
@@ -185,7 +184,6 @@ body{
       <div id="monthGoalNow" class="goal-num">0</div>
       <span>/</span>
       <input id="monthGoalInput" class="goal-input" type="number" min="1" value="10800" />
-      <span>개</span>
       <div id="monthPercent" class="goal-num orange" style="margin-left:auto;font-size:15px">0%</div>
     </div>
     <div class="bar monthbar"><div id="monthBar"></div></div>
