@@ -802,20 +802,12 @@ function render(){
   const streak = calcStreaks();
 
   const now = new Date();
-  const dayOfMonth = now.getDate();
-  const startOfYear = new Date(now.getFullYear(),0,1);
-  const dayOfYear = Math.floor((now-startOfYear)/86400000)+1;
-
-  let firstDate = null;
-  Object.keys(data.records).forEach(d=>{
-    if(!firstDate || d<firstDate) firstDate = d;
-  });
-
-  let totalDays = 1;
-  if(firstDate){
-    totalDays = Math.floor((now-new Date(firstDate))/86400000)+1;
-    if(totalDays<1) totalDays = 1;
-  }
+  const startDate = new Date('2026-02-19'); 
+  
+  // 2월 19일부터의 일수 계산 (연 평균 및 전체 평균용)
+  const diffDays = Math.floor((now - startDate) / 86400000) + 1;
+  const dayOfYear = diffDays < 1 ? 1 : diffDays;
+  let totalDays = dayOfYear;
 
   const monthAvg = Math.round(mTotal/dayOfMonth || 0);
   const yearAvg = Math.round(yTotal/dayOfYear || 0);
