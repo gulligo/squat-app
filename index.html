@@ -828,8 +828,8 @@ function render(){
   document.getElementById('statsMonth').textContent = mTotal.toLocaleString();
   document.getElementById('statsAllTotal').textContent = total.toLocaleString();
 
-  const todayPct = Math.min(100, Math.round((today/Math.max(1,data.todayGoal))*100));
-  const monthPct = Math.min(100, Math.round((mTotal/Math.max(1,data.monthGoal))*100));
+  const todayPct = Math.round((today / Math.max(1, data.todayGoal)) * 100);
+const monthPct = Math.round((mTotal / Math.max(1, data.monthGoal)) * 100);
   document.getElementById('todayBar').style.width = todayPct + '%';
   document.getElementById('monthBar').style.width = monthPct + '%';
   document.getElementById('monthPercent').textContent = monthPct + '%';
