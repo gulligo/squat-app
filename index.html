@@ -849,7 +849,7 @@ const monthPct = Math.round((mTotal / Math.max(1, data.monthGoal)) * 100);
 window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
   if(document.hidden) return;
-  if(currentPage !== 'home') return;
+  //if(currentPage !== 'home') return;
 
   const acc = e.accelerationIncludingGravity;
   if(!acc) return;
