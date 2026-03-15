@@ -849,7 +849,7 @@ const monthPct = Math.round((mTotal / Math.max(1, data.monthGoal)) * 100);
 window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
   if(document.hidden) return;
-  //if(currentPage !== 'home') return;
+  if(currentPage!=='home') return;
 
   const acc = e.accelerationIncludingGravity;
   if(!acc) return;
@@ -872,17 +872,14 @@ window.addEventListener('devicemotion', function(e){
   const delta = mag - auto.base;
 
   // 1. 충분히 내려감
-  if (auto.stage === 'idle') {
-    if (auto.lastCountTime && (now - auto.lastCountTime < 1700)) {
-        return;
-    }
-    if (delta < -2.0) {
-        auto.stage = 'down';
-        auto.downTime = now;
-        auto.lowDelta = delta;
+  if(auto.stage==='idle'){
+    if(delta < -1.9){
+      auto.stage = 'down';
+      auto.downTime = now;
+      auto.lowDelta = delta;
     }
     return;
-}
+  }
 
   // 2. 내려간 뒤 충분히 올라옴
   if(auto.stage==='down'){
@@ -893,7 +890,7 @@ window.addEventListener('devicemotion', function(e){
       return;
     }
 
-    if(delta > 2.0 && now - auto.downTime > 300){
+    if(delta > 1.4 && now - auto.downTime > 300){
       auto.stage = 'up';
       auto.upTime = now;
       auto.highDelta = delta;
@@ -911,10 +908,10 @@ window.addEventListener('devicemotion', function(e){
     }
 
     if(
-      delta > -1.5 &&
-      delta < 1.5 &&
+      delta > -0.2 &&
+      delta < 0.8 &&
       now - auto.upTime > 180 &&
-      now - auto.lastCountTime > 2300
+      now - auto.lastCountTime > 1400
     ){
       auto.lastCountTime = now;
       auto.stage = 'idle';
@@ -936,7 +933,7 @@ document.addEventListener('visibilitychange',()=>{
   btn.style.bottom = '16px';
 
   btn.addEventListener('touchstart',e=>{
-    // if(currentPage !== 'home') return; //
+    if(currentPage!=='home') return;
     isDragging = false;
     const t = e.touches[0];
     dragStartX = t.clientX;
@@ -946,7 +943,8 @@ document.addEventListener('visibilitychange',()=>{
     btnStartY = rect.top;
   },{passive:true});
 
-  // if(currentPage !== 'home') return; //
+  btn.addEventListener('touchmove',e=>{
+    if(currentPage!=='home') return;
     const t = e.touches[0];
     const dx = t.clientX - dragStartX;
     const dy = t.clientY - dragStartY;
