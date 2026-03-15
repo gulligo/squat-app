@@ -72,7 +72,10 @@ body{
 .hero{text-align:center;padding:10px 8px}
 .hero-count{font-size:120px;line-height:1;color:var(--primary);font-weight:900}
 .hero-unit{font-size:15px;font-weight:800;color:#9d74d4}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row2{display: grid;
+  grid-template-columns: 1fr 1fr; /* 한 줄에 똑같은 크기 2개씩 배치 */
+  gap: 8px; /* 칸 사이 간격 */
+  margin-top: 10px;}
 .mini-title{font-size:11px;color:#9f90ab;margin-bottom:5px}
 .mini-value{font-size:24px;font-weight:900;line-height:1.1}
 .center{text-align:center}
@@ -80,8 +83,6 @@ body{
 .green{color:var(--green)}
 .purple{color:var(--primary)}
 .small{font-size:11px;color:#b7aabc}
-.streak{display:grid;grid-template-columns:1fr 1px 1fr;gap:8px;align-items:center}
-.divider{height:54px;background:#eee}
 .main-btn-row{display:flex;justify-content:center;gap:10px;margin-top:2px}
 .main-btn{
   border:none;background:linear-gradient(90deg,var(--primary),var(--primary2));
