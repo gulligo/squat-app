@@ -936,7 +936,7 @@ document.addEventListener('visibilitychange',()=>{
   btn.style.bottom = '16px';
 
   btn.addEventListener('touchstart',e=>{
-    if(currentPage!=='home') return;
+    // if(currentPage !== 'home') return; //
     isDragging = false;
     const t = e.touches[0];
     dragStartX = t.clientX;
@@ -946,8 +946,7 @@ document.addEventListener('visibilitychange',()=>{
     btnStartY = rect.top;
   },{passive:true});
 
-  btn.addEventListener('touchmove',e=>{
-    if(currentPage!=='home') return;
+  // if(currentPage !== 'home') return; //
     const t = e.touches[0];
     const dx = t.clientX - dragStartX;
     const dy = t.clientY - dragStartY;
