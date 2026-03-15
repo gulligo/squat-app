@@ -873,7 +873,7 @@ window.addEventListener('devicemotion', function(e){
 
   // 1. 충분히 내려감
   if(auto.stage==='idle'){
-    if(delta < -1.9){
+    if(delta < -2.0){
       auto.stage = 'down';
       auto.downTime = now;
       auto.lowDelta = delta;
