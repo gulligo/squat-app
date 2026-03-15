@@ -872,14 +872,17 @@ window.addEventListener('devicemotion', function(e){
   const delta = mag - auto.base;
 
   // 1. 충분히 내려감
-  if(auto.stage==='idle'){
-    if(delta < -2.0){
-      auto.stage = 'down';
-      auto.downTime = now;
-      auto.lowDelta = delta;
+  if (auto.stage === 'idle') {
+    if (auto.lastCountTime && (now - auto.lastCountTime < 1700)) {
+        return;
+    }
+    if (delta < -2.0) {
+        auto.stage = 'down';
+        auto.downTime = now;
+        auto.lowDelta = delta;
     }
     return;
-  }
+}
 
   // 2. 내려간 뒤 충분히 올라옴
   if(auto.stage==='down'){
@@ -890,7 +893,7 @@ window.addEventListener('devicemotion', function(e){
       return;
     }
 
-    if(delta > 1.4 && now - auto.downTime > 300){
+    if(delta > 2.0 && now - auto.downTime > 300){
       auto.stage = 'up';
       auto.upTime = now;
       auto.highDelta = delta;
