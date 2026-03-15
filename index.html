@@ -911,10 +911,10 @@ window.addEventListener('devicemotion', function(e){
     }
 
     if(
-      delta > -0.2 &&
+      delta > -1.0 &&
       delta < 0.8 &&
       now - auto.upTime > 180 &&
-      now - auto.lastCountTime > 2000
+      now - auto.lastCountTime > 2300
     ){
       auto.lastCountTime = now;
       auto.stage = 'idle';
