@@ -968,6 +968,37 @@ document.addEventListener('visibilitychange',()=>{
   });
 })();
 
+  render();
+
+function backupData(){
+  const data = JSON.stringify(localStorage);
+  const blob = new Blob([data], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'squat_backup.json';
+  a.click();
+}
+
+function restoreData(){
+  document.getElementById('restoreFile').click();
+}
+
+document.getElementById('restoreFile').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(){
+    const data = JSON.parse(reader.result);
+    for (let key in data){
+      localStorage.setItem(key, data[key]);
+    }
+    location.reload();
+  }
+
+  reader.readAsText(file);
+});
 render();
 </script>
 </body>
