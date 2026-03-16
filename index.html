@@ -81,7 +81,7 @@ body{
 .green{color:var(--green)}
 .purple{color:var(--primary)}
 .small{font-size:11px;color:#b7aabc}
-.streak{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.streak{display:grid;grid-template-columns:1fr 1px 1fr;gap:8px;align-items:center}
 .divider{width:1px;background:#eee}
 .main-btn-row{display:flex;justify-content:center;gap:10px;margin-top:2px}
 .main-btn{
@@ -219,19 +219,19 @@ body{
     </div>
   </div>
 
-  <div class="card streak">
-    <div class="center">
-      <div class="mini-title">현재 연속</div>
-      <div id="currentStreak" class="mini-value orange">0</div>
-      <div class="small">일</div>
-    </div>
-    <div class="divider"></div>
-    <div class="center">
-      <div class="mini-title">최고 연속</div>
-      <div id="bestStreak" class="mini-value orange">0</div>
-      <div class="small">일</div>
-    </div>
+  <div class="row2">
+  <div class="card center">
+    <div class="mini-title">현재 연속</div>
+    <div id="currentStreak" class="mini-value orange">0</div>
+    <div class="small">일</div>
   </div>
+
+  <div class="card center">
+    <div class="mini-title">최고 연속</div>
+    <div id="bestStreak" class="mini-value orange">0</div>
+    <div class="small">일</div>
+  </div>
+</div>
 
   <div class="main-btn-row">
     <button id="plus10Btn" class="main-btn plus10">+10</button>
