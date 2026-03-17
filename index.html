@@ -597,7 +597,7 @@ function monthTotal(date=new Date()){
 }
 
 function yearTotal(date=new Date()){
-  const y = `${date.getFullYear()}-`;
+  const y = `${new Date().getFullYear()}-`;
   let sum = 0;
   for(const k in data.records){
     if(k.startsWith(y)) sum += data.records[k];
