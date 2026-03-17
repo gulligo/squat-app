@@ -710,7 +710,8 @@ function renderCalendar(){
     bubble.style.width = (count>0 ? bubbleSize(count,maxCount) : 24) + 'px';
     bubble.style.height = (count>0 ? bubbleSize(count,maxCount) : 24) + 'px';
     bubble.textContent = d.getDate();
-
+    bubble.style.fontSize = '22px';
+bubble.style.fontWeight = 'bold';
     if(key===todayKey){
       bubble.style.outline = '2px solid #8d4dff';
       bubble.style.outlineOffset = '1px';
