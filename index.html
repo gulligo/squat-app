@@ -239,7 +239,11 @@ body{
 
 <div id="calendar" class="page">
   <div class="card">
-    <div class="section-title">이번 달 기록</div>
+    <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+    <button onclick="changeMonth(-1)" style="padding: 0 15px; background: none; border: 1px solid #ddd; border-radius: 5px;"> < </button>
+    <span id="calendar-title">이번 달 기록</span>
+    <button onclick="changeMonth(1)" style="padding: 0 15px; background: none; border: 1px solid #ddd; border-radius: 5px;"> > </button>
+</div>
     <div id="calendarHeads" class="cal-heads" style="margin-bottom:6px"></div>
     <div id="calendarGrid" class="calendar-grid"></div>
   </div>
@@ -676,11 +680,12 @@ function renderCalendar(){
     heads.appendChild(h);
   });
 
-  const base = new Date();
+  const base = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
+  document.getElementById('calendar-title').innerText = `${viewDate.getFullYear()}년 ${viewDate.getMonth() + 1}월`;
   const y = base.getFullYear();
   const m = base.getMonth();
-  const firstDay = new Date(y,m,1).getDay();
-  const days = monthDays(base);
+  const firstDay = base.getDay();
+  const days = getMonthDays(viewDate);
   const counts = days.map(d=>getCount(ymd(d)));
   const maxCount = Math.max(1,...counts);
   const todayKey = ymd();
@@ -729,7 +734,6 @@ function renderCalendar(){
 }
 
 function getDailySeries(){
-  let viewDate = new Date();
   const arr = [];
   for(let i=6;i>=0;i--){
     const d = new Date(viewDate);
@@ -803,7 +807,7 @@ function setToggle(id,on){
 function updateFloatingVisibility(){
   floatBtn.style.display = currentPage==='home' ? 'block' : 'none';
 }
-
+let viewDate = new Date();
 function render(){
   const today = getCount(ymd());
   const mTotal = monthTotal();
@@ -1010,6 +1014,10 @@ document.getElementById('restoreFile').addEventListener('change', function(e){
   reader.readAsText(file);
 });
 render();
+  function changeMonth(offset) {
+    viewDate.setMonth(viewDate.getMonth() + offset);
+    render();
+}
 </script>
 </body>
 </html>
