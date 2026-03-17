@@ -780,6 +780,7 @@ function getYearlySeries(){
 
 function renderChart(){
   const wrap = document.getElementById('chartWrap');
+  if(!wrap) return;
   wrap.innerHTML = '';
 
   document.querySelectorAll('.graph-chip').forEach(ch=>{
@@ -1019,10 +1020,8 @@ document.getElementById('restoreFile').addEventListener('change', function(e){
   reader.readAsText(file);
 });
 render();
+renderChart();
 
-if(currentPage === 'graph'){
-  renderChart();
-}
 </script>
 </body>
 </html>
