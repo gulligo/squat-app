@@ -240,9 +240,13 @@ body{
 <div id="calendar" class="page">
   <div class="card">
     <div class="section-title">이번 달 기록</div>
-    <div id="calendarHead" class="cal-heads" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-    <div id="calendarGrid" class="calendar-grid"></div>
-  </div>
+    <div class="cal-heads" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+  <button onclick="changeMonth(-1)" class="chip">이전</button>
+  <div id="monthLabel"></div>
+  <button onclick="changeMonth(1)" class="chip">다음</button>
+</div>
+<div id="calendarHead" class="cal-heads" style="margin-bottom:6px"></div>
+<div id="calendarGrid" class="calendar-grid"></div>
 </div>
 
 <div id="graph" class="page">
