@@ -245,10 +245,6 @@ body{
   <div id="monthLabel"></div>
   <button onclick="changeMonth(1)" class="chip">다음</button>
 </div>
-<div id="calendarHead" class="cal-heads" style="margin-bottom:6px"></div>
-<div id="calendarGrid" class="calendar-grid"></div>
-</div>
-
 <div id="graph" class="page">
   <div class="card">
     <div class="section-title">그래프</div>
@@ -256,6 +252,10 @@ body{
       <button class="chip active graph-chip" data-graph="day">일</button>
       <button class="chip graph-chip" data-graph="month">달</button>
       <button class="chip graph-chip" data-graph="year">년</button>
+    </div>
+    <div id="chartWrap" class="chartWrap"></div>
+  </div>
+</div>
     </div>
     <div id="chartWrap" class="chartWrap"></div>
   </div>
