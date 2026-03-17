@@ -729,11 +729,11 @@ function renderCalendar(){
 }
 
 function getDailySeries(){
-  const today = new Date();
+  let viewDate = new Date();
   const arr = [];
   for(let i=6;i>=0;i--){
-    const d = new Date(today);
-    d.setDate(today.getDate()-i);
+    const d = new Date(viewDate);
+    d.setDate(viewDate.getDate()-i);
     arr.push({label:`${d.getMonth()+1}/${d.getDate()}`, value:getCount(ymd(d))});
   }
   return arr;
