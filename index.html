@@ -682,10 +682,14 @@ grid.innerHTML = '';
   });
 
   const base = viewDate;
-  const y = base.getFullYear();
-  const m = base.getMonth();
-  const maxCount = Math.max(1,...counts);
-  const todayKey = ymd();
+const y = base.getFullYear();
+const m = base.getMonth();
+monthLabel.textContent = `${y}.${String(m+1).padStart(2,'0')}`;
+const firstDay = new Date(y,m,1).getDay();
+const days = monthDays(base);
+const counts = days.map(d=>getCount(ymd(d)));
+const maxCount = Math.max(1,...counts);
+const todayKey = ymd();
 
   for(let i=0;i<firstDay;i++){
     const empty = document.createElement('div');
