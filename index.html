@@ -685,7 +685,7 @@ function renderCalendar(){
   const y = base.getFullYear();
   const m = base.getMonth();
   const firstDay = base.getDay();
-  const days = MonthDays(viewDate);
+  const days = monthDays(viewDate);
   const counts = days.map(d=>getCount(ymd(d)));
   const maxCount = Math.max(1,...counts);
   const todayKey = ymd();
