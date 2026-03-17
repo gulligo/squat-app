@@ -684,9 +684,6 @@ grid.innerHTML = '';
   const base = viewDate;
   const y = base.getFullYear();
   const m = base.getMonth();
-  monthLabel.textContent = `${y}.${String(m+1).padStart(2,'0')}`;
-  const firstDay = new Date(y,m,1).getDay();
-  const counts = days.map(d=>getCount(ymd(d)));
   const maxCount = Math.max(1,...counts);
   const todayKey = ymd();
 
