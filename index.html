@@ -241,12 +241,8 @@ body{
   <div class="card">
     <div class="section-title">이번 달 기록</div>
     <div class="cal-heads" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-  <button onclick="changeMonth(-1)" class="chip">이전</button>
-  <div id="monthLabel"></div>
-  <button onclick="changeMonth(1)" class="chip">다음</button>
-</div>
-<div id="calendarHead" class="cal-heads" style="margin-bottom:6px"></div>
-<div id="calendarGrid" class="calendar-grid"></div>
+    <div id="calendarGrid" class="calendar-grid"></div>
+  </div>
 </div>
 
 <div id="graph" class="page">
@@ -668,12 +664,11 @@ function bubbleSize(count,max){
 }
 
 function renderCalendar(){
-  const heads = document.getElementById('calendarHead');
-const grid = document.getElementById('calendarGrid');
-const monthLabel = document.getElementById('monthLabel');
+  const heads = document.getElementById('calendarHeads');
+  const grid = document.getElementById('calendarGrid');
+  heads.innerHTML = '';
+  grid.innerHTML = '';
 
-heads.innerHTML = '';
-grid.innerHTML = '';
   ['일','월','화','수','목','금','토'].forEach(name=>{
     const h = document.createElement('div');
     h.className = 'cal-head';
@@ -684,6 +679,9 @@ grid.innerHTML = '';
   const base = viewDate;
   const y = base.getFullYear();
   const m = base.getMonth();
+  const firstDay = new Date(y,m,1).getDay();
+  const days = monthDays(base);
+  const counts = days.map(d=>getCount(ymd(d)));
   const maxCount = Math.max(1,...counts);
   const todayKey = ymd();
 
