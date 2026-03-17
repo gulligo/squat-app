@@ -33,7 +33,7 @@ body{
   z-index:50;
   display:flex;
   background:#fff;
-  border-bottom:2px solid var(--line);
+  border-bottom:?none;
 }
 .top-tabs button{
   flex:1;
@@ -47,13 +47,13 @@ body{
 .top-tabs button.active{
   color:var(--primary);
 }
-.page{display:none;padding:8px 8px 160px}
+.page{display:none;padding:4px 8px 220px}
 .page.active{display:block}
 .card{
   background:var(--card);
   border-radius:16px;
-  padding:6px;
-  margin-bottom:8px;
+  padding:4px;
+  margin-bottom:4px;
 }
 .goal-head{font-size:12px;color:#999;margin-bottom:5px}
 .goal-line{display:flex;align-items:center;gap:8px;margin-bottom:3px}
@@ -62,20 +62,20 @@ body{
   width:82px;height:32px;border-radius:12px;border:2px solid var(--line);
   text-align:center;font-size:15px;font-weight:800;color:#444;background:#faf7ff;
 }
-.bar{height:5px;background:transparent;overflow:hidden}
+.bar{height:10px;background:transparent;overflow:hidden}
 .bar>div{
   height:100%;width:0%;border-radius:999px;
-  background:linear-gradient(90deg,var(--primary),var(--primary2));
+  background:linear-gradient(90deg,#8b5cf6,#ec4899);
   transition:width .2s;
 }
-.monthbar>div{background:linear-gradient(90deg,#2ec5c0,#2fdb91)}
-.hero{text-align:center;padding:10px 8px}
+.monthbar>div{background:linear-gradient(90deg,#22c55e,#4ade80)}
+.hero{text-align:center;padding:30px 8px;margin-top:10px}
 .hero-count{font-size:120px;line-height:1;color:var(--primary);font-weight:900}
-.hero-unit{font-size:15px;font-weight:800;color:#9d74d4}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
 .mini-title{font-size:11px;color:#9f90ab;margin-bottom:5px}
 .mini-value{font-size:24px;font-weight:900;line-height:1.1}
 .center{text-align:center}
+.card.center{min-height:80px;display:flex;flex-direction:column;justify-content:center}
 .orange{color:var(--orange)}
 .green{color:var(--green)}
 .purple{color:var(--primary)}
@@ -218,19 +218,19 @@ body{
     </div>
   </div>
 
-  <div class="card streak">
-    <div class="center">
-      <div class="mini-title">현재 연속</div>
-      <div id="currentStreak" class="mini-value orange">0</div>
-      <div class="small">일</div>
-    </div>
-    <div class="divider"></div>
-    <div class="center">
-      <div class="mini-title">최고 연속</div>
-      <div id="bestStreak" class="mini-value orange">0</div>
-      <div class="small">일</div>
-    </div>
+  <div class="row2">
+  <div class="card center">
+    <div class="mini-title">현재 연속</div>
+    <div id="currentStreak" class="mini-value orange">0</div>
+    <div class="small">일</div>
   </div>
+
+  <div class="card center">
+    <div class="mini-title">최고 연속</div>
+    <div id="bestStreak" class="mini-value orange">0</div>
+    <div class="small">일</div>
+  </div>
+</div>
 
   <div class="main-btn-row">
     <button id="plus10Btn" class="main-btn plus10">+10</button>
@@ -240,9 +240,13 @@ body{
 <div id="calendar" class="page">
   <div class="card">
     <div class="section-title">이번 달 기록</div>
-    <div id="calendarHeads" class="cal-heads" style="margin-bottom:6px"></div>
-    <div id="calendarGrid" class="calendar-grid"></div>
-  </div>
+    <div class="cal-heads" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+  <button onclick="changeMonth(-1)" class="chip">이전</button>
+  <div id="monthLabel"></div>
+  <button onclick="changeMonth(1)" class="chip">다음</button>
+</div>
+<div id="calendarHead" class="cal-heads" style="margin-bottom:6px"></div>
+<div id="calendarGrid" class="calendar-grid"></div>
 </div>
 
 <div id="graph" class="page">
@@ -343,7 +347,7 @@ const defaultData = {
 // 여자 멘트는 여기 직접 추가
 const FEMALE_LINES = [
 "오늘밤 기대할께","오빠 더우면 다벗어","오빠 벌떡 벌떡 일어나","다리를 일으켜 세우란 말이야 도와줘?",
-"역시 내 남자는 멋져","오빠 난 허물허물한 다리는 싫어","어머 아직도 일어날 힘이 남았어?","내 눈앞에서 그렇게 힘을주면 난 설레어",
+"역시 내 남자는 멋져","오빠 난 허물 허물 한 다리는 싫어","어머 아직도 일어날 힘이 남았어?","내 눈앞에서 그렇게 힘을주면 난 설레어",
 "어머 욕심난다 저 다리","더 깊숙히 내려","날 가지러면 힘을 더 키워","난 딱딱한 오빠 다리가 너무좋아",
 "어머! 다리가 너무 딱딱해","자기야 오늘 너무 무리하는거 아니야","날 앉고 다리에 힘을 넣어봐","오빠 다리 힘 빠지면 내가 더 슬퍼",
   "오늘 밤 끝까지 버티면 내가 해줄 게 많아.","더 세게힘줘 멈추지 말고 끝까지 책임져.","호흡이 점점 거칠어지네, 나도 그래.","한 번 더, 이번엔 아주 천천히 느껴봐.",
@@ -581,7 +585,7 @@ function monthDays(base=new Date()){
   for(let i=1;i<=last;i++) arr.push(new Date(y,m,i));
   return arr;
 }
-
+let viewDate = new Date();
 function monthTotal(date=new Date()){
   const y = date.getFullYear();
   const m = date.getMonth()+1;
@@ -664,11 +668,12 @@ function bubbleSize(count,max){
 }
 
 function renderCalendar(){
-  const heads = document.getElementById('calendarHeads');
-  const grid = document.getElementById('calendarGrid');
-  heads.innerHTML = '';
-  grid.innerHTML = '';
+  const heads = document.getElementById('calendarHead');
+const grid = document.getElementById('calendarGrid');
+const monthLabel = document.getElementById('monthLabel');
 
+heads.innerHTML = '';
+grid.innerHTML = '';
   ['일','월','화','수','목','금','토'].forEach(name=>{
     const h = document.createElement('div');
     h.className = 'cal-head';
@@ -676,11 +681,11 @@ function renderCalendar(){
     heads.appendChild(h);
   });
 
-  const base = new Date();
+  const base = viewDate;
   const y = base.getFullYear();
   const m = base.getMonth();
+  monthLabel.textContent = `${y}.${String(m+1).padStart(2,'0')}`;
   const firstDay = new Date(y,m,1).getDay();
-  const days = monthDays(base);
   const counts = days.map(d=>getCount(ymd(d)));
   const maxCount = Math.max(1,...counts);
   const todayKey = ymd();
