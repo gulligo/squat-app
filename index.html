@@ -240,13 +240,9 @@ body{
 <div id="calendar" class="page">
   <div class="card">
     <div class="section-title">이번 달 기록</div>
-    <div class="cal-heads" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-  <button onclick="changeMonth(-1)" class="chip">이전</button>
-  <div id="monthLabel"></div>
-  <button onclick="changeMonth(1)" class="chip">다음</button>
-</div>
-<div id="calendarHead" class="cal-heads" style="margin-bottom:6px"></div>
-<div id="calendarGrid" class="calendar-grid"></div>
+    <div id="calendarHeads" class="cal-heads" style="margin-bottom:6px"></div>
+    <div id="calendarGrid" class="calendar-grid"></div>
+  </div>
 </div>
 
 <div id="graph" class="page">
@@ -585,7 +581,7 @@ function monthDays(base=new Date()){
   for(let i=1;i<=last;i++) arr.push(new Date(y,m,i));
   return arr;
 }
-let viewDate = new Date();
+
 function monthTotal(date=new Date()){
   const y = date.getFullYear();
   const m = date.getMonth()+1;
@@ -680,7 +676,7 @@ function renderCalendar(){
     heads.appendChild(h);
   });
 
-  const base = viewDate;
+  const base = new Date();
   const y = base.getFullYear();
   const m = base.getMonth();
   const firstDay = new Date(y,m,1).getDay();
