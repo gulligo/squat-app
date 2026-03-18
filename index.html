@@ -1037,34 +1037,21 @@ let graphViewDate = new Date();
 function changeGraphMonth(offset) {
   graphViewDate.setMonth(graphViewDate.getMonth() + offset);
   
-  // 제목 업데이트 (예: 2026년 3월)
+  // 1. 제목 업데이트 (예: 2026년 3월)
   const year = graphViewDate.getFullYear();
   const month = graphViewDate.getMonth() + 1;
   const titleEl = document.getElementById('graph-title');
   if (titleEl) titleEl.textContent = year + '년 ' + month + '월';
   
-  // 그래프 화면 갱신
-  if (typeof updateGraphDisplay === 'function') {
+  // 2. '달' 버튼을 자동으로 눌러서 한 달치 그래프 보여주기
+  const monthTab = document.querySelector('[data-graph="month"]');
+  if (monthTab) {
+    monthTab.click(); 
+  } else if (typeof updateGraphDisplay === 'function') {
     updateGraphDisplay();
   }
 }
 
-// 2. 그래프 옆으로 밀어서 넘기기 (스와이프)
-let graphTouchStart = 0;
-const chartArea = document.getElementById('chartWrap');
-
-if (chartArea) {
-  chartArea.addEventListener('touchstart', e => {
-    graphTouchStart = e.changedTouches[0].screenX;
-  }, {passive: true});
-
-  chartArea.addEventListener('touchend', e => {
-    let graphTouchEnd = e.changedTouches[0].screenX;
-    // 50픽셀 이상 밀었을 때 작동
-    if (graphTouchStart - graphTouchEnd > 50) changeGraphMonth(1);  // 왼쪽으로 밀면 다음달
-    else if (graphTouchEnd - graphTouchStart > 50) changeGraphMonth(-1); // 오른쪽으로 밀면 이전달
-  }, {passive: true});
-}
 
 </script>
 </body>
