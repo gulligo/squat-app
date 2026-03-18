@@ -708,12 +708,6 @@ if(nextBtn) nextBtn.style.fontSize = '50px';
     heads.appendChild(h);
   });
 
-  const base = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
-  document.getElementById('calendar-title').innerText = `${viewDate.getFullYear()}년 ${viewDate.getMonth() + 1}월`;
-  const y = base.getFullYear();
-  const m = base.getMonth();
-  const firstDay = base.getDay();
-  const days = monthDays(viewDate);
   const counts = days.map(d=>getCount(ymd(d)));
   const maxCount = Math.max(1,...counts);
   const todayKey = ymd();
@@ -765,22 +759,22 @@ bubble.style.fontWeight = 'bold';
     grid.appendChild(el);
   });
 }
-function getDailySeries(){
+function getDailySeries() {
   const arr = [];
-  const today = new Date();
-  for(let i=29; i>=0; i--){
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const k = `${y}-${m}-${day}`;
-    const val = (defaultData.records && defaultData.records[k]) || 0;
-    arr.push({label: `${d.getMonth()+1}/${d.getDate()}`, value: val});
+  const y = viewDate.getFullYear();
+  const m = viewDate.getMonth();
+  const lastDay = new Date(y, m + 1, 0).getDate();
+
+  for (let i = 1; i <= lastDay; i++) {
+    const d = new Date(y, m, i);
+    const k = ymd(d);
+    const val = (data.records && data.records[k]) || 0;
+    arr.push({ label: `${m + 1}/${i}`, value: val });
   }
   return arr;
 }
-function getMonthlySeries(){
+
+function getMonthlySeries() {
   const arr = [];
   const today = new Date();
   for(let i=5;i>=0;i--){
@@ -791,10 +785,11 @@ function getMonthlySeries(){
     for(const k in data.records){
       if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)) sum += data.records[k];
     }
-    arr.push({label:`${m}월`, value:sum});
+    arr.push({label: `${m}월`, value: sum});
   }
   return arr;
 }
+
 
 function getYearlySeries(){
   const arr = [];
@@ -828,9 +823,7 @@ function renderChart(){
   if(data.graphMode === 'month') arr = getMonthlySeries();
   else if(data.graphMode === 'year') arr = getYearlySeries();
   else arr = getDailySeries();
-
-  const max = Math.max(1, ...arr.map(x=>x.value));
-
+  const max = 1000;
   // 2. [필수!] 사라진 막대기를 다시 그려주는 핵심 코드
   arr.forEach(item=>{
     const h = Math.max(8, Math.round((item.value/max)*100));
