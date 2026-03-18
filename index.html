@@ -240,9 +240,12 @@ body{
 <div id="calendar" class="page">
   <div class="card">
     <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
-    <button onclick="changeMonth(-1)" style="padding: 0 15px; background: none; border: 1px solid #ddd; border-radius: 5px;"> < </button>
-    <span id="calendar-title">이번 달 기록</span>
-    <button onclick="changeMonth(1)" style="padding: 0 15px; background: none; border: 1px solid #ddd; border-radius: 5px;"> > </button>
+    <button onclick="changeMonth(-1)" style="width: 60px; height: 50px; font-size: 28px; font-weight: bold; background: #fff; border: 1px solid #ddd; border-radius: 8px;"> < </button>
+
+    <span id="calendar-title" style="font-size: 30px; font-weight: bold; margin: 0 15px;">2026년 3월</span>
+
+    <button onclick="changeMonth(1)" style="width: 60px; height: 50px; font-size: 28px; font-weight: bold; background: #fff; border: 1px solid #ddd; border-radius: 8px;"> > </button>
+
 </div>
     <div id="calendarHeads" class="cal-heads" style="margin-bottom:6px"></div>
     <div id="calendarGrid" class="calendar-grid"></div>
