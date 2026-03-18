@@ -888,7 +888,7 @@ function render(){
   const aDays = Math.floor((today2-aFirst)/86400000)+1;
   document.getElementById('monthAvg').textContent = Math.round(mTotal/Math.max(1,mDays));
   document.getElementById('yearAvg').textContent = Math.round(yTotal/Math.max(1,yDays));
-  document.getElementById('allAvg'
+  document.getElementById('allAvg').textContent = Math.round(total/Math.max(1,aDays));
   document.getElementById('dayMax').textContent = dayMax().toLocaleString();
   document.getElementById('monthTotal').textContent = mTotal.toLocaleString();
   document.getElementById('allTotal').textContent = total.toLocaleString();
