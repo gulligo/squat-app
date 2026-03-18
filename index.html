@@ -807,15 +807,15 @@ function getYearlySeries(){
   return arr;
 }
 
-function renderChart(){
-  const wrap = document.getElementById('chartWrap');
-    wrap.innerHTML = '';
+    div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
+    wrap.appendChild(div);
+  });
 }
 
 function getDailySeries() {
     const arr = [];
-    const y = viewDate.getFullYear();
-    const m = viewDate.getMonth();
+    const y = graphViewDate.getFullYear();
+    const m = graphViewDate.getMonth();
     const lastDay = new Date(y, m + 1, 0).getDate();
 
     for (let i = 1; i <= lastDay; i++) {
@@ -829,6 +829,7 @@ function getDailySeries() {
 
 function renderChart(){
   const wrap = document.getElementById('chartWrap');
+  if(!wrap) return;
   wrap.innerHTML = '';
   
   const graphTitle = document.querySelector('#graph .section-title');
@@ -853,43 +854,36 @@ function renderChart(){
     const h = Math.max(8, Math.round((item.value/max)*100));
     const div = document.createElement('div');
     div.className = 'barItem';
-    div.innerHTML = `
-      <div class="barVal">${item.value}</div>
-      <div class="barCol" style="height:${h}px"></div>
-      <div class="barLbl">${item.label}</div>
-    `;
+    div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
     wrap.appendChild(div);
   });
 }
 
-
-  const monthAvg = Math.round(mTotal / (new Date().getDate()) || 0);
-  const yearAvg = Math.round(yTotal / dayOfYear || 0);
-  const allAvg = Math.round(total / totalDays || 0);
+function render(){
+  const today = getCount(ymd());
+  const mTotal = monthTotal();
+  const yTotal = yearTotal();
+  const total = allTotal();
+  const streak = calcStreaks();
 
   document.getElementById('todayGoalNow').textContent = today;
   document.getElementById('monthGoalNow').textContent = mTotal;
   document.getElementById('heroCount').textContent = today;
-  document.getElementById('monthAvg').textContent = monthAvg.toLocaleString();
-  document.getElementById('yearAvg').textContent = yearAvg.toLocaleString();
-  document.getElementById('allAvg').textContent = allAvg.toLocaleString();
-  document.getElementById('dayMax').textContent = dayMax().toLocaleString();
-  document.getElementById('monthTotal').textContent = mTotal.toLocaleString();
-  document.getElementById('allTotal').textContent = total.toLocaleString();
   document.getElementById('currentStreak').textContent = streak.current;
   document.getElementById('bestStreak').textContent = streak.best;
+
   document.getElementById('statsToday').textContent = today.toLocaleString();
   document.getElementById('weekTotal').textContent = weekTotal().toLocaleString();
   document.getElementById('statsMonth').textContent = mTotal.toLocaleString();
   document.getElementById('statsAllTotal').textContent = total.toLocaleString();
 
   const todayPct = Math.round((today / Math.max(1, data.todayGoal)) * 100);
-const monthPct = Math.round((mTotal / Math.max(1, data.monthGoal)) * 100);
+  const monthPct = Math.round((mTotal / Math.max(1, data.monthGoal)) * 100);
   document.getElementById('todayBar').style.width = todayPct + '%';
   document.getElementById('monthBar').style.width = monthPct + '%';
-  document.getElementById('monthPercent').textContent = monthPct + '%';
   document.getElementById('todayPercent').textContent = todayPct + '%';
-
+  document.getElementById('monthPercent').textContent = monthPct + '%';
+  
   setToggle('togAuto',data.settings.autoCount);
   setToggle('togSound',data.settings.sound);
   setToggle('togCheer',data.settings.cheer);
@@ -898,167 +892,10 @@ const monthPct = Math.round((mTotal / Math.max(1, data.monthGoal)) * 100);
   document.querySelectorAll('.voice-chip').forEach(chip=>{
     chip.classList.toggle('active', chip.dataset.voice===data.settings.voice);
   });
+    }
+}
 
   renderCalendar();
   renderChart();
   updateFloatingVisibility();
 }
-
-window.addEventListener('devicemotion', function(e){
-  if(!data.settings.autoCount) return;
-  if(document.hidden) return;
-  if(currentPage!=='home') return;
-
-  const acc = e.accelerationIncludingGravity;
-  if(!acc) return;
-
-  const x = acc.x || 0;
-  const y = acc.y || 0;
-  const z = acc.z || 0;
-  const mag = Math.sqrt(x*x + y*y + z*z);
-  const now = Date.now();
-
-  if(auto.base===null){
-    auto.base = mag;
-    auto.stage = 'idle';
-    auto.lowDelta = 0;
-    auto.highDelta = 0;
-    return;
-  }
-
-  auto.base = auto.base * 0.985 + mag * 0.015;
-  const delta = mag - auto.base;
-
-  // 1. 충분히 내려감
-  if(auto.stage==='idle'){
-    if(delta < -1.9){
-      auto.stage = 'down';
-      auto.downTime = now;
-      auto.lowDelta = delta;
-    }
-    return;
-  }
-
-  // 2. 내려간 뒤 충분히 올라옴
-  if(auto.stage==='down'){
-    if(delta < auto.lowDelta) auto.lowDelta = delta;
-
-    if(now - auto.downTime > 2200){
-      auto.stage = 'idle';
-      return;
-    }
-
-    if(delta > 1.4 && now - auto.downTime > 300){
-      auto.stage = 'up';
-      auto.upTime = now;
-      auto.highDelta = delta;
-    }
-    return;
-  }
-
-  // 3. 올라온 뒤 흔들림이 안정될 때만 1개
-  if(auto.stage==='up'){
-    if(delta > auto.highDelta) auto.highDelta = delta;
-
-    if(now - auto.upTime > 1800){
-      auto.stage = 'idle';
-      return;
-    }
-
-    if(
-      delta > -0.2 &&
-      delta < 0.8 &&
-      now - auto.upTime > 180 &&
-      now - auto.lastCountTime > 1400
-    ){
-      auto.lastCountTime = now;
-      auto.stage = 'idle';
-      addSquat(1);
-    }
-  }
-});
-
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){
-    auto.base = null;
-    auto.stage = 'idle';
-  }
-});
-
-(function(){
-  const btn = floatBtn;
-  btn.style.right = '12px';
-  btn.style.bottom = '16px';
-
-  btn.addEventListener('touchstart',e=>{
-    if(currentPage!=='home') return;
-    isDragging = false;
-    const t = e.touches[0];
-    dragStartX = t.clientX;
-    dragStartY = t.clientY;
-    const rect = btn.getBoundingClientRect();
-    btnStartX = rect.left;
-    btnStartY = rect.top;
-  },{passive:true});
-
-  btn.addEventListener('touchmove',e=>{
-    if(currentPage!=='home') return;
-    const t = e.touches[0];
-    const dx = t.clientX - dragStartX;
-    const dy = t.clientY - dragStartY;
-
-    if(Math.abs(dx)>8 || Math.abs(dy)>8) isDragging = true;
-
-    if(isDragging){
-      e.preventDefault();
-      btn.style.left = Math.max(0, Math.min(window.innerWidth-150, btnStartX+dx)) + 'px';
-      btn.style.top = Math.max(0, Math.min(window.innerHeight-150, btnStartY+dy)) + 'px';
-      btn.style.right = 'auto';
-      btn.style.bottom = 'auto';
-    }
-  },{passive:false});
-
-  btn.addEventListener('touchend',()=>{
-    setTimeout(()=>{ isDragging = false; },30);
-  });
-})();
-
-  render();
-
-function backupData(){
-  const data = JSON.stringify(localStorage);
-  const blob = new Blob([data], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'squat_backup.json';
-  a.click();
-}
-
-function restoreData(){
-  document.getElementById('restoreFile').click();
-}
-
-document.getElementById('restoreFile').addEventListener('change', function(e){
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = function(){
-    const data = JSON.parse(reader.result);
-    for (let key in data){
-      localStorage.setItem(key, data[key]);
-    }
-    location.reload();
-  }
-
-  reader.readAsText(file);
-});
-render();
-  function changeMonth(offset) {
-    viewDate.setMonth(viewDate.getMonth() + offset);
-    render();
-}
-</script>
-</body>
-</html>
