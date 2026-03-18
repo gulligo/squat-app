@@ -254,7 +254,12 @@ body{
 
 <div id="graph" class="page">
   <div class="card">
-    <div class="section-title">그래프</div>
+    <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+  <button onclick="changeGraphMonth(-1)" style="width: 60px; height: 50px; font-size: 28px; font-weight: bold; background: #fff; border: 1px solid #ddd; border-radius: 8px;"> < </button>
+  <span id="graph-title" style="font-size: 30px; font-weight: bold;">2026년 3월</span>
+  <button onclick="changeGraphMonth(1)" style="width: 60px; height: 50px; font-size: 28px; font-weight: bold; background: #fff; border: 1px solid #ddd; border-radius: 8px;"> > </button>
+</div>
+
     <div class="graph-tabs">
       <button class="chip active graph-chip" data-graph="day">일</button>
       <button class="chip graph-chip" data-graph="month">달</button>
@@ -1026,6 +1031,41 @@ render();
     viewDate.setMonth(viewDate.getMonth() + offset);
     render();
 }
+  // 1. 그래프 월 변경 기능
+let graphViewDate = new Date();
+
+function changeGraphMonth(offset) {
+  graphViewDate.setMonth(graphViewDate.getMonth() + offset);
+  
+  // 제목 업데이트 (예: 2026년 3월)
+  const year = graphViewDate.getFullYear();
+  const month = graphViewDate.getMonth() + 1;
+  const titleEl = document.getElementById('graph-title');
+  if (titleEl) titleEl.textContent = year + '년 ' + month + '월';
+  
+  // 그래프 화면 갱신
+  if (typeof updateGraphDisplay === 'function') {
+    updateGraphDisplay();
+  }
+}
+
+// 2. 그래프 옆으로 밀어서 넘기기 (스와이프)
+let graphTouchStart = 0;
+const chartArea = document.getElementById('chartWrap');
+
+if (chartArea) {
+  chartArea.addEventListener('touchstart', e => {
+    graphTouchStart = e.changedTouches[0].screenX;
+  }, {passive: true});
+
+  chartArea.addEventListener('touchend', e => {
+    let graphTouchEnd = e.changedTouches[0].screenX;
+    // 50픽셀 이상 밀었을 때 작동
+    if (graphTouchStart - graphTouchEnd > 50) changeGraphMonth(1);  // 왼쪽으로 밀면 다음달
+    else if (graphTouchEnd - graphTouchStart > 50) changeGraphMonth(-1); // 오른쪽으로 밀면 이전달
+  }, {passive: true});
+}
+
 </script>
 </body>
 </html>
