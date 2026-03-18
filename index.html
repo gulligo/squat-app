@@ -682,6 +682,10 @@ function renderCalendar(){
   const grid = document.getElementById('calendarGrid');
   heads.innerHTML = '';
   grid.innerHTML = '';
+ const prevBtn = document.querySelector('.calendar-page .calendar-header button:first-child') || document.querySelector('button[onclick="changeMonth(-1)"]');
+const nextBtn = document.querySelector('.calendar-page .calendar-header button:last-child') || document.querySelector('button[onclick="changeMonth(1)"]');
+if(prevBtn) prevBtn.style.fontSize = '50px';
+if(nextBtn) nextBtn.style.fontSize = '50px';
 
   ['일','월','화','수','목','금','토'].forEach(name=>{
     const h = document.createElement('div');
