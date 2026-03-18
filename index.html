@@ -802,14 +802,11 @@ if(graphTitle) graphTitle.style.fontSize = '30px';
   document.querySelectorAll('.graph-chip').forEach(ch=>{
     ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
   });
-
-  let arr = [];
-  if(!data.graphMode) data.graphMode = 'month';
-  else if(data.graphMode==='year') arr = getYearlySeries();
+    let arr = [];
+  if(data.graphMode === undefined) data.graphMode = 'month';
+  if(data.graphMode === 'month') arr = getMonthlySeries();
+  else if(data.graphMode === 'year') arr = getYearlySeries();
   else arr = getDailySeries();
-
-  const max = Math.max(1,...arr.map(x=>x.value));
-
   arr.forEach(item=>{
     const h = Math.max(8, Math.round((item.value/max)*100));
     const div = document.createElement('div');
