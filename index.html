@@ -795,12 +795,17 @@ function getYearlySeries(){
 function renderChart(){
   const wrap = document.getElementById('chartWrap');
   wrap.innerHTML = '';
+const prevBtnGraph = document.querySelector('#graph button:first-child');
+const nextBtnGraph = document.querySelector('#graph button:last-child');
+if(prevBtnGraph) prevBtnGraph.style.fontSize = '50px';
+if(nextBtnGraph) nextBtnGraph.style.fontSize = '50px';
 
   document.querySelectorAll('.graph-chip').forEach(ch=>{
     ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
   });
 
   let arr = [];
+  data.graphMode = 'month';
   if(data.graphMode==='month') arr = getMonthlySeries();
   else if(data.graphMode==='year') arr = getYearlySeries();
   else arr = getDailySeries();
