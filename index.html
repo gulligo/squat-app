@@ -777,18 +777,19 @@ function getMonthlySeries(){
 function getYearlySeries(){
   const arr = [];
   const today = new Date();
-  for(let i=2;i>=0;i--){
+  for(let i=2; i>=0; i--){
     const y = today.getFullYear()-i;
     let sum = 0;
     for(const k in data.records){
       if(k.startsWith(String(y))) sum += data.records[k];
     }
-    arr.push({label:`${y}`, value:sum});
+    arr.push({label: y + '년', value: sum});
   }
   return arr;
 }
 
 function renderChart(){
+
   const wrap = document.getElementById('chartWrap');
   wrap.innerHTML = '';
 
