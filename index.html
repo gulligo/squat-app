@@ -809,19 +809,10 @@ function getYearlySeries(){
 
 function renderChart(){
   const wrap = document.getElementById('chartWrap');
-  wrap.innerHTML = '';
-  
-  // 1. 제목 '그래프'와 여백 없애기
-  const graphTitle = document.querySelector('#graph .section-title');
-  if(graphTitle) {
-    graphTitle.style.display = 'none'; 
-    graphTitle.parentElement.style.paddingTop = '0px'; 
-  }
-  document.querySelectorAll('.graph-chip').forEach(ch=>{
-    ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
-  });
-  let arr = [];
-  function getDailySeries() {
+    wrap.innerHTML = '';
+}
+
+function getDailySeries() {
     const arr = [];
     const y = viewDate.getFullYear();
     const m = viewDate.getMonth();
@@ -870,6 +861,7 @@ function renderChart(){
     wrap.appendChild(div);
   });
 }
+
 
   const monthAvg = Math.round(mTotal / (new Date().getDate()) || 0);
   const yearAvg = Math.round(yTotal / dayOfYear || 0);
