@@ -869,12 +869,26 @@ function render(){
   document.getElementById('currentStreak').textContent = streak.current;
   document.getElementById('bestStreak').textContent = streak.best;
 
-  const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate();
-  const daysInYear = new Date().getFullYear() % 4 === 0 ? 366 : 365;
-  const totalDays = Object.keys(data.records).length || 1;
-  document.getElementById('monthAvg').textContent = Math.round(mTotal / daysInMonth);
-  document.getElementById('yearAvg').textContent = Math.round(yTotal / daysInYear);
-  document.getElementById('allAvg').textContent = Math.round(total / totalDays);
+  const today2 = new Date(); today2.setHours(0,0,0,0);
+  const thisY = today2.getFullYear();
+  const thisM = today2.getMonth();
+  const allKeys = Object.keys(data.records).sort();
+  const mPrefix = `${thisY}-${String(thisM+1).padStart(2,'0')}-`;
+  const mKeys = allKeys.filter(k=>k.startsWith(mPrefix));
+  const mFirst = mKeys.length ? new Date(mKeys[0]) : new Date(thisY,thisM,1);
+  mFirst.setHours(0,0,0,0);
+  const mLast = new Date(Math.min(today2.getTime(), new Date(thisY,thisM+1,0).getTime()));
+  const mDays = Math.floor((mLast-mFirst)/86400000)+1;
+  const yKeys = allKeys.filter(k=>k.startsWith(`${thisY}-`));
+  const yFirst = yKeys.length ? new Date(yKeys[0]) : new Date(thisY,0,1);
+  yFirst.setHours(0,0,0,0);
+  const yDays = Math.floor((today2-yFirst)/86400000)+1;
+  const aFirst = allKeys.length ? new Date(allKeys[0]) : today2;
+  aFirst.setHours(0,0,0,0);
+  const aDays = Math.floor((today2-aFirst)/86400000)+1;
+  document.getElementById('monthAvg').textContent = Math.round(mTotal/Math.max(1,mDays));
+  document.getElementById('yearAvg').textContent = Math.round(yTotal/Math.max(1,yDays));
+  document.getElementById('allAvg'
   document.getElementById('dayMax').textContent = dayMax().toLocaleString();
   document.getElementById('monthTotal').textContent = mTotal.toLocaleString();
   document.getElementById('allTotal').textContent = total.toLocaleString();
