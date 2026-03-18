@@ -795,30 +795,38 @@ function getYearlySeries(){
 function renderChart(){
   const wrap = document.getElementById('chartWrap');
   wrap.innerHTML = '';
+  
+  // 1. 제목 '그래프'와 여백 없애기
   const graphTitle = document.querySelector('#graph .section-title');
   if(graphTitle) {
     graphTitle.style.display = 'none'; 
-    graphTitle.parentElement.style.paddingTop = '0px';
+    graphTitle.parentElement.style.paddingTop = '0px'; 
   }
   document.querySelectorAll('.graph-chip').forEach(ch=>{
     ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
   });
-    let arr = [];
+  let arr = [];
   if(data.graphMode === undefined) data.graphMode = 'month';
   if(data.graphMode === 'month') arr = getMonthlySeries();
   else if(data.graphMode === 'year') arr = getYearlySeries();
   else arr = getDailySeries();
+
+  const max = Math.max(1, ...arr.map(x=>x.value));
+
+  // 2. [필수!] 사라진 막대기를 다시 그려주는 핵심 코드
   arr.forEach(item=>{
     const h = Math.max(8, Math.round((item.value/max)*100));
     const div = document.createElement('div');
     div.className = 'barItem';
-    div.innerHTML =
-      `<div class="barVal">${item.value}</div>
-       <div class="barCol" style="height:${h}px"></div>
-       <div class="barLbl">${item.label}</div>`;
+    div.innerHTML = `
+      <div class="barVal">${item.value}</div>
+      <div class="barCol" style="height:${h}px"></div>
+      <div class="barLbl">${item.label}</div>
+    `;
     wrap.appendChild(div);
   });
 }
+
 
 function setToggle(id,on){
   document.getElementById(id).classList.toggle('on', !!on);
