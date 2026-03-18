@@ -747,11 +747,19 @@ bubble.style.fontWeight = 'bold';
 }
 
 function getDailySeries(){
+  function getDailySeries(){
   const arr = [];
-  for(let i=6;i>=0;i--){
-    const d = new Date(viewDate);
-    d.setDate(viewDate.getDate()-i);
-    arr.push({label:`${d.getMonth()+1}/${d.getDate()}`, value:getCount(ymd(d))});
+  // 현재 선택된 달(graphViewDate)의 마지막 날짜를 구합니다 (예: 31일)
+  const lastDate = new Date(graphViewDate.getFullYear(), graphViewDate.getMonth() + 1, 0).getDate();
+  
+  // 1일부터 마지막 날까지 반복하며 데이터를 만듭니다
+  for(let i=1; i<=lastDate; i++){
+    const d = new Date(graphViewDate.getFullYear(), graphViewDate.getMonth(), i);
+    arr.push({label: `${d.getDate()}일`, value: getCount(ymd(d))});
+  }
+  return arr;
+}
+
   }
   return arr;
 }
@@ -1044,15 +1052,21 @@ function changeGraphMonth(offset) {
   if (titleEl) titleEl.textContent = year + '년 ' + month + '월';
   
   // 2. '달' 버튼을 자동으로 눌러서 한 달치 그래프 보여주기
-  const monthTab = document.querySelector('[data-graph="month"]');
-  if (monthTab) {
-    monthTab.click(); 
+    // 2. 무조건 '달' 단위로 그래프 화면 전환
+  currentGraphType = 'month'; // 단위를 '달'로 강제 고정
+  const tabs = document.querySelectorAll('.graph-chip');
+  tabs.forEach(tab => {
+    tab.classList.remove('active'); // 기존 '일' 버튼 불 끄기
+    if(tab.getAttribute('data-graph') === 'month') tab.classList.add('active'); // '달' 버튼에 불 켜기
+  });
+  
+  if (typeof renderChart === 'function') {
+    renderChart('month'); // 한 달치 그래프 그리기 실행
   } else if (typeof updateGraphDisplay === 'function') {
     updateGraphDisplay();
   }
+  }
 }
-
-
 </script>
 </body>
 </html>
