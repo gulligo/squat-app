@@ -760,19 +760,21 @@ bubble.style.fontWeight = 'bold';
   });
 }
 function getDailySeries() {
-  const arr = [];
-  const y = viewDate.getFullYear();
-  const m = viewDate.getMonth();
-  const lastDay = new Date(y, m + 1, 0).getDate();
+    const arr = [];
+    const y = viewDate.getFullYear();
+    const m = viewDate.getMonth();
+    const lastDay = new Date(y, m + 1, 0).getDate();
 
-  for (let i = 1; i <= lastDay; i++) {
-    const d = new Date(y, m, i);
-    const k = ymd(d);
-    const val = (data.records && data.records[k]) || 0;
-    arr.push({ label: `${m + 1}/${i}`, value: val });
-  }
-  return arr;
+    for (let i = 1; i <= lastDay; i++) {
+        const d = new Date(y, m, i);
+        const k = ymd(d);
+        const val = (data.records && data.records[k]) || 0;
+        arr.push({ label: `${m + 1}/${i}`, value: val });
+    }
+    return arr;
 }
+
+  return arr;
 
 function getMonthlySeries() {
   const arr = [];
