@@ -747,15 +747,20 @@ bubble.style.fontWeight = 'bold';
 }
 
 function getDailySeries(){
-  function getDailySeries(){
   const arr = [];
-  // 현재 선택된 달(graphViewDate)의 마지막 날짜를 구합니다 (예: 31일)
-  const lastDate = new Date(graphViewDate.getFullYear(), graphViewDate.getMonth() + 1, 0).getDate();
+  const y = graphViewDate.getFullYear();
+  const m = graphViewDate.getMonth();
+  // 이번 달의 마지막 날짜를 구함 (예: 31일)
+  const lastDate = new Date(y, m + 1, 0).getDate();
   
-  // 1일부터 마지막 날까지 반복하며 데이터를 만듭니다
   for(let i=1; i<=lastDate; i++){
-    const d = new Date(graphViewDate.getFullYear(), graphViewDate.getMonth(), i);
-    arr.push({label: `${d.getDate()}일`, value: getCount(ymd(d))});
+    const d = new Date(y, m, i);
+    const dateStr = ymd(d);
+    arr.push({label: i + '일', value: getCount(dateStr)});
+  }
+  return arr;
+}
+
   }
   return arr;
 }
