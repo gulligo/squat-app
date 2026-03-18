@@ -49,16 +49,14 @@ body{
 }
 .page{display:none;padding:4px 8px 220px}
 .page.active{display:block}
-  /* 달력 화살표만 크게 */
 .calendar-page .calendar-header button {
-    font-size: 35px !important;    /* 화살표 크기를 아주 크게 */
-    font-weight: bold;             /* 화살표를 두껍게 */
-    padding: 10px 25px !important; /* 터치 영역을 넉넉하게 */
-    color: #8d4dff !important;     /* 보라색 색상 적용 */
+    font-size: 35px !important;
+    font-weight: bold;
+    padding: 10px 25px !important;
+    color: #8d4dff !important;
     border: none;
     background: none;
 }
-
 .card{
   background:var(--card);
   border-radius:16px;
@@ -149,12 +147,10 @@ body{
   background-image: linear-gradient(#eee 1px, transparent 1px);
   background-size: 100% 55px;
 }
-
 .barItem { flex: 1; text-align: center; padding: 0 1px; }
 .barVal { font-size: 8px; color: #bbb; margin-bottom: 2px; }
 .barCol { width: 100%; background: #7c4dff; border-radius: 2px 2px 0 0; min-height: 1px; }
 .barLbl { font-size: 8px; color: #999; margin-top: 3px; }
-
 .floating{
   position:fixed;right:12px;bottom:16px;z-index:99;
   width:150px;height:150px;border-radius:50%;border:none;background:#fff;
@@ -171,8 +167,7 @@ body{
 </style>
 </head>
 <body>
-
-<div class="top-tabs">
+  <div class="top-tabs">
   <button class="tab active" data-page="home">스쿼트</button>
   <button class="tab" data-page="calendar">달력</button>
   <button class="tab" data-page="graph">그래프</button>
@@ -190,7 +185,6 @@ body{
     </div>
     <div class="bar"><div id="todayBar"></div></div>
   </div>
-
   <div class="card">
     <div class="goal-head">월 목표</div>
     <div class="goal-line">
@@ -201,12 +195,10 @@ body{
     </div>
     <div class="bar monthbar"><div id="monthBar"></div></div>
   </div>
-
   <div class="card hero">
     <div id="heroCount" class="hero-count">0</div>
     <div class="hero-unit"></div>
   </div>
-
   <div class="row2">
     <div class="card center">
       <div class="mini-title">한달 평균</div>
@@ -233,21 +225,18 @@ body{
       <div id="allTotal" class="mini-value green">0</div>
     </div>
   </div>
-
   <div class="row2">
-  <div class="card center">
-    <div class="mini-title">현재 연속</div>
-    <div id="currentStreak" class="mini-value orange">0</div>
-    <div class="small">일</div>
+    <div class="card center">
+      <div class="mini-title">현재 연속</div>
+      <div id="currentStreak" class="mini-value orange">0</div>
+      <div class="small">일</div>
+    </div>
+    <div class="card center">
+      <div class="mini-title">최고 연속</div>
+      <div id="bestStreak" class="mini-value orange">0</div>
+      <div class="small">일</div>
+    </div>
   </div>
-
-  <div class="card center">
-    <div class="mini-title">최고 연속</div>
-    <div id="bestStreak" class="mini-value orange">0</div>
-    <div class="small">일</div>
-  </div>
-</div>
-
   <div class="main-btn-row">
     <button id="plus10Btn" class="main-btn plus10">+10</button>
   </div>
@@ -255,11 +244,11 @@ body{
 
 <div id="calendar" class="page">
   <div class="card">
-    <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
-    <button onclick="changeMonth(-1)" style="padding: 0 15px; background: none; border: 1px solid #ddd; border-radius: 5px;"> < </button>
-    <span id="calendar-title">이번 달 기록</span>
-    <button onclick="changeMonth(1)" style="padding: 0 15px; background: none; border: 1px solid #ddd; border-radius: 5px;"> > </button>
-</div>
+    <div class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
+      <button onclick="changeMonth(-1)" style="padding:0 15px;background:none;border:1px solid #ddd;border-radius:5px;"> < </button>
+      <span id="calendar-title">이번 달 기록</span>
+      <button onclick="changeMonth(1)" style="padding:0 15px;background:none;border:1px solid #ddd;border-radius:5px;"> > </button>
+    </div>
     <div id="calendarHeads" class="cal-heads" style="margin-bottom:6px"></div>
     <div id="calendarGrid" class="calendar-grid"></div>
   </div>
@@ -273,15 +262,14 @@ body{
       <button class="chip graph-chip" data-graph="month">월</button>
       <button class="chip graph-chip" data-graph="year">년</button>
     </div>
-    <div class="graph-container" style="display: flex; position: relative; margin-bottom: 20px;">
-  <div class="y-axis" style="display: flex; flex-direction: column; justify-content: space-between; padding: 20px 5px 25px 0; font-size: 10px; color: #999; text-align: right; min-width: 35px;">
-    <div>1000</div>
-    <div>500</div>
-    <div>0</div>
-  </div>
-  <div id="chartWrap" class="chartWrap" style="flex: 1;"></div>
-</div>
-
+    <div class="graph-container" style="display:flex;position:relative;margin-bottom:20px;">
+      <div class="y-axis" style="display:flex;flex-direction:column;justify-content:space-between;padding:20px 5px 25px 0;font-size:10px;color:#999;text-align:right;min-width:35px;">
+        <div>1000</div>
+        <div>500</div>
+        <div>0</div>
+      </div>
+      <div id="chartWrap" class="chartWrap" style="flex:1;"></div>
+    </div>
   </div>
 </div>
 
@@ -326,11 +314,6 @@ body{
     </div>
   </div>
 </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
 
 <br><br>
 <button onclick="backupData()">기록 백업</button>
@@ -339,9 +322,7 @@ body{
 <button id="floatBtn" class="floating" aria-label="이동 버튼">
   <img src="icon.png" alt="용용이" />
 </button>
-
 <div id="notice" class="notice"></div>
-
 <script>
 const KEY = 'yongyong_squat_final_v5';
 const EVENT_STEP = 20;
@@ -368,14 +349,13 @@ const defaultData = {
   graphMode:'day'
 };
 
-// 여자 멘트는 여기 직접 추가
 const FEMALE_LINES = [
 "오늘밤 기대할께","오빠 더우면 다벗어","오빠 벌떡 벌떡 일어나","다리를 일으켜 세우란 말이야 도와줘?",
 "역시 내 남자는 멋져","오빠 난 허물 허물 한 다리는 싫어","어머 아직도 일어날 힘이 남았어?","내 눈앞에서 그렇게 힘을주면 난 설레어",
 "어머 욕심난다 저 다리","더 깊숙히 내려","날 가지러면 힘을 더 키워","난 딱딱한 오빠 다리가 너무좋아",
 "어머! 다리가 너무 딱딱해","자기야 오늘 너무 무리하는거 아니야","날 앉고 다리에 힘을 넣어봐","오빠 다리 힘 빠지면 내가 더 슬퍼",
-  "오늘 밤 끝까지 버티면 내가 해줄 게 많아.","더 세게힘줘 멈추지 말고 끝까지 책임져.","호흡이 점점 거칠어지네, 나도 그래.","한 번 더, 이번엔 아주 천천히 느껴봐.",
-  "지금 오빠 모습, 정말 유혹적이다","오늘 밤 내가 지켜볼 테니까 다리 똑바로 해.",
+"오늘 밤 끝까지 버티면 내가 해줄 게 많아.","더 세게힘줘 멈추지 말고 끝까지 책임져.","호흡이 점점 거칠어지네, 나도 그래.","한 번 더, 이번엔 아주 천천히 느껴봐.",
+"지금 오빠 모습, 정말 유혹적이다","오늘 밤 내가 지켜볼 테니까 다리 똑바로 해.",
 "먼저 씻고 있을께"
 ];
 
@@ -399,7 +379,6 @@ let dragStartY = 0;
 let btnStartX = 0;
 let btnStartY = 0;
 
-// 자동카운트: 내려감 -> 올라옴 -> 안정됨 후 +1
 let auto = {
   base:null,
   stage:'idle',
@@ -412,7 +391,6 @@ let auto = {
 
 const tabs = document.querySelectorAll('.tab');
 const pages = document.querySelectorAll('.page');
-const mainBtn = document.getElementById('mainBtn');
 const plus10Btn = document.getElementById('plus10Btn');
 const floatBtn = document.getElementById('floatBtn');
 const notice = document.getElementById('notice');
@@ -539,7 +517,6 @@ function speak(text){
     speechSynthesis.cancel();
     const msg = new SpeechSynthesisUtterance(text);
     msg.lang = 'ko-KR';
-
     if(data.settings.voice==='male'){
       msg.pitch = 0.82;
       msg.rate = 0.78;
@@ -550,11 +527,9 @@ function speak(text){
       msg.pitch = 1.05;
       msg.rate = 0.80;
     }
-
     const voices = speechSynthesis.getVoices();
     const ko = voices.find(v=>v.lang && v.lang.toLowerCase().includes('ko'));
     if(ko) msg.voice = ko;
-
     speechSynthesis.speak(msg);
   }catch(e){}
 }
@@ -570,19 +545,15 @@ function addSquat(amount=1){
   const day = ymd();
   const before = getCount(day);
   setCount(day, before + amount);
-
   if(data.settings.vibrate && navigator.vibrate){
     navigator.vibrate(amount===10 ? [25,40,25] : 25);
   }
-
   const after = getCount(day);
-
   if(data.settings.sound && data.settings.voice!=='mute'){
     if(after % EVENT_STEP !== 0){
-  speak(String(after));
-}
+      speak(String(after));
+    }
   }
-
   if(data.settings.cheer){
     const beforeStep = Math.floor(before / EVENT_STEP);
     const afterStep = Math.floor(after / EVENT_STEP);
@@ -596,7 +567,6 @@ function addSquat(amount=1){
       }
     }
   }
-
   saveData();
   render();
 }
@@ -644,10 +614,8 @@ function dayMax(){
 function calcStreaks(){
   const keys = Object.keys(data.records).filter(k=>data.records[k]>0).sort();
   if(keys.length===0) return {current:0,best:0};
-
   let best = 1;
   let cur = 1;
-
   for(let i=1;i<keys.length;i++){
     const prev = new Date(keys[i-1]);
     const curr = new Date(keys[i]);
@@ -659,7 +627,6 @@ function calcStreaks(){
       cur=1;
     }
   }
-
   let current = 0;
   const today = new Date(ymd());
   for(let i=0;;i++){
@@ -668,7 +635,6 @@ function calcStreaks(){
     if(getCount(ymd(d))>0) current++;
     else break;
   }
-
   return {current,best};
 }
 
@@ -690,216 +656,7 @@ function bubbleSize(count,max){
   const ratio = count / 1000;
   return Math.round(minSize + (maxSize-minSize)*ratio);
 }
-
-function renderCalendar(){
-  const heads = document.getElementById('calendarHeads');
-  const grid = document.getElementById('calendarGrid');
-  heads.innerHTML = '';
-  grid.innerHTML = '';
- const prevBtn = document.querySelector('.calendar-page .calendar-header button:first-child') || document.querySelector('button[onclick="changeMonth(-1)"]');
-const nextBtn = document.querySelector('.calendar-page .calendar-header button:last-child') || document.querySelector('button[onclick="changeMonth(1)"]');
-if(prevBtn) prevBtn.style.fontSize = '50px';
-if(nextBtn) nextBtn.style.fontSize = '50px';
-
-  ['일','월','화','수','목','금','토'].forEach(name=>{
-    const h = document.createElement('div');
-    h.className = 'cal-head';
-    h.textContent = name;
-    heads.appendChild(h);
-  });
-
-  const counts = days.map(d=>getCount(ymd(d)));
-  const maxCount = Math.max(1,...counts);
-  const todayKey = ymd();
-
-  for(let i=0;i<firstDay;i++){
-    const empty = document.createElement('div');
-    empty.className = 'day empty';
-    grid.appendChild(empty);
-  }
-
-  days.forEach(d=>{
-    const key = ymd(d);
-    const count = getCount(key);
-    const el = document.createElement('div');
-    el.className = 'day';
-
-    const wrap = document.createElement('div');
-    wrap.className = 'day-bubble-wrap';
-
-    const bubble = document.createElement('div');
-    bubble.className = 'day-bubble';
-    bubble.style.width = (count>0 ? bubbleSize(count,maxCount) : 24) + 'px';
-    bubble.style.height = (count>0 ? bubbleSize(count,maxCount) : 24) + 'px';
-    bubble.textContent = d.getDate();
-    bubble.style.fontSize = '22px';
-bubble.style.fontWeight = 'bold';
-    if(key===todayKey){
-      bubble.style.outline = '2px solid #8d4dff';
-      bubble.style.outlineOffset = '1px';
-    }
-
-    if(count===0){
-      bubble.style.background = '#f7f3fa';
-      bubble.style.color = '#b6a8c4';
-    }
-
-    wrap.appendChild(bubble);
-
-    const cnt = document.createElement('div');
-    cnt.className = 'day-count';
-    cnt.textContent = count>0 ? String(count) : '';
-    cnt.style.fontSize = '15px';
-    cnt.style.fontWeight = 'bold';
-    cnt.style.marginTop = '5px';
-    cnt.style.color = '#db96ac';
-
-    el.appendChild(wrap);
-    el.appendChild(cnt);
-    grid.appendChild(el);
-  });
-}
-function getDailySeries() {
-    const arr = [];
-    const y = viewDate.getFullYear();
-    const m = viewDate.getMonth();
-    const lastDay = new Date(y, m + 1, 0).getDate();
-
-    for (let i = 1; i <= lastDay; i++) {
-        const d = new Date(y, m, i);
-        const k = ymd(d);
-        const val = (data.records && data.records[k]) || 0;
-        arr.push({ label: `${m + 1}/${i}`, value: val });
-    }
-    return arr;
-}
-
-  return arr;
-
-function getMonthlySeries() {
-  const arr = [];
-  const today = new Date();
-  for(let i=5;i>=0;i--){
-    const d = new Date(today.getFullYear(), today.getMonth()-i, 1);
-    const y = d.getFullYear();
-    const m = d.getMonth()+1;
-    let sum = 0;
-    for(const k in data.records){
-      if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)) sum += data.records[k];
-    }
-    arr.push({label: `${m}월`, value: sum});
-  }
-  return arr;
-}
-
-
-function getYearlySeries(){
-  const arr = [];
-  const today = new Date();
-  for(let i=2;i>=0;i--){
-    const y = today.getFullYear()-i;
-    let sum = 0;
-    for(const k in data.records){
-      if(k.startsWith(String(y))) sum += data.records[k];
-    }
-    arr.push({label:`${y}`, value:sum});
-  }
-  return arr;
-}
-
-    div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
-    wrap.appendChild(div);
-  });
-}
-
-function getDailySeries() {
-    const arr = [];
-    const y = graphViewDate.getFullYear();
-    const m = graphViewDate.getMonth();
-    const lastDay = new Date(y, m + 1, 0).getDate();
-
-    for (let i = 1; i <= lastDay; i++) {
-        const d = new Date(y, m, i);
-        const k = ymd(d);
-        const val = (data.records && data.records[k]) || 0;
-        arr.push({ label: i + '일', value: val });
-    }
-    return arr;
-}
-
-function renderChart(){
-  const wrap = document.getElementById('chartWrap');
-  if(!wrap) return;
-  wrap.innerHTML = '';
-  
-  const graphTitle = document.querySelector('#graph .section-title');
-  if(graphTitle) {
-    graphTitle.style.display = 'none'; 
-    graphTitle.parentElement.style.paddingTop = '0px'; 
-  }
-
-  document.querySelectorAll('.graph-chip').forEach(ch=>{
-    ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
-  });
-
-  let arr = [];
-  if(!data.graphMode) data.graphMode = 'day';
-
-  if(data.graphMode === 'month') arr = getMonthlySeries();
-  else if(data.graphMode === 'year') arr = getYearlySeries();
-  else arr = getDailySeries();
-
-  const max = 1000;
-  arr.forEach(item=>{
-    const h = Math.max(8, Math.round((item.value/max)*100));
-    const div = document.createElement('div');
-    div.className = 'barItem';
-    div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
-    wrap.appendChild(div);
-  });
-}
-
-function render(){
-  const today = getCount(ymd());
-  const mTotal = monthTotal();
-  const yTotal = yearTotal();
-  const total = allTotal();
-  const streak = calcStreaks();
-
-  document.getElementById('todayGoalNow').textContent = today;
-  document.getElementById('monthGoalNow').textContent = mTotal;
-  document.getElementById('heroCount').textContent = today;
-  document.getElementById('currentStreak').textContent = streak.current;
-  document.getElementById('bestStreak').textContent = streak.best;
-
-  document.getElementById('statsToday').textContent = today.toLocaleString();
-  document.getElementById('weekTotal').textContent = weekTotal().toLocaleString();
-  document.getElementById('statsMonth').textContent = mTotal.toLocaleString();
-  document.getElementById('statsAllTotal').textContent = total.toLocaleString();
-
-  const todayPct = Math.round((today / Math.max(1, data.todayGoal)) * 100);
-  const monthPct = Math.round((mTotal / Math.max(1, data.monthGoal)) * 100);
-  document.getElementById('todayBar').style.width = todayPct + '%';
-  document.getElementById('monthBar').style.width = monthPct + '%';
-  document.getElementById('todayPercent').textContent = todayPct + '%';
-  document.getElementById('monthPercent').textContent = monthPct + '%';
-  
-  setToggle('togAuto',data.settings.autoCount);
-  setToggle('togSound',data.settings.sound);
-  setToggle('togCheer',data.settings.cheer);
-  setToggle('togVibrate',data.settings.vibrate);
-
-  document.querySelectorAll('.voice-chip').forEach(chip=>{
-    chip.classList.toggle('active', chip.dataset.voice===data.settings.voice);
-  });
-    }
-}
-
-  renderCalendar();
-  renderChart();
-  updateFloatingVisibility();
-}
-let calendarViewDate = new Date();
+  let calendarViewDate = new Date();
 let graphViewDate = new Date();
 
 function changeMonth(dir){
@@ -1098,7 +855,7 @@ function renderChart(){
     wrap.appendChild(div);
   });
 }
-  function render(){
+function render(){
   const today = getCount(ymd());
   const mTotal = monthTotal();
   const yTotal = yearTotal();
@@ -1150,6 +907,8 @@ updateFloatingVisibility();
 </script>
 </body>
 </html>
+
+
 
 
 
