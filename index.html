@@ -40,7 +40,7 @@ body{
   border:none;
   background:none;
   padding:20px 15px;
-  font-size:30px;
+  font-size:15px;
   font-weight:800;
   color:#666;
 }
@@ -49,6 +49,16 @@ body{
 }
 .page{display:none;padding:4px 8px 220px}
 .page.active{display:block}
+  /* 달력 화살표만 크게 */
+.calendar-header button {
+    font-size: 35px !important;    /* 화살표 크기를 아주 크게 */
+    font-weight: bold;             /* 화살표를 두껍게 */
+    padding: 10px 25px !important; /* 터치 영역을 넉넉하게 */
+    color: #8d4dff !important;     /* 보라색 색상 적용 */
+    border: none;
+    background: none;
+}
+
 .card{
   background:var(--card);
   border-radius:16px;
