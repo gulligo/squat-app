@@ -750,7 +750,7 @@ function getDailySeries(){
   const arr = [];
   const y = graphViewDate.getFullYear();
   const m = graphViewDate.getMonth();
-  // 이번 달의 마지막 날짜를 구함 (예: 31일)
+  // 이번 달의 마지막 날짜(28~31일) 자동 계산
   const lastDate = new Date(y, m + 1, 0).getDate();
   
   for(let i=1; i<=lastDate; i++){
@@ -759,16 +759,6 @@ function getDailySeries(){
     arr.push({label: i + '일', value: getCount(dateStr)});
   }
   return arr;
-}
-
-  }
-  return arr;
-}
-
-  }
-  return arr;
-}
-
 function getMonthlySeries(){
   const arr = [];
   const today = new Date();
