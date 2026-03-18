@@ -139,16 +139,22 @@ body{
 .day-count{
   margin-top:3px;font-size:10px;font-weight:900;color:#9a7faa;min-height:12px;
 }
-.chartWrap{
-  display:flex;align-items:flex-end;gap:7px;height:130px;overflow-x:auto;padding-top:4px;
+.chartWrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 130px;
+  overflow-x: auto;
+  padding-top: 20px;
+  background-image: linear-gradient(#eee 1px, transparent 1px);
+  background-size: 100% 55px;
 }
-.barItem{min-width:34px;text-align:center}
-.barVal{font-size:9px;color:#999;margin-bottom:3px}
-.barCol{
-  width:100%;background:linear-gradient(180deg,var(--primary2),var(--primary));
-  border-radius:8px 8px 4px 4px;min-height:8px;
-}
-.barLbl{font-size:9px;color:#888;margin-top:4px}
+
+.barItem { flex: 1; text-align: center; padding: 0 1px; }
+.barVal { font-size: 8px; color: #bbb; margin-bottom: 2px; }
+.barCol { width: 100%; background: #7c4dff; border-radius: 2px 2px 0 0; min-height: 1px; }
+.barLbl { font-size: 8px; color: #999; margin-top: 3px; }
+
 .floating{
   position:fixed;right:12px;bottom:16px;z-index:99;
   width:150px;height:150px;border-radius:50%;border:none;background:#fff;
@@ -267,7 +273,15 @@ body{
       <button class="chip graph-chip" data-graph="month">월</button>
       <button class="chip graph-chip" data-graph="year">년</button>
     </div>
-    <div id="chartWrap" class="chartWrap"></div>
+    <div class="graph-container" style="display: flex; position: relative; margin-bottom: 20px;">
+  <div class="y-axis" style="display: flex; flex-direction: column; justify-content: space-between; padding: 20px 5px 25px 0; font-size: 10px; color: #999; text-align: right; min-width: 35px;">
+    <div>1000</div>
+    <div>500</div>
+    <div>0</div>
+  </div>
+  <div id="chartWrap" class="chartWrap" style="flex: 1;"></div>
+</div>
+
   </div>
 </div>
 
@@ -673,7 +687,7 @@ function bubbleSize(count,max){
   if(count<=0) return 0;
   const minSize = 24;
   const maxSize = 38;
-  const ratio = Math.sqrt(count/Math.max(1,max));
+  const ratio = count / 1000;
   return Math.round(minSize + (maxSize-minSize)*ratio);
 }
 
