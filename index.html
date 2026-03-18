@@ -804,8 +804,7 @@ if(graphTitle) graphTitle.style.fontSize = '30px';
   });
 
   let arr = [];
-  data.graphMode = 'month';
-  if(data.graphMode==='month') arr = getMonthlySeries();
+  if(!data.graphMode) data.graphMode = 'month';
   else if(data.graphMode==='year') arr = getYearlySeries();
   else arr = getDailySeries();
 
