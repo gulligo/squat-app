@@ -899,3 +899,259 @@ function render(){
   renderChart();
   updateFloatingVisibility();
 }
+let calendarViewDate = new Date();
+let graphViewDate = new Date();
+
+function changeMonth(dir){
+  calendarViewDate.setMonth(calendarViewDate.getMonth() + dir);
+  renderCalendar();
+  const title = document.getElementById('calendar-title');
+  if(title) title.textContent = `${calendarViewDate.getFullYear()}년 ${calendarViewDate.getMonth()+1}월`;
+}
+
+function updateFloatingVisibility(){
+  if(!floatBtn) return;
+  floatBtn.style.display = (currentPage === 'home') ? 'block' : 'none';
+}
+
+function setToggle(id, on){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.toggle('on', on);
+}
+
+function backupData(){
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'squat_backup.json';
+  a.click();
+}
+
+function restoreData(){
+  document.getElementById('restoreFile').click();
+}
+
+document.getElementById('restoreFile').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev=>{
+    try{
+      const parsed = JSON.parse(ev.target.result);
+      Object.assign(data, parsed);
+      saveData();
+      render();
+      showNotice('복구 완료!');
+    }catch(err){
+      showNotice('복구 실패: 파일 오류');
+    }
+  };
+  reader.readAsText(file);
+});
+
+function renderCalendar(){
+  const heads = document.getElementById('calendarHeads');
+  const grid = document.getElementById('calendarGrid');
+  heads.innerHTML = '';
+  grid.innerHTML = '';
+
+  const y = calendarViewDate.getFullYear();
+  const m = calendarViewDate.getMonth();
+  const days = monthDays(calendarViewDate);
+  const firstDay = new Date(y, m, 1).getDay();
+
+  const title = document.getElementById('calendar-title');
+  if(title) title.textContent = `${y}년 ${m+1}월`;
+
+  const prevBtn = document.querySelector('button[onclick="changeMonth(-1)"]');
+  const nextBtn = document.querySelector('button[onclick="changeMonth(1)"]');
+  if(prevBtn) prevBtn.style.fontSize = '50px';
+  if(nextBtn) nextBtn.style.fontSize = '50px';
+
+  ['일','월','화','수','목','금','토'].forEach(name=>{
+    const h = document.createElement('div');
+    h.className = 'cal-head';
+    h.textContent = name;
+    heads.appendChild(h);
+  });
+
+  const counts = days.map(d=>getCount(ymd(d)));
+  const maxCount = Math.max(1,...counts);
+  const todayKey = ymd();
+
+  for(let i=0;i<firstDay;i++){
+    const empty = document.createElement('div');
+    empty.className = 'day empty';
+    grid.appendChild(empty);
+  }
+
+  days.forEach(d=>{
+    const key = ymd(d);
+    const count = getCount(key);
+    const el = document.createElement('div');
+    el.className = 'day';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'day-bubble-wrap';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'day-bubble';
+    bubble.style.width = (count>0 ? bubbleSize(count,maxCount) : 24) + 'px';
+    bubble.style.height = (count>0 ? bubbleSize(count,maxCount) : 24) + 'px';
+    bubble.textContent = d.getDate();
+    bubble.style.fontSize = '22px';
+    bubble.style.fontWeight = 'bold';
+    if(key===todayKey){
+      bubble.style.outline = '2px solid #8d4dff';
+      bubble.style.outlineOffset = '1px';
+    }
+    if(count===0){
+      bubble.style.background = '#f7f3fa';
+      bubble.style.color = '#b6a8c4';
+    }
+
+    wrap.appendChild(bubble);
+
+    const cnt = document.createElement('div');
+    cnt.className = 'day-count';
+    cnt.textContent = count>0 ? String(count) : '';
+    cnt.style.fontSize = '15px';
+    cnt.style.fontWeight = 'bold';
+    cnt.style.marginTop = '5px';
+    cnt.style.color = '#db96ac';
+
+    el.appendChild(wrap);
+    el.appendChild(cnt);
+    grid.appendChild(el);
+  });
+}
+
+function getMonthlySeries(){
+  const arr = [];
+  const today = new Date();
+  for(let i=5;i>=0;i--){
+    const d = new Date(today.getFullYear(), today.getMonth()-i, 1);
+    const y = d.getFullYear();
+    const m = d.getMonth()+1;
+    let sum = 0;
+    for(const k in data.records){
+      if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)) sum += data.records[k];
+    }
+    arr.push({label:`${m}월`, value:sum});
+  }
+  return arr;
+}
+
+function getYearlySeries(){
+  const arr = [];
+  const today = new Date();
+  for(let i=2;i>=0;i--){
+    const y = today.getFullYear()-i;
+    let sum = 0;
+    for(const k in data.records){
+      if(k.startsWith(String(y))) sum += data.records[k];
+    }
+    arr.push({label:`${y}`, value:sum});
+  }
+  return arr;
+}
+
+function getDailySeries(){
+  const arr = [];
+  const y = graphViewDate.getFullYear();
+  const m = graphViewDate.getMonth();
+  const lastDay = new Date(y, m+1, 0).getDate();
+  for(let i=1;i<=lastDay;i++){
+    const d = new Date(y, m, i);
+    const k = ymd(d);
+    const val = (data.records && data.records[k]) || 0;
+    arr.push({label:i+'일', value:val});
+  }
+  return arr;
+}
+
+function renderChart(){
+  const wrap = document.getElementById('chartWrap');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  const graphTitle = document.querySelector('#graph .section-title');
+  if(graphTitle){
+    graphTitle.style.display = 'none';
+    graphTitle.parentElement.style.paddingTop = '0px';
+  }
+  document.querySelectorAll('.graph-chip').forEach(ch=>{
+    ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
+  });
+  let arr = [];
+  if(!data.graphMode) data.graphMode = 'day';
+  if(data.graphMode === 'month') arr = getMonthlySeries();
+  else if(data.graphMode === 'year') arr = getYearlySeries();
+  else arr = getDailySeries();
+  const max = 1000;
+  arr.forEach(item=>{
+    const h = Math.max(8, Math.round((item.value/max)*100));
+    const div = document.createElement('div');
+    div.className = 'barItem';
+    div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
+    wrap.appendChild(div);
+  });
+}
+  function render(){
+  const today = getCount(ymd());
+  const mTotal = monthTotal();
+  const yTotal = yearTotal();
+  const total = allTotal();
+  const streak = calcStreaks();
+
+  document.getElementById('todayGoalNow').textContent = today;
+  document.getElementById('monthGoalNow').textContent = mTotal;
+  document.getElementById('heroCount').textContent = today;
+  document.getElementById('currentStreak').textContent = streak.current;
+  document.getElementById('bestStreak').textContent = streak.best;
+
+  const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate();
+  const daysInYear = new Date().getFullYear() % 4 === 0 ? 366 : 365;
+  const totalDays = Object.keys(data.records).length || 1;
+  document.getElementById('monthAvg').textContent = Math.round(mTotal / daysInMonth);
+  document.getElementById('yearAvg').textContent = Math.round(yTotal / daysInYear);
+  document.getElementById('allAvg').textContent = Math.round(total / totalDays);
+  document.getElementById('dayMax').textContent = dayMax().toLocaleString();
+  document.getElementById('monthTotal').textContent = mTotal.toLocaleString();
+  document.getElementById('allTotal').textContent = total.toLocaleString();
+
+  document.getElementById('statsToday').textContent = today.toLocaleString();
+  document.getElementById('weekTotal').textContent = weekTotal().toLocaleString();
+  document.getElementById('statsMonth').textContent = mTotal.toLocaleString();
+  document.getElementById('statsAllTotal').textContent = total.toLocaleString();
+
+  const todayPct = Math.round((today / Math.max(1, data.todayGoal)) * 100);
+  const monthPct = Math.round((mTotal / Math.max(1, data.monthGoal)) * 100);
+  document.getElementById('todayBar').style.width = todayPct + '%';
+  document.getElementById('monthBar').style.width = monthPct + '%';
+  document.getElementById('todayPercent').textContent = todayPct + '%';
+  document.getElementById('monthPercent').textContent = monthPct + '%';
+
+  setToggle('togAuto',data.settings.autoCount);
+  setToggle('togSound',data.settings.sound);
+  setToggle('togCheer',data.settings.cheer);
+  setToggle('togVibrate',data.settings.vibrate);
+
+  document.querySelectorAll('.voice-chip').forEach(chip=>{
+    chip.classList.toggle('active', chip.dataset.voice===data.settings.voice);
+  });
+}
+
+render();
+renderCalendar();
+renderChart();
+updateFloatingVisibility();
+</script>
+</body>
+</html>
+
+
+
+
+  
