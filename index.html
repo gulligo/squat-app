@@ -821,12 +821,43 @@ function renderChart(){
     ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
   });
   let arr = [];
-  if(data.graphMode === undefined) data.graphMode = 'month';
+  function getDailySeries() {
+    const arr = [];
+    const y = viewDate.getFullYear();
+    const m = viewDate.getMonth();
+    const lastDay = new Date(y, m + 1, 0).getDate();
+
+    for (let i = 1; i <= lastDay; i++) {
+        const d = new Date(y, m, i);
+        const k = ymd(d);
+        const val = (data.records && data.records[k]) || 0;
+        arr.push({ label: i + '일', value: val });
+    }
+    return arr;
+}
+
+function renderChart(){
+  const wrap = document.getElementById('chartWrap');
+  wrap.innerHTML = '';
+  
+  const graphTitle = document.querySelector('#graph .section-title');
+  if(graphTitle) {
+    graphTitle.style.display = 'none'; 
+    graphTitle.parentElement.style.paddingTop = '0px'; 
+  }
+
+  document.querySelectorAll('.graph-chip').forEach(ch=>{
+    ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
+  });
+
+  let arr = [];
+  if(!data.graphMode) data.graphMode = 'day';
+
   if(data.graphMode === 'month') arr = getMonthlySeries();
   else if(data.graphMode === 'year') arr = getYearlySeries();
   else arr = getDailySeries();
+
   const max = 1000;
-  // 2. [필수!] 사라진 막대기를 다시 그려주는 핵심 코드
   arr.forEach(item=>{
     const h = Math.max(8, Math.round((item.value/max)*100));
     const div = document.createElement('div');
@@ -840,29 +871,6 @@ function renderChart(){
   });
 }
 
-
-function setToggle(id,on){
-  document.getElementById(id).classList.toggle('on', !!on);
-}
-
-function updateFloatingVisibility(){
-  floatBtn.style.display = currentPage==='home' ? 'block' : 'none';
-}
-let viewDate = new Date();
-function render(){
-  const today = getCount(ymd());
-  const mTotal = monthTotal();
-  const yTotal = yearTotal();
-  const total = allTotal();
-  const streak = calcStreaks();
-
-  const now = new Date();
-  const startDate = new Date('2026-02-19');
-  const diffDays = Math.floor((now - startDate) / 86400000) + 1;
-  const dayOfYear = diffDays < 1 ? 1 : diffDays;
-  let totalDays = dayOfYear;
-
-  // 기존 데이터 로직을 활용하여 계산
   const monthAvg = Math.round(mTotal / (new Date().getDate()) || 0);
   const yearAvg = Math.round(yTotal / dayOfYear || 0);
   const allAvg = Math.round(total / totalDays || 0);
