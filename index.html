@@ -795,10 +795,9 @@ function getYearlySeries(){
 function renderChart(){
   const wrap = document.getElementById('chartWrap');
   wrap.innerHTML = '';
-const prevBtnGraph = document.querySelector('#graph button:first-child');
-const nextBtnGraph = document.querySelector('#graph button:last-child');
-if(prevBtnGraph) prevBtnGraph.style.fontSize = '50px';
-if(nextBtnGraph) nextBtnGraph.style.fontSize = '50px';
+const graphTitle = document.querySelector('#graph .section-title');
+if(graphTitle) graphTitle.style.fontSize = '30px'; 
+// 화살표가 없으니 버튼 크기 키우는 코드는 지우고, 제목만 조금 키웠어요.
 
   document.querySelectorAll('.graph-chip').forEach(ch=>{
     ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
