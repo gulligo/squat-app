@@ -795,10 +795,11 @@ function getYearlySeries(){
 function renderChart(){
   const wrap = document.getElementById('chartWrap');
   wrap.innerHTML = '';
-const graphTitle = document.querySelector('#graph .section-title');
-if(graphTitle) graphTitle.style.fontSize = '30px'; 
-// 화살표가 없으니 버튼 크기 키우는 코드는 지우고, 제목만 조금 키웠어요.
-
+  const graphTitle = document.querySelector('#graph .section-title');
+  if(graphTitle) {
+    graphTitle.style.display = 'none'; 
+    graphTitle.parentElement.style.paddingTop = '0px';
+  }
   document.querySelectorAll('.graph-chip').forEach(ch=>{
     ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
   });
