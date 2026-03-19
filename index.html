@@ -824,7 +824,7 @@ function getDailySeries(){
     const d = new Date(y, m, i);
     const k = ymd(d);
     const val = (data.records && data.records[k]) || 0;
-    arr.push({label:i+'일', value:val});
+    arr.push({label:i, value:val});
   }
   return arr;
 }
