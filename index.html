@@ -968,6 +968,7 @@ function changeGraphMonth(diff){
   } else if(data.graphMode === 'year'){
   graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
  }
+  }
  window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
   if(document.hidden) return;
@@ -1053,10 +1054,3 @@ updateFloatingVisibility();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-  
