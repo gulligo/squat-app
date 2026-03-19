@@ -167,6 +167,20 @@ body{
   max-width:88vw;white-space:nowrap;
 }
 .notice.show{opacity:1}
+  .confetti-container{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:999;overflow:hidden;
+}
+.confetti{
+  position:absolute;top:-10px;
+  width:10px;height:14px;
+  opacity:0;
+  animation:confetti-fall 2.5s ease-in forwards;
+}
+@keyframes confetti-fall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
 </style>
 </head>
 <body>
@@ -558,7 +572,25 @@ function speak(text){
     speechSynthesis.speak(msg);
   }catch(e){}
 }
-
+function launchConfetti(){
+  const container = document.createElement('div');
+  container.className = 'confetti-container';
+  document.body.appendChild(container);
+  const colors = ['#8d4dff','#ff8a2a','#19c37d','#f43f5e','#facc15','#38bdf8'];
+  for(let i=0;i<80;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random()*100 + '%';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.width = (Math.random()*8+6) + 'px';
+    c.style.height = (Math.random()*10+8) + 'px';
+    c.style.animationDelay = Math.random()*1.2 + 's';
+    c.style.animationDuration = (Math.random()*1.5+2) + 's';
+    c.style.borderRadius = Math.random()>0.5 ? '50%' : '0';
+    container.appendChild(c);
+  }
+  setTimeout(()=>container.remove(), 4000);
+}
 function showNotice(text){
   notice.textContent = text;
   notice.classList.add('show');
@@ -592,6 +624,9 @@ function addSquat(amount=1){
       }
     }
   }
+  const prevPct = Math.floor(before / data.todayGoal * 100);
+  const newPct = Math.floor(after / data.todayGoal * 100);
+  if(prevPct < 100 && newPct >= 100) launchConfetti();
   saveData();
   render();
 }
