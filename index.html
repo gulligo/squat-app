@@ -282,11 +282,11 @@ body{
 </div>
 
 <div class="graph-container" style="display:flex;position:relative;margin-bottom:20px;overflow:hidden;">
-      <div class="y-axis" style="display:flex;flex-direction:column;justify-content:space-between;padding:60px 5px 25px 0;font-size:10px;color:#999;text-align:right;min-width:35px;">
-        <div>1000</div>
-        <div>500</div>
-        <div>0</div>
-      </div>
+      <div class="y-axis">
+  <div id="yTop">1000</div>
+  <div id="yMid">500</div>
+  <div id="yBottom">0</div>
+</div>
       <div id="chartWrap" class="chartWrap" style="flex:1;"></div>
     </div>
   </div>
@@ -857,7 +857,13 @@ function renderChart(){
   wrap.innerHTML = '';
   const graphMonthLabel = document.getElementById('graphMonthLabel');
 if(graphMonthLabel){
+  if(data.graphMode === 'month'){
+  graphMonthLabel.textContent = `${graphViewDate.getFullYear()}년`;
+}else if(data.graphMode === 'year'){
+  graphMonthLabel.textContent = `연도별`;
+}else{
   graphMonthLabel.textContent = `${graphViewDate.getFullYear()}년 ${graphViewDate.getMonth()+1}월`;
+}
 }
   const graphTitle = document.querySelector('#graph .section-title');
   if(graphTitle){
@@ -872,7 +878,18 @@ if(graphMonthLabel){
   if(data.graphMode === 'month') arr = getMonthlySeries();
   else if(data.graphMode === 'year') arr = getYearlySeries();
   else arr = getDailySeries();
-  const max = 1200;
+  let max = 1200;
+
+if(data.graphMode === 'month' || data.graphMode === 'year'){
+  max = Math.max(1000, ...arr.map(x => x.value));
+}
+const yTop = document.getElementById('yTop');
+const yMid = document.getElementById('yMid');
+const yBottom = document.getElementById('yBottom');
+
+if(yTop) yTop.textContent = max;
+if(yMid) yMid.textContent = Math.round(max / 2);
+if(yBottom) yBottom.textContent = 0;
   arr.forEach(item=>{
     const h = Math.max(12, Math.round((item.value/max)*500));
     const div = document.createElement('div');
