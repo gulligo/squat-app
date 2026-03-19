@@ -262,6 +262,18 @@ body{
       <button class="chip graph-chip" data-graph="month">월</button>
       <button class="chip graph-chip" data-graph="year">년</button>
     </div>
+    <div class="graph-tabs">
+  <button class="chip active graph-chip" data-graph="day">일</button>
+  <button class="chip graph-chip" data-graph="month">월</button>
+  <button class="chip graph-chip" data-graph="year">년</button>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px 0;">
+  <button onclick="changeGraphMonth(-1)" class="chip">〈 이전달</button>
+  <div id="graphMonthLabel" style="font-weight:800;color:#666;"></div>
+  <button onclick="changeGraphMonth(1)" class="chip">다음달 〉</button>
+</div>
+
+<div class="graph-container" style="display:flex;position:relative;margin-bottom:20px;">
     <div class="graph-container" style="display:flex;position:relative;margin-bottom:20px;">
       <div class="y-axis" style="display:flex;flex-direction:column;justify-content:space-between;padding:60px 5px 25px 0;font-size:10px;color:#999;text-align:right;min-width:35px;">
         <div>1000</div>
@@ -658,7 +670,10 @@ function bubbleSize(count,max){
 }
   let calendarViewDate = new Date();
 let graphViewDate = new Date();
-
+function changeGraphMonth(dir){
+  graphViewDate.setMonth(graphViewDate.getMonth() + dir);
+  renderChart();
+}
 function changeMonth(dir){
   calendarViewDate.setMonth(calendarViewDate.getMonth() + dir);
   renderCalendar();
@@ -833,6 +848,10 @@ function renderChart(){
   const wrap = document.getElementById('chartWrap');
   if(!wrap) return;
   wrap.innerHTML = '';
+  const graphMonthLabel = document.getElementById('graphMonthLabel');
+if(graphMonthLabel){
+  graphMonthLabel.textContent = `${graphViewDate.getFullYear()}년 ${graphViewDate.getMonth()+1}월`;
+}
   const graphTitle = document.querySelector('#graph .section-title');
   if(graphTitle){
     graphTitle.style.display = 'none';
