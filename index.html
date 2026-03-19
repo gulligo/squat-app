@@ -798,7 +798,7 @@ function renderCalendar(){
     cnt.textContent = count>0 ? String(count) : '';
     cnt.style.fontSize = '11px';
     cnt.style.fontWeight = 'bold';
-    cnt.style.marginTop = '1px';
+    cnt.style.marginTop = '0px';
     cnt.style.color = '#db96ac';
 
     el.appendChild(wrap);
@@ -968,14 +968,88 @@ function changeGraphMonth(diff){
   } else if(data.graphMode === 'year'){
   graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
  }
- render();
- renderCalendar();
- renderChart();
- updateFloatingVisibility();
- }
-  render();
+ window.addEventListener('devicemotion', function(e){
+  if(!data.settings.autoCount) return;
+  if(document.hidden) return;
+  if(currentPage!=='home') return;
+  const acc = e.accelerationIncludingGravity;
+  if(!acc) return;
+  const x = acc.x || 0;
+  const y = acc.y || 0;
+  const z = acc.z || 0;
+  const mag = Math.sqrt(x*x + y*y + z*z);
+  const now = Date.now();
+  if(auto.base===null){
+    auto.base = mag;
+    auto.stage = 'idle';
+    auto.lowDelta = 0;
+    auto.highDelta = 0;
+    return;
+  }
+  auto.base = auto.base * 0.985 + mag * 0.015;
+  const delta = mag - auto.base;
+  if(auto.stage==='idle'){
+    if(delta < -1.9){ auto.stage = 'down'; auto.downTime = now; auto.lowDelta = delta; }
+    return;
+  }
+  if(auto.stage==='down'){
+    if(delta < auto.lowDelta) auto.lowDelta = delta;
+    if(now - auto.downTime > 2200){ auto.stage = 'idle'; return; }
+    if(delta > 1.4 && now - auto.downTime > 300){ auto.stage = 'up'; auto.upTime = now; auto.highDelta = delta; }
+    return;
+  }
+  if(auto.stage==='up'){
+    if(delta > auto.highDelta) auto.highDelta = delta;
+    if(now - auto.upTime > 1800){ auto.stage = 'idle'; return; }
+    if(delta > -0.2 && delta < 0.8 && now - auto.upTime > 180 && now - auto.lastCountTime > 1400){
+      auto.lastCountTime = now;
+      auto.stage = 'idle';
+      addSquat(1);
+    }
+  }
+});
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){ auto.base = null; auto.stage = 'idle'; }
+});
+
+(function(){
+  const btn = floatBtn;
+  btn.style.right = '12px';
+  btn.style.bottom = '16px';
+  btn.addEventListener('touchstart',e=>{
+    if(currentPage!=='home') return;
+    isDragging = false;
+    const t = e.touches[0];
+    dragStartX = t.clientX;
+    dragStartY = t.clientY;
+    const rect = btn.getBoundingClientRect();
+    btnStartX = rect.left;
+    btnStartY = rect.top;
+  },{passive:true});
+  btn.addEventListener('touchmove',e=>{
+    if(currentPage!=='home') return;
+    const t = e.touches[0];
+    const dx = t.clientX - dragStartX;
+    const dy = t.clientY - dragStartY;
+    if(Math.abs(dx)>8 || Math.abs(dy)>8) isDragging = true;
+    if(isDragging){
+      e.preventDefault();
+      btn.style.left = Math.max(0, Math.min(window.innerWidth-150, btnStartX+dx)) + 'px';
+      btn.style.top = Math.max(0, Math.min(window.innerHeight-150, btnStartY+dy)) + 'px';
+      btn.style.right = 'auto';
+      btn.style.bottom = 'auto';
+    }
+  },{passive:false});
+  btn.addEventListener('touchend',()=>{
+    setTimeout(()=>{ isDragging = false; },30);
+  });
+})();
+
+render();
 renderCalendar();
 renderChart();
+updateFloatingVisibility();
 </script>
 </body>
 </html>
