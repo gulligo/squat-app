@@ -26,6 +26,7 @@ body{
   font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:var(--bg);
   color:var(--text);
+  overflow-x: hidden;
 }
 .top-tabs{
   position:sticky;
@@ -143,6 +144,8 @@ body{
   gap: 1px;
   height: 500px;
   overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 0;
   padding-top: 60px;
   background-image: linear-gradient(#eee 1px, transparent 1px);
   background-size: 100% 55px;
@@ -278,8 +281,7 @@ body{
 
 </div>
 
-<div class="graph-container" style="display:flex;position:relative;margin-bottom:20px;">
-    <div class="graph-container" style="display:flex;position:relative;margin-bottom:20px;">
+<div class="graph-container" style="display:flex;position:relative;margin-bottom:20px;overflow:hidden;">
       <div class="y-axis" style="display:flex;flex-direction:column;justify-content:space-between;padding:60px 5px 25px 0;font-size:10px;color:#999;text-align:right;min-width:35px;">
         <div>1000</div>
         <div>500</div>
