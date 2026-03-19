@@ -956,11 +956,21 @@ function render(){
     chip.classList.toggle('active', chip.dataset.voice===data.settings.voice);
   });
 }
+function changeGraphMonth(diff){
+  if(!graphViewDate) graphViewDate = new Date();
 
-render();
-renderCalendar();
-renderChart();
-updateFloatingVisibility();
+  if(data.graphMode === 'day'){
+    graphViewDate.setMonth(graphViewDate.getMonth() + diff);
+  } else if(data.graphMode === 'month'){
+    graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
+  } else if(data.graphMode === 'year'){
+  graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
+ }
+ render();
+ renderCalendar();
+ renderChart();
+ updateFloatingVisibility();
+ }
 </script>
 </body>
 </html>
