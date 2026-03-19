@@ -885,7 +885,7 @@ if(data.graphMode === 'month'){
 } else if(data.graphMode === 'year'){
   max = 130000;
 } else {
-  max = Math.max(1000, ...arr.map(x => x.value));
+  max = Math.max(1, ...arr.map(x => x.value));
 }
 
 const yTop = document.getElementById('yTop');
