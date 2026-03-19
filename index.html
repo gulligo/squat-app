@@ -263,9 +263,19 @@ body{
   <button class="chip graph-chip" data-graph="year">년</button>
 </div>
 <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px 0;">
-  <button onclick="changeGraphMonth(-1)" class="chip">〈 이전달</button>
-  <div id="graphMonthLabel" style="font-weight:800;color:#666;"></div>
-  <button onclick="changeGraphMonth(1)" class="chip">다음달 〉</button>
+  
+  <button onclick="changeGraphMonth(-1)" 
+    style="width:60px;height:60px;border-radius:12px;border:1px solid #ddd;background:#fff;font-size:28px;">
+    <
+  </button>
+
+  <div id="graphMonthLabel" style="font-weight:800;font-size:18px;color:#666;"></div>
+
+  <button onclick="changeGraphMonth(1)" 
+    style="width:60px;height:60px;border-radius:12px;border:1px solid #ddd;background:#fff;font-size:28px;">
+    >
+  </button>
+
 </div>
 
 <div class="graph-container" style="display:flex;position:relative;margin-bottom:20px;">
