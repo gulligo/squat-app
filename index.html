@@ -810,10 +810,8 @@ function renderCalendar(){
 function getMonthlySeries(){
   const arr = [];
   const today = new Date();
-  for(let i=5;i>=0;i--){
-    const d = new Date(today.getFullYear(), today.getMonth()-i, 1);
-    const y = d.getFullYear();
-    const m = d.getMonth()+1;
+  const y = graphViewDate.getFullYear();
+  for(let m=1;m<=12;m++){
     let sum = 0;
     for(const k in data.records){
       if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)) sum += data.records[k];
@@ -821,6 +819,7 @@ function getMonthlySeries(){
     arr.push({label:`${m}월`, value:sum});
   }
   return arr;
+}
 }
 
 function getYearlySeries(){
