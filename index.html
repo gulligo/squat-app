@@ -899,9 +899,10 @@ if(yBottom) yBottom.textContent = 0;
   const h = Math.max(12, Math.round((item.value/max)*300));
   const div = document.createElement('div');
   div.className = 'barItem';
-div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
+  div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
   wrap.appendChild(div);
 });
+
 }
 function render(){
   const today = getCount(ymd());
