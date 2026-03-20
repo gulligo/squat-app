@@ -802,7 +802,7 @@ function renderCalendar(){
   const mPrefix = `${y}-${String(m+1).padStart(2,'0')}-`;
   const mVals = Object.keys(data.records).filter(k=>k.startsWith(mPrefix)).map(k=>data.records[k]);
   const mSum = mVals.reduce((a,b)=>a+b,0);
-  const mAvg = mVals.length > 0 ? Math.round(mSum/days.length) : 0;
+  const mAvg = mVals.length > 0 ? Math.round(mSum/mVals.length) : 0;
   if(calAvg) calAvg.textContent = mAvg;
   if(calSum) calSum.textContent = mSum.toLocaleString();
   const prevBtn = document.querySelector('button[onclick="changeMonth(-1)"]');
