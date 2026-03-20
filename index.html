@@ -262,10 +262,12 @@ body{
 <div id="calendar" class="page">
   <div class="card">
     <div class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
-      <button onclick="changeMonth(-1)" style="padding:0 15px;background:none;border:1px solid #ddd;border-radius:5px;"> < </button>
-      <span id="calendar-title">이번 달 기록</span>
-      <button onclick="changeMonth(1)" style="padding:0 15px;background:none;border:1px solid #ddd;border-radius:5px;"> > </button>
-    </div>
+  <button onclick="changeMonth(-1)" style="padding:0 15px;background:none;border:1px solid #ddd;border-radius:5px;"> < </button>
+  <span style="font-size:12px;color:#999;">평균 <span id="calAvg" style="color:#8d4dff;">-</span></span>
+  <span id="calendar-title">이번 달 기록</span>
+  <span style="font-size:12px;color:#999;">합계 <span id="calSum" style="color:#19c37d;">-</span></span>
+  <button onclick="changeMonth(1)" style="padding:0 15px;background:none;border:1px solid #ddd;border-radius:5px;"> > </button>
+</div>
     <div id="calendarHeads" class="cal-heads" style="margin-bottom:6px"></div>
     <div id="calendarGrid" class="calendar-grid"></div>
   </div>
@@ -795,7 +797,14 @@ function renderCalendar(){
 
   const title = document.getElementById('calendar-title');
   if(title) title.textContent = `${y}년 ${m+1}월`;
-
+  const calAvg = document.getElementById('calAvg');
+  const calSum = document.getElementById('calSum');
+  const mPrefix = `${y}-${String(m+1).padStart(2,'0')}-`;
+  const mVals = Object.keys(data.records).filter(k=>k.startsWith(mPrefix)).map(k=>data.records[k]);
+  const mSum = mVals.reduce((a,b)=>a+b,0);
+  const mAvg = mVals.length > 0 ? Math.round(mSum/days.length) : 0;
+  if(calAvg) calAvg.textContent = mAvg;
+  if(calSum) calSum.textContent = mSum.toLocaleString();
   const prevBtn = document.querySelector('button[onclick="changeMonth(-1)"]');
   const nextBtn = document.querySelector('button[onclick="changeMonth(1)"]');
   if(prevBtn) prevBtn.style.fontSize = '50px';
