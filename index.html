@@ -720,7 +720,7 @@ function bubbleSize(count,max){
 let graphViewDate = new Date();
 function changeGraphMonth(diff){
   if(!graphViewDate) graphViewDate = new Date();
-  if(data.graphMode === 'day' || data.graphMode === 'month'){
+  if(data.graphMode === 'day'){
     graphViewDate.setMonth(graphViewDate.getMonth() + diff);
   } else {
     graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
