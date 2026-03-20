@@ -286,7 +286,13 @@ body{
     <
   </button>
 
-  <div id="graphMonthLabel" style="font-weight:800;font-size:18px;color:#666;"></div>
+  <div style="text-align:center;">
+  <div id="graphMonthLabel" style="font-weight:800;font-size:16px;color:#666;"></div>
+  <div style="display:flex;gap:16px;justify-content:center;margin-top:4px;font-size:12px;color:#999;">
+    <span>평균 <span id="graphAvg" style="color:#8d4dff;">-</span></span>
+    <span>합계 <span id="graphSum" style="color:#19c37d;">-</span></span>
+  </div>
+</div>
 
   <button onclick="changeGraphMonth(1)" 
     style="width:60px;height:60px;border-radius:12px;border:1px solid #ddd;background:#fff;font-size:28px;">
@@ -920,6 +926,12 @@ if(graphMonthLabel){
   if(data.graphMode === 'month') arr = getMonthlySeries();
   else if(data.graphMode === 'year') arr = getYearlySeries();
   else arr = getDailySeries();
+  const graphAvg = document.getElementById('graphAvg');
+const graphSum = document.getElementById('graphSum');
+const sumVal = arr.reduce((a,b)=>a+b.value,0);
+const avgVal = arr.filter(x=>x.value>0).length > 0 ? Math.round(sumVal/arr.filter(x=>x.value>0).length) : 0;
+if(graphAvg) graphAvg.textContent = avgVal;
+if(graphSum) graphSum.textContent = sumVal.toLocaleString();
   let max = 1200;
 
 if(data.graphMode === 'month'){
