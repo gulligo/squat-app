@@ -719,8 +719,8 @@ function weekTotal(){
 
 function bubbleSize(count,max){
   if(count<=0) return 0;
-  const minSize = 24;
-  const maxSize = 38;
+  const minSize = 14;
+  const maxSize = 46;
   const ratio = count / 1000;
   return Math.round(minSize + (maxSize-minSize)*ratio);
 }
@@ -838,8 +838,8 @@ function renderCalendar(){
 
     const bubble = document.createElement('div');
     bubble.className = 'day-bubble';
-    bubble.style.width = (count>0 ? bubbleSize(count,maxCount) : 24) + 'px';
-    bubble.style.height = (count>0 ? bubbleSize(count,maxCount) : 24) + 'px';
+    bubble.style.width = (count>0 ? bubbleSize(count,maxCount) : 8) + 'px';
+    bubble.style.height = (count>0 ? bubbleSize(count,maxCount) : 8) + 'px';
     bubble.textContent = d.getDate();
     bubble.style.fontSize = '22px';
     bubble.style.fontWeight = 'bold';
