@@ -1004,15 +1004,6 @@ function render(){
     chip.classList.toggle('active', chip.dataset.voice===data.settings.voice);
   });
 }
-function changeGraphMonth(diff){
-  if(!graphViewDate) graphViewDate = new Date();
-  if(data.graphMode === 'day' || data.graphMode === 'month'){
-    graphViewDate.setMonth(graphViewDate.getMonth() + diff);
-  } else {
-    graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
-  }
-  renderChart();
-}
  window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
   if(document.hidden) return;
