@@ -838,8 +838,8 @@ function renderCalendar(){
 
     const bubble = document.createElement('div');
     bubble.className = 'day-bubble';
-    bubble.style.width = (count>0 ? bubbleSize(count,maxCount) : 8) + 'px';
-    bubble.style.height = (count>0 ? bubbleSize(count,maxCount) : 8) + 'px';
+    bubble.style.width = (count>0 ? bubbleSize(count,maxCount) : 0) + 'px';
+    bubble.style.height = (count>0 ? bubbleSize(count,maxCount) : 0) + 'px';
     bubble.textContent = d.getDate();
     bubble.style.fontSize = '22px';
     bubble.style.fontWeight = 'bold';
