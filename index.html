@@ -938,7 +938,7 @@ if(yTop) yTop.textContent = max;
 if(yMid) yMid.textContent = Math.round(max / 2);
 if(yBottom) yBottom.textContent = 0;
   arr.forEach(item=>{
-  const h = Math.max(12, Math.round((item.value/max)*480));
+  const h = Math.max(12, Math.round((item.value/max)*420));
   const div = document.createElement('div');
   div.className = 'barItem';
   div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
