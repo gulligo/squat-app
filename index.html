@@ -798,7 +798,8 @@ function renderCalendar(){
   const mSum = mVals.reduce((a,b)=>a+b,0);
   const today3 = new Date(); today3.setHours(0,0,0,0);
 const mLastDay = new Date(Math.min(today3.getTime(), new Date(y,m+1,0).getTime()));
-const mFirstDay = mVals.length > 0 ? new Date(mPrefix + '01') : today3;
+const mFirstKey = Object.keys(data.records).filter(k=>k.startsWith(mPrefix)).sort()[0];
+const mFirstDay = mFirstKey ? new Date(mFirstKey) : new Date(y,m,1);
 const mDays2 = Math.floor((mLastDay - mFirstDay)/86400000) + 1;
 const mAvg = mDays2 > 0 ? Math.round(mSum/mDays2) : 0;
   if(calAvg) calAvg.textContent = mAvg;
