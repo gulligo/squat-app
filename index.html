@@ -800,6 +800,7 @@ function renderCalendar(){
 const mLastDay = new Date(Math.min(today3.getTime(), new Date(y,m+1,0).getTime()));
 const mFirstKey = Object.keys(data.records).filter(k=>k.startsWith(mPrefix)).sort()[0];
 const mFirstDay = mFirstKey ? new Date(mFirstKey) : new Date(y,m,1);
+  mFirstDay.setHours(0,0,0,0);
 const mDays2 = Math.floor((mLastDay - mFirstDay)/86400000) + 1;
 const mAvg = mDays2 > 0 ? Math.round(mSum/mDays2) : 0;
   if(calAvg) calAvg.textContent = mAvg;
