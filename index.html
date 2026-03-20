@@ -282,24 +282,18 @@ body{
   <button class="chip graph-chip" data-graph="year">년</button>
 </div>
 <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px 0;">
-  
   <button onclick="changeGraphMonth(-1)" 
     style="width:60px;height:60px;border-radius:12px;border:1px solid #ddd;background:#fff;font-size:28px;">
     <
   </button>
-
-  <div style="text-align:center;">
+  <span style="font-size:12px;color:#999;">평균 <span id="graphAvg" style="color:#8d4dff;">-</span></span>
   <div id="graphMonthLabel" style="font-weight:800;font-size:16px;color:#666;"></div>
-  <div style="display:flex;gap:16px;justify-content:center;margin-top:4px;font-size:12px;color:#999;">
-    <span>평균 <span id="graphAvg" style="color:#8d4dff;">-</span></span>
-    <span>합계 <span id="graphSum" style="color:#19c37d;">-</span></span>
-  </div>
-</div>
-
+  <span style="font-size:12px;color:#999;">합계 <span id="graphSum" style="color:#19c37d;">-</span></span>
   <button onclick="changeGraphMonth(1)" 
     style="width:60px;height:60px;border-radius:12px;border:1px solid #ddd;background:#fff;font-size:28px;">
     >
   </button>
+</div>
 
 </div>
 
