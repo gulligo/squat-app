@@ -1006,15 +1006,13 @@ function render(){
 }
 function changeGraphMonth(diff){
   if(!graphViewDate) graphViewDate = new Date();
-
-  if(data.graphMode === 'day'){
+  if(data.graphMode === 'day' || data.graphMode === 'month'){
     graphViewDate.setMonth(graphViewDate.getMonth() + diff);
-  } else if(data.graphMode === 'month'){
+  } else {
     graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
-  } else if(data.graphMode === 'year'){
-  graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
- }
   }
+  renderChart();
+}
  window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
   if(document.hidden) return;
@@ -1100,3 +1098,4 @@ updateFloatingVisibility();
 </script>
 </body>
 </html>
+ㅓㅓ.ㅗ
