@@ -620,12 +620,11 @@ function addSquat(amount=1){
       const line = getEventLine();
       if(line){
         showNotice(line);
-        if(data.settings.sound && data.settings.voice!=='mute'){
-          speak(line);
-        }
+        if(data.settings.cheer && data.settings.voice!=='mute') speak(line);
       }
     }
   }
+}
   const prevPct = Math.floor(before / data.todayGoal * 100);
   const newPct = Math.floor(after / data.todayGoal * 100);
   if(prevPct < 100 && newPct >= 100) launchConfetti();
