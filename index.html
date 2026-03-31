@@ -553,7 +553,7 @@ function getEventLine(){
 }
 
 function speak(text){
-  if(!data.settings.sound || data.settings.voice==='mute') return;
+  if(data.settings.voice==='mute') return;
   try{
     speechSynthesis.cancel();
     const msg = new SpeechSynthesisUtterance(text);
