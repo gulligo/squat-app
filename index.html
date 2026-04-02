@@ -1044,13 +1044,13 @@ function render(){
   auto.base = auto.base * 0.985 + mag * 0.015;
   const delta = mag - auto.base;
   if(auto.stage==='idle'){
-    if(delta < -2.2){ auto.stage = 'down'; auto.downTime = now; auto.lowDelta = delta; }
+    if(delta < -3.5){ auto.stage = 'down'; auto.downTime = now; auto.lowDelta = delta; }
     return;
   }
   if(auto.stage==='down'){
     if(delta < auto.lowDelta) auto.lowDelta = delta;
     if(now - auto.downTime > 2200){ auto.stage = 'idle'; return; }
-    if(delta > 1.6 && now - auto.downTime > 350){ auto.stage = 'up'; auto.upTime = now; auto.highDelta = delta; }
+    if(delta > 2.5 && now - auto.downTime > 350){ auto.stage = 'up'; auto.upTime = now; auto.highDelta = delta; }
     return;
   }
   if(auto.stage==='up'){
