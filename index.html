@@ -1041,22 +1041,22 @@ function render(){
     auto.highDelta = 0;
     return;
   }
-  auto.base = auto.base * 0.985 + mag * 0.015;
+  auto.base = auto.base * 0.993 + mag * 0.007;
   const delta = mag - auto.base;
   if(auto.stage==='idle'){
-    if(delta < -2.5){ auto.stage = 'down'; auto.downTime = now; auto.lowDelta = delta; }
+    if(delta < -1.5){ auto.stage = 'down'; auto.downTime = now; auto.lowDelta = delta; }
     return;
   }
   if(auto.stage==='down'){
     if(delta < auto.lowDelta) auto.lowDelta = delta;
-    if(now - auto.downTime > 2200){ auto.stage = 'idle'; return; }
-    if(delta > 1.8 && now - auto.downTime > 350){ auto.stage = 'up'; auto.upTime = now; auto.highDelta = delta; }
+    if(now - auto.downTime > 3500){ auto.stage = 'idle'; return; }
+    if(delta > 1.2 && now - auto.downTime > 250){ auto.stage = 'up'; auto.upTime = now; auto.highDelta = delta; }
     return;
   }
   if(auto.stage==='up'){
     if(delta > auto.highDelta) auto.highDelta = delta;
-    if(now - auto.upTime > 1800){ auto.stage = 'idle'; return; }
-    if(delta > -0.2 && delta < 0.7 && now - auto.upTime > 200 && now - auto.lastCountTime > 2000){
+    if(now - auto.upTime > 2500){ auto.stage = 'idle'; return; }
+    if(delta > -0.3 && delta < 1.0 && now - auto.upTime > 150 && now - auto.lastCountTime > 1500){
       auto.lastCountTime = now;
       auto.stage = 'idle';
       addSquat(1);
