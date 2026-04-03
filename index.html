@@ -2,8 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" /> 
-  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <title>용용이 스쿼트</title>
 <link rel="manifest" href="manifest.json" />
 <link rel="icon" href="icon.png" type="image/png" />
@@ -162,7 +161,7 @@ body{
 }
 .floating img{width:100%;height:100%;object-fit:cover}
 .notice{
-  position:fixed;left:50%;bottom:130px;transform:translateX(-50%);
+  position:fixed;left:50%;bottom:165px;transform:translateX(-50%);
   background:rgba(34,34,34,.92);color:#fff;padding:10px 14px;border-radius:999px;
   font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:100;
   max-width:88vw;white-space:nowrap;
@@ -359,7 +358,7 @@ body{
 </div>
 
 <br><br>
-<input type="file" id="restoreFile" style="display:none"> <button id="pauseBtn" onclick="togglePause()" style="position:fixed;bottom:50px;left:50%;transform:translateX(-50%);background:#ff3b30;color:#fff;border:none;border-radius:20px;padding:10px 28px;font-size:15px;font-weight:700;cursor:pointer;z-index:9999;display:none;">⏸ 정지</button>
+<input type="file" id="restoreFile" style="display:none">
 <button id="floatBtn" class="floating" aria-label="이동 버튼">
   <img src="icon.png" alt="용용이" />
 </button>
@@ -397,7 +396,7 @@ const FEMALE_LINES = [
 "어머! 다리가 너무 딱딱해","자기야 오늘 너무 무리하는거 아니야","날 앉고 다리에 힘을 넣어봐","오빠 다리 힘 빠지면 내가 더 슬퍼",
 "오늘 밤 끝까지 버티면 내가 해줄 게 많아.","더 세게힘줘 멈추지 말고 끝까지 책임져.","호흡이 점점 거칠어지네, 나도 그래.","한 번 더, 이번엔 아주 천천히 느껴봐.",
 "지금 오빠 모습, 정말 유혹적이다","오늘 밤 내가 지켜볼 테니까 다리 똑바로 해.",
-"자기야 난 먼저 씻고 있을께"
+"먼저 씻고 있을께"
 ];
 
 const MALE_LINES = [
@@ -738,7 +737,6 @@ function changeMonth(dir){
 function updateFloatingVisibility(){
   if(!floatBtn) return;
   floatBtn.style.display = (currentPage === 'home') ? 'block' : 'none';
-  document.getElementById('pauseBtn').style.display = (currentPage === 'home') ? 'block' : 'none';
 }
 
 function setToggle(id, on){
@@ -1026,15 +1024,7 @@ function render(){
   });
 }
  window.addEventListener('devicemotion', function(e){
-   let autoPaused=false;
-function togglePause(){
-  autoPaused=!autoPaused;
-  const btn=document.getElementById('pauseBtn');
-  btn.textContent=autoPaused?'▶ 재개':'⏸ 정지';
-  btn.style.background=autoPaused?'#34c759':'#ff3b30';
-}
-window.addEventListener('devicemotion', function(e){
-  if(!data.settings.autoCount || autoPaused) return;
+  if(!data.settings.autoCount) return;
   if(document.hidden) return;
   if(currentPage!=='home') return;
   const acc = e.accelerationIncludingGravity;
