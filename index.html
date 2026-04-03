@@ -1033,6 +1033,8 @@ function togglePause(){
   btn.textContent=autoPaused?'▶ 재개':'⏸ 정지';
   btn.style.background=autoPaused?'#34c759':'#ff3b30';
 }
+window.addEventListener('devicemotion', function(e){
+  if(!data.settings.autoCount || autoPaused) return;
   if(!data.settings.autoCount || autoPaused) return;
   if(document.hidden) return;
   if(currentPage!=='home') return;
