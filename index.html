@@ -737,6 +737,7 @@ function changeMonth(dir){
 function updateFloatingVisibility(){
   if(!floatBtn) return;
   floatBtn.style.display = (currentPage === 'home') ? 'block' : 'none';
+  document.getElementById('pauseBtn').style.display = (currentPage === 'home') ? 'block' : 'none';
 }
 
 function setToggle(id, on){
