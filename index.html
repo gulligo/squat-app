@@ -258,6 +258,11 @@ body{
   <div class="main-btn-row">
     <button id="plus10Btn" class="main-btn plus10">+10</button>
   </div>
+<div class="main-btn-row" style="flex-direction: column; align-items: center;">
+  <button id="plus10Btn" class="main-btn plus10">+10</button>
+  <button id="pauseBtn" class="main-btn" style="background: var(--green); margin-top: 10px; width: 120px; font-size: 16px; padding: 10px;" onclick="togglePause()">
+    ⏸️ 정지
+  </button>
 </div>
 
 <div id="calendar" class="page">
@@ -412,7 +417,19 @@ const BABY_LINES = [
 ];
 
 const data = loadData();
+let isPaused = false;
 
+function togglePause() {
+  isPaused = !isPaused;
+  const btn = document.getElementById('pauseBtn');
+  if (isPaused) {
+    btn.innerHTML = '▶️ 시작';
+    btn.style.background = 'var(--orange)';
+  } else {
+    btn.innerHTML = '⏸️ 정지';
+    btn.style.background = 'var(--green)';
+  }
+}
 let currentPage = 'home';
 let isDragging = false;
 let dragStartX = 0;
@@ -602,6 +619,7 @@ function showNotice(text){
 }
 
 function addSquat(amount=1){
+  if (isPaused) return;
   const day = ymd();
   const before = getCount(day);
   setCount(day, before + amount);
