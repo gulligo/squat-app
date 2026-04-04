@@ -356,10 +356,6 @@ body{
   </div>
 </div>
 
-    </div>
-  </div>
-</div>
-
 <br><br>
 <input type="file" id="restoreFile" style="display:none">
 <button id="floatBtn" class="floating" aria-label="이동 버튼">
@@ -1041,6 +1037,7 @@ function render(){
 }
  window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
+  if(isPaused) return;
   if(document.hidden) return;
   if(currentPage!=='home') return;
   const acc = e.accelerationIncludingGravity;
