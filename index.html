@@ -829,6 +829,9 @@ const mAvg = mDays2 > 0 ? Math.round(mSum/mDays2) : 0;
   const counts = days.map(d=>getCount(ymd(d)));
   const maxCount = Math.max(1,...counts);
   const todayKey = ymd();
+  const maxVal = Math.max(...counts);
+  const maxIdx = counts.indexOf(maxVal);
+  const maxKey = maxVal > 0 ? ymd(days[maxIdx]) : null;
 
   for(let i=0;i<firstDay;i++){
     const empty = document.createElement('div');
@@ -855,6 +858,10 @@ const mAvg = mDays2 > 0 ? Math.round(mSum/mDays2) : 0;
     if(key===todayKey){
       bubble.style.outline = '2px solid #8d4dff';
       bubble.style.outlineOffset = '1px';
+    }
+    if(key===maxKey && maxVal>0){
+      bubble.style.border = '3px solid #ff8a2a';
+      bubble.style.boxSizing = 'border-box';
     }
     if(count===0){
       bubble.style.background = '#f7f3fa';
