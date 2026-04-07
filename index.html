@@ -1073,7 +1073,7 @@ function render(){
   if(auto.stage==='up'){
     if(delta > auto.highDelta) auto.highDelta = delta;
     if(now - auto.upTime > 2500){ auto.stage = 'idle'; return; }
-    if(delta > -0.3 && delta < 1.0 && now - auto.upTime > 150 && now - auto.lastCountTime > 2600){
+    if(delta > -0.3 && delta < 1.0 && now - auto.upTime > 150 && now - auto.lastCountTime > 2800){
       auto.lastCountTime = now;
       auto.stage = 'idle';
       addSquat(1);
