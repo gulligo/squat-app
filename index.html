@@ -1135,12 +1135,6 @@ function getEventLine(){
   return randomFrom(FEMALE_LINES);
 }
 
-function getEventLine(){
-  if(data.settings.voice==='male') return randomFrom(MALE_LINES);
-  if(data.settings.voice==='baby') return randomFrom(MALE_LINES);
-  return randomFrom(FEMALE_LINES);
-}
-
 function speak(text){
   if(data.settings.voice==='mute') return;
   try{
