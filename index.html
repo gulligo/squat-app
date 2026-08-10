@@ -999,9 +999,9 @@ function speak(text){
     const msg = new SpeechSynthesisUtterance(text);
     msg.lang = 'ko-KR';
     if(data.settings.voice==='male' || data.settings.voice==='baby'){
-      msg.pitch = 0.82;
-      msg.rate = 0.78;
-    }else{
+  msg.pitch = 0.6;
+  msg.rate = 0.85;
+}else{
       msg.pitch = 1.05;
       msg.rate = 0.80;
     }
