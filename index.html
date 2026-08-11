@@ -340,7 +340,7 @@ body{
       <div class="voice-row">
         <button class="chip active voice-chip" data-voice="female">여자</button>
         <button class="chip voice-chip" data-voice="male">남자</button>
-        <button class="chip voice-chip" data-voice="baby">아기</button>
+        <button class="chip voice-chip" data-voice="baby">명언</button>
         <button class="chip voice-chip" data-voice="mute">무음</button>
       </div>
       </div>
@@ -1128,10 +1128,9 @@ function randomFrom(arr){
   if(!arr || arr.length===0) return '';
   return arr[Math.floor(Math.random()*arr.length)];
 }
-
 function getEventLine(){
   if(data.settings.voice==='male') return randomFrom(MALE_LINES);
-  if(data.settings.voice==='baby') return randomFrom(FEMALE_LINES);
+  if(data.settings.voice==='baby') return randomFrom(BABY_LINES);
   return randomFrom(FEMALE_LINES);
 }
 
