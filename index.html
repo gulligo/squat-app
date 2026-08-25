@@ -1087,7 +1087,21 @@ document.getElementById('togVibrate').addEventListener('click',()=>{
 
 plus10Btn.addEventListener('click',()=>addSquat(10));
 floatBtn.addEventListener('click',()=>{
-  if(!isDragging && currentPage==='home') addSquat(1);
+  if(longPressFired){ longPressFired = false; return; }
+  if(isDragging) return;
+  if(currentPage!=='home') return;
+
+  const now = Date.now();
+  if(now - lastTapTime < 300){
+    toggleFloatMode();
+    lastTapTime = 0;
+    return;
+  }
+  lastTapTime = now;
+  setTimeout(()=>{
+    if(Date.now() - lastTapTime >= 300) return;
+    addSquat(1);
+  }, 300);
 });
 
 function ymd(d=new Date()){
