@@ -1091,6 +1091,16 @@ document.getElementById('togVibrate').addEventListener('click',()=>{
   render();
 });
 
+const opacitySlider = document.getElementById('opacitySlider');
+const opacityValue = document.getElementById('opacityValue');
+opacitySlider.addEventListener('input', e=>{
+  const val = e.target.value;
+  document.documentElement.style.setProperty('--panel-opacity', val/100);
+  opacityValue.textContent = val + '%';
+  data.settings.panelOpacity = val;
+  saveData();
+});
+
 plus10Btn.addEventListener('click',()=>addSquat(10));
 floatBtn.addEventListener('click',()=>{
   if(!isDragging && currentPage==='home') addSquat(1);
