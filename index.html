@@ -345,6 +345,11 @@ body{
         <button class="chip voice-chip" data-voice="mute">무음</button>
       </div>
       </div>
+    <div class="row" style="display:block">
+      <div>배경 투명도</div>
+      <input type="range" id="opacitySlider" min="0" max="100" value="100" style="width:100%;margin-top:8px;">
+      <div id="opacityValue" style="text-align:center;color:#999;font-size:12px;margin-top:4px;">100%</div>
+    </div>
     <div class="row">
       <button onclick="backupData()" style="border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">기록 백업</button>
       <button onclick="restoreData()" style="border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">기록 복구</button>
