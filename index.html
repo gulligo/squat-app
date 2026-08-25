@@ -1576,6 +1576,8 @@ function render(){
   document.getElementById('todayGoalNow').textContent = today;
   document.getElementById('monthGoalNow').textContent = mTotal;
   document.getElementById('heroCount').textContent = today;
+  const floatCountEl = document.getElementById('floatCount');
+  if(floatCountEl) floatCountEl.textContent = today;
   document.getElementById('currentStreak').textContent = streak.current;
   document.getElementById('bestStreak').textContent = streak.best;
 
