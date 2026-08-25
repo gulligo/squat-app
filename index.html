@@ -159,11 +159,6 @@ body{
   box-shadow:0 8px 24px rgba(0,0,0,.18);overflow:hidden;
 }
 .floating img{width:100%;height:100%;object-fit:cover}
-.floating #floatCount{
-  width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:48px;font-weight:900;color:var(--primary);
-}
 .notice{
   position:fixed;left:50%;bottom:165px;transform:translateX(-50%);
   background:rgba(34,34,34,.92);color:#fff;padding:10px 14px;border-radius:999px;
@@ -359,8 +354,7 @@ body{
 <br><br>
 <input type="file" id="restoreFile" style="display:none">
 <button id="floatBtn" class="floating" aria-label="이동 버튼">
-  <img id="floatIcon" src="icon.png" alt="용용이" />
-  <span id="floatCount" style="display:none;">0</span>
+  <img src="icon.png" alt="용용이" />
 </button>
 <div id="notice" class="notice"></div>
 <script>
@@ -1093,21 +1087,7 @@ document.getElementById('togVibrate').addEventListener('click',()=>{
 
 plus10Btn.addEventListener('click',()=>addSquat(10));
 floatBtn.addEventListener('click',()=>{
-  if(longPressFired){ longPressFired = false; return; }
-  if(isDragging) return;
-  if(currentPage!=='home') return;
-
-  const now = Date.now();
-  if(now - lastTapTime < 300){
-    toggleFloatMode();
-    lastTapTime = 0;
-    return;
-  }
-  lastTapTime = now;
-  setTimeout(()=>{
-    if(Date.now() - lastTapTime >= 300) return;
-    addSquat(1);
-  }, 300);
+  if(!isDragging && currentPage==='home') addSquat(1);
 });
 
 function ymd(d=new Date()){
@@ -1582,8 +1562,6 @@ function render(){
   document.getElementById('todayGoalNow').textContent = today;
   document.getElementById('monthGoalNow').textContent = mTotal;
   document.getElementById('heroCount').textContent = today;
-  const floatCountEl = document.getElementById('floatCount');
-  if(floatCountEl) floatCountEl.textContent = today;
   document.getElementById('currentStreak').textContent = streak.current;
   document.getElementById('bestStreak').textContent = streak.best;
 
@@ -1678,19 +1656,6 @@ document.addEventListener('visibilitychange',()=>{
   if(document.hidden){ auto.base = null; auto.stage = 'idle'; }
 });
 
-let longPressTimer = null;
-let longPressFired = false;
-let lastTapTime = 0;
-let showingNumber = false;
-
-function toggleFloatMode(){
-  showingNumber = !showingNumber;
-  const icon = document.getElementById('floatIcon');
-  const count = document.getElementById('floatCount');
-  if(icon) icon.style.display = showingNumber ? 'none' : 'block';
-  if(count) count.style.display = showingNumber ? 'flex' : 'none';
-}
-
 (function(){
   const btn = floatBtn;
   btn.style.right = '12px';
@@ -1698,20 +1663,12 @@ function toggleFloatMode(){
   btn.addEventListener('touchstart',e=>{
     if(currentPage!=='home') return;
     isDragging = false;
-    longPressFired = false;
     const t = e.touches[0];
     dragStartX = t.clientX;
     dragStartY = t.clientY;
     const rect = btn.getBoundingClientRect();
     btnStartX = rect.left;
     btnStartY = rect.top;
-    clearTimeout(longPressTimer);
-    longPressTimer = setTimeout(()=>{
-      if(!isDragging){
-        longPressFired = true;
-        btn.style.display = 'none';
-      }
-    }, 2000);
   },{passive:true});
   btn.addEventListener('touchmove',e=>{
     if(currentPage!=='home') return;
@@ -1720,7 +1677,6 @@ function toggleFloatMode(){
     const dy = t.clientY - dragStartY;
     if(Math.abs(dx)>8 || Math.abs(dy)>8) isDragging = true;
     if(isDragging){
-      clearTimeout(longPressTimer);
       e.preventDefault();
       btn.style.left = Math.max(0, Math.min(window.innerWidth-150, btnStartX+dx)) + 'px';
       btn.style.top = Math.max(0, Math.min(window.innerHeight-150, btnStartY+dy)) + 'px';
@@ -1729,7 +1685,6 @@ function toggleFloatMode(){
     }
   },{passive:false});
   btn.addEventListener('touchend',()=>{
-    clearTimeout(longPressTimer);
     setTimeout(()=>{ isDragging = false; },30);
   });
 })();
