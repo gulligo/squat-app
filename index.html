@@ -1625,6 +1625,13 @@ function render(){
   document.querySelectorAll('.voice-chip').forEach(chip=>{
     chip.classList.toggle('active', chip.dataset.voice===data.settings.voice);
   });
+
+  const savedOpacity = data.settings.panelOpacity !== undefined ? data.settings.panelOpacity : 100;
+  document.documentElement.style.setProperty('--panel-opacity', savedOpacity/100);
+  const opacitySliderEl = document.getElementById('opacitySlider');
+  const opacityValueEl = document.getElementById('opacityValue');
+  if(opacitySliderEl) opacitySliderEl.value = savedOpacity;
+  if(opacityValueEl) opacityValueEl.textContent = savedOpacity + '%';
 }
  window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
