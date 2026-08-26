@@ -64,7 +64,6 @@ body{
   border-radius:16px;
   padding:4px 8px;
   margin-bottom:2px;
-  opacity: var(--panel-opacity, 1);
 }
 .goal-head{font-size:12px;color:#999;margin-bottom:2px}
 .goal-line{display:flex;align-items:center;gap:8px;margin-bottom:1px}
@@ -345,11 +344,6 @@ body{
         <button class="chip voice-chip" data-voice="mute">무음</button>
       </div>
       </div>
-    <div class="row" style="display:block">
-      <div>배경 투명도</div>
-      <input type="range" id="opacitySlider" min="0" max="100" value="100" style="width:100%;margin-top:8px;">
-      <div id="opacityValue" style="text-align:center;color:#999;font-size:12px;margin-top:4px;">100%</div>
-    </div>
     <div class="row">
       <button onclick="backupData()" style="border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">기록 백업</button>
       <button onclick="restoreData()" style="border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">기록 복구</button>
@@ -1091,16 +1085,6 @@ document.getElementById('togVibrate').addEventListener('click',()=>{
   render();
 });
 
-const opacitySlider = document.getElementById('opacitySlider');
-const opacityValue = document.getElementById('opacityValue');
-opacitySlider.addEventListener('input', e=>{
-  const val = e.target.value;
-  document.documentElement.style.setProperty('--panel-opacity', val/100);
-  opacityValue.textContent = val + '%';
-  data.settings.panelOpacity = val;
-  saveData();
-});
-
 plus10Btn.addEventListener('click',()=>addSquat(10));
 floatBtn.addEventListener('click',()=>{
   if(!isDragging && currentPage==='home') addSquat(1);
@@ -1625,13 +1609,6 @@ function render(){
   document.querySelectorAll('.voice-chip').forEach(chip=>{
     chip.classList.toggle('active', chip.dataset.voice===data.settings.voice);
   });
-
-  const savedOpacity = data.settings.panelOpacity !== undefined ? data.settings.panelOpacity : 100;
-  document.documentElement.style.setProperty('--panel-opacity', savedOpacity/100);
-  const opacitySliderEl = document.getElementById('opacitySlider');
-  const opacityValueEl = document.getElementById('opacityValue');
-  if(opacitySliderEl) opacitySliderEl.value = savedOpacity;
-  if(opacityValueEl) opacityValueEl.textContent = savedOpacity + '%';
 }
  window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
