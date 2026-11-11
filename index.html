@@ -348,6 +348,13 @@ body{
       <button onclick="backupData()" style="border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">기록 백업</button>
       <button onclick="restoreData()" style="border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">기록 복구</button>
     </div>
+    <div class="row" style="display:block">
+      <div>☁️ R2 자동 저장 <span id="cloudDot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#bbb;margin-left:6px;vertical-align:middle"></span></div>
+      <input id="cloudUrl" placeholder="https://yongdata.86400seccc.workers.dev" style="display:block;width:100%;margin-top:8px;padding:10px;font-size:15px;border:1px solid #eadcf6;border-radius:10px">
+      <input id="cloudKey" type="password" placeholder="비밀번호 (APP_KEY)" style="display:block;width:100%;margin-top:6px;padding:10px;font-size:15px;border:1px solid #eadcf6;border-radius:10px">
+      <button onclick="saveCloud()" style="margin-top:8px;border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">연결 저장</button>
+      <div style="font-size:12px;color:#999;margin-top:6px">점: 초록=저장됨 · 노랑=저장 중 · 빨강=실패 · 회색=미설정</div>
+    </div>
   </div>
 </div>
 
@@ -359,6 +366,9 @@ body{
 <div id="notice" class="notice"></div>
 <script>
 const KEY = 'yongyong_squat_final_v5';
+const CLOUD_KEY = 'yongyong_squat_cloud';
+const CLOUD_APP = 'squat';
+let cloud = (()=>{try{return JSON.parse(localStorage.getItem(CLOUD_KEY))||{}}catch(e){return{}}})();
 const EVENT_STEP = 20;
 
 function clone(v){ return JSON.parse(JSON.stringify(v)); }
@@ -1104,24 +1114,72 @@ function setCount(day,count){
   if(data.records[day]===0) delete data.records[day];
 }
 
+function normalizeData(parsed){
+  return {
+    ...clone(defaultData),
+    ...parsed,
+    records:{...defaultData.records,...(parsed.records||{})},
+    settings:{...defaultData.settings,...(parsed.settings||{})}
+  };
+}
+
 function loadData(){
   try{
     const raw = localStorage.getItem(KEY);
     if(!raw) return clone(defaultData);
-    const parsed = JSON.parse(raw);
-    return {
-      ...clone(defaultData),
-      ...parsed,
-      records:{...defaultData.records,...(parsed.records||{})},
-      settings:{...defaultData.settings,...(parsed.settings||{})}
-    };
+    return normalizeData(JSON.parse(raw));
   }catch(e){
     return clone(defaultData);
   }
 }
 
 function saveData(){
+  data.updated = Date.now();
   localStorage.setItem(KEY, JSON.stringify(data));
+  clearTimeout(saveData.t);
+  saveData.t = setTimeout(cloudPush, 700);
+}
+
+/* ---------- R2 자동 저장 ---------- */
+function cloudDot(s){
+  const el = document.getElementById('cloudDot');
+  if(el) el.style.background = s==='ok'?'#19c37d':s==='err'?'#f87171':s==='ing'?'#facc15':'#bbb';
+}
+function cloudUrl(){ return cloud.url.replace(/\/+$/,'') + '/' + CLOUD_APP; }
+async function cloudPush(){
+  if(!cloud.url || !cloud.key) return;
+  cloudDot('ing');
+  try{
+    const r = await fetch(cloudUrl(), {method:'PUT', headers:{'X-Key':cloud.key,'Content-Type':'application/json'}, body:JSON.stringify(data)});
+    cloudDot(r.ok?'ok':'err');
+  }catch(e){ cloudDot('err'); }
+}
+async function cloudPull(){
+  if(!cloud.url || !cloud.key){ cloudDot(''); return; }
+  cloudDot('ing');
+  try{
+    const r = await fetch(cloudUrl(), {headers:{'X-Key':cloud.key}});
+    if(!r.ok) throw 0;
+    const remote = await r.json();
+    const ru = (remote && remote.updated) || 0, lu = data.updated || 0;
+    if(remote && ru > lu){
+      const merged = normalizeData(remote);
+      Object.keys(data).forEach(k=>delete data[k]);
+      Object.assign(data, merged);
+      localStorage.setItem(KEY, JSON.stringify(data));
+      try{ render(); renderCalendar(); renderChart(); }catch(e){}
+      cloudDot('ok');
+    }else if(lu > ru){
+      await cloudPush();
+    }else cloudDot('ok');
+  }catch(e){ cloudDot('err'); }
+}
+function saveCloud(){
+  cloud.url = document.getElementById('cloudUrl').value.trim();
+  cloud.key = document.getElementById('cloudKey').value.trim();
+  localStorage.setItem(CLOUD_KEY, JSON.stringify(cloud));
+  showNotice('연결 저장!');
+  cloudPull();
 }
 
 function randomFrom(arr){
@@ -1693,6 +1751,10 @@ render();
 renderCalendar();
 renderChart();
 updateFloatingVisibility();
+document.getElementById('cloudUrl').value = cloud.url || '';
+document.getElementById('cloudKey').value = cloud.key || '';
+cloudPull();
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') cloudPull(); });
 </script>
 </body>
 </html>
