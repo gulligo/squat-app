@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" /> 
-
+  
 <title>용용이 스쿼트</title>
 <link rel="manifest" href="manifest.json" />
 <link rel="icon" href="icon.png" type="image/png" />
@@ -29,10 +29,16 @@ body{
   color:var(--text);
   overflow-x: hidden;
 }
-.top-tabs{
+.top-wrap{
   position:sticky;
   top:0;
   z-index:50;
+  background:#fff;
+}
+.ex-switch{display:flex;gap:8px;padding:6px 8px 2px}
+.ex-btn{flex:1;border:none;border-radius:12px;padding:9px 0;font-size:16px;font-weight:900;background:#f1ebf8;color:#8b7a99}
+.ex-btn.active{color:#fff;background:linear-gradient(90deg,var(--primary),var(--primary2))}
+.top-tabs{
   display:flex;
   background:#fff;
   border-bottom: none;
@@ -180,18 +186,33 @@ body{
   0%{transform:translateY(0) rotate(0deg);opacity:1}
   100%{transform:translateY(100vh) rotate(720deg);opacity:0}
 }
+body[data-ex="wall"]{--primary:#19c37d;--primary2:#6ee7b7}
+body[data-ex="wall"] .barCol{background:#19c37d}
+.wall-num{font-size:84px}
+.wall-unit{font-size:22px;color:#9f90ab;font-weight:800;margin-left:6px}
+.wall-btn{margin-top:10px;width:70%;max-width:260px}
+.wall-btn.stop{background:linear-gradient(90deg,var(--orange),#ffb061)}
+.wall-save{margin-left:auto;font-size:15px;padding:8px 20px}
+.goal-input:disabled{opacity:.45}
 </style>
 </head>
-<body>
+<body data-ex="squat">
+<div class="top-wrap">
+  <div class="ex-switch">
+    <button class="ex-btn active" data-ex="squat" onclick="switchEx('squat')">스쿼트</button>
+    <button class="ex-btn" data-ex="wall" onclick="switchEx('wall')">벽스쿼트</button>
+  </div>
   <div class="top-tabs">
-  <button class="tab active" data-page="home">스쿼트</button>
+  <button class="tab active" data-page="home">메인</button>
   <button class="tab" data-page="calendar">달력</button>
   <button class="tab" data-page="graph">그래프</button>
   <button class="tab" data-page="settings">설정</button>
 </div>
+</div>
 
 <div id="home" class="page active">
-  <div class="card">
+<div id="homeSquat">
+<div class="card">
     <div class="goal-head">오늘 목표</div>
     <div class="goal-line">
       <div id="todayGoalNow" class="goal-num">0</div>
@@ -254,10 +275,66 @@ body{
     </div>
   </div>
   <div class="main-btn-row" style="flex-direction: column; align-items: center;">
-  <button id="pauseBtn" class="main-btn" style="background: var(--green); width: 120px; font-size: 16px; padding: 10px;" onclick="togglePause()">
+  <button id="plus10Btn" class="main-btn plus10">+10</button>
+  <button id="pauseBtn" class="main-btn" style="background: var(--green); margin-top: 10px; width: 120px; font-size: 16px; padding: 10px;" onclick="togglePause()">
     ⏸️ 정지
   </button>
-  <button id="plus10Btn" class="main-btn plus10" style="margin-top: 10px;">+10</button>
+</div>
+</div>
+
+<div id="homeWall" style="display:none">
+  <div class="card hero">
+    <div class="goal-head">오늘 누적</div>
+    <div><span id="wallNum" class="hero-count wall-num">0</span><span class="wall-unit">초</span></div>
+    <div id="wallSub" class="small" style="min-height:16px;margin-top:6px">시작 버튼을 누르세요</div>
+    <button id="wallBtn" class="main-btn wall-btn" onclick="toggleWall()">▶ 시작</button>
+  </div>
+  <div class="card">
+    <div class="goal-head">오늘 누적 직접 입력</div>
+    <div class="goal-line">
+      <input id="wallInput" class="goal-input" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+      <span>초</span>
+      <button class="main-btn wall-save" onclick="saveWallManual()">저장</button>
+    </div>
+  </div>
+  <div class="row2">
+    <div class="card center">
+      <div class="mini-title">한달 평균</div>
+      <div id="wMonthAvg" class="mini-value purple">0</div>
+    </div>
+    <div class="card center">
+      <div class="mini-title">연 평균</div>
+      <div id="wYearAvg" class="mini-value purple">0</div>
+    </div>
+    <div class="card center">
+      <div class="mini-title">총 평균</div>
+      <div id="wAllAvg" class="mini-value purple">0</div>
+    </div>
+    <div class="card center">
+      <div class="mini-title">일 최대</div>
+      <div id="wDayMax" class="mini-value orange">0</div>
+    </div>
+    <div class="card center">
+      <div class="mini-title">이번 월</div>
+      <div id="wMonthTotal" class="mini-value green">0</div>
+    </div>
+    <div class="card center">
+      <div class="mini-title">전체 누적</div>
+      <div id="wAllTotal" class="mini-value green">0</div>
+    </div>
+  </div>
+  <div class="row2">
+    <div class="card center">
+      <div class="mini-title">현재 연속</div>
+      <div id="wCurrentStreak" class="mini-value orange">0</div>
+      <div class="small">일</div>
+    </div>
+    <div class="card center">
+      <div class="mini-title">최고 연속</div>
+      <div id="wBestStreak" class="mini-value orange">0</div>
+      <div class="small">일</div>
+    </div>
+  </div>
 </div>
 </div>
 <div id="calendar" class="page">
@@ -340,20 +417,13 @@ body{
       <div class="voice-row">
         <button class="chip active voice-chip" data-voice="female">여자</button>
         <button class="chip voice-chip" data-voice="male">남자</button>
-        <button class="chip voice-chip" data-voice="baby">명언</button>
+        <button class="chip voice-chip" data-voice="baby">아기</button>
         <button class="chip voice-chip" data-voice="mute">무음</button>
       </div>
       </div>
     <div class="row">
       <button onclick="backupData()" style="border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">기록 백업</button>
       <button onclick="restoreData()" style="border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">기록 복구</button>
-    </div>
-    <div class="row" style="display:block">
-      <div>☁️ R2 자동 저장 <span id="cloudDot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#bbb;margin-left:6px;vertical-align:middle"></span></div>
-      <input id="cloudUrl" placeholder="https://yongdata.86400seccc.workers.dev" style="display:block;width:100%;margin-top:8px;padding:10px;font-size:15px;border:1px solid #eadcf6;border-radius:10px">
-      <input id="cloudKey" type="password" placeholder="비밀번호 (APP_KEY)" style="display:block;width:100%;margin-top:6px;padding:10px;font-size:15px;border:1px solid #eadcf6;border-radius:10px">
-      <button onclick="saveCloud()" style="margin-top:8px;border:none;background:#f1ebf8;color:#8d4dff;font-weight:800;padding:10px 20px;border-radius:999px;font-size:14px;">연결 저장</button>
-      <div style="font-size:12px;color:#999;margin-top:6px">점: 초록=저장됨 · 노랑=저장 중 · 빨강=실패 · 회색=미설정</div>
     </div>
   </div>
 </div>
@@ -366,9 +436,6 @@ body{
 <div id="notice" class="notice"></div>
 <script>
 const KEY = 'yongyong_squat_final_v5';
-const CLOUD_KEY = 'yongyong_squat_cloud';
-const CLOUD_APP = 'squat';
-let cloud = (()=>{try{return JSON.parse(localStorage.getItem(CLOUD_KEY))||{}}catch(e){return{}}})();
 const EVENT_STEP = 20;
 
 function clone(v){ return JSON.parse(JSON.stringify(v)); }
@@ -392,287 +459,20 @@ const defaultData = {
     vibrate:true,
     voice:'female'
   },
-  graphMode:'day'
+  graphMode:'day',
+  wall:{records:{}},
+  wallGraphMode:'day',
+  currentEx:'squat'
 };
 
 const FEMALE_LINES = [
-"자기야 오늘밤 기대할께", "오빠 더우면 다벗어", "오빠 벌떡 벌떡 일어나", "다리를 벌떡 일으켜 세우란 말이야","오빠, 일어설 때 터질 것처럼 팽팽해지는 거 너무 야해.","힘 풀지 마, 꼿꼿하게 세워야 이따 밤에 제대로 쓰지.",
-  "역시 내 남자는 멋져", "오빠 난 허물 허물 한 다리는 싫어", "어머 아직도 일어날 힘이 남았어?", "내 눈앞에서 그렇게 힘을주면 난 설레어","자기야, 마지막 한 개까지 빳빳하게 세워야 진짜 내 남자지!",
-  "어머 욕심난다 저 다리", "좀 더 깊숙히 내려", "날 가지러면 힘을 더 키워", "난 딱딱한 오빠 다리가 너무좋아","자기야 홍콩가자.","어우, 잠깐 사이에 허벅지 단단해진 것 좀 봐.",
-  "어머! 다리가 너무 딱딱해", "자기야 오늘 너무 무리하는거 아니야", "날 앉고 다리에 힘을 넣어봐", "오빠 다리 힘 빠지면 내가 더 슬퍼","오빠, 틈틈이 하는데도 다리가 이렇게 빳빳하면 어떡해?",
-  "오늘 밤 끝까지 버티면 내가 해줄 게 많아.", "더 세게힘줘 멈추지 말고 끝까지 책임져.", "호흡이 점점 거칠어지네, 나도 그래.", "한 번 더, 이번엔 아주 천천히 느껴봐.","허벅지가 단단하게 솟아오를수록 내 몸도 뜨거워져.",
-  "지금 오빠 모습, 정말 유혹적이다", "오늘 밤 내가 지켜볼 테니까 다리 똑바로 해.","어머, 다리 근육이 쉴 틈 없이 성나 있는 거 장난 아니다.","자기야, 덜덜 떨려도 멈추지 말고 팍 치고 올라와 봐.",
-  "먼저 씻고 있을께", "자기야 조금만 더 참고 견뎌봐", "벌써 지쳐서 쉬는 거야? 침대에선 밤새우자더니.","끝까지 곧고 단단하게 세워야 진짜 수컷이지.","오빠, 그 단단한 힘으로 날 침대에 꽉 누른다고 생각해 봐.",
-  "오빠, 다리 힘 풀려서 주저앉으면 오늘 밤은 국물도 없어.","오빠, 다리 쫙 펴지면서 불끈할 때 그 카타르시스 대박이지?","그렇게 터지기 직전으로 밀어 올리니까 온몸이 짜릿해.","자기야, 허벅지 뿌리 끝까지 힘 한 번 더 빡 줘봐.",
-  "자기야, 날 홍수 나게 만들려면 부지런히 움직여야지.","단단하게 버티고 꼿꼿이 서 있는 게 아주 물건이네.","자기야, 마지막 남은 쾌감까지 싹 쥐어짜서 힘내봐.","오빠, 틈틈이 하면서도 끝까지 일어서는 거 진짜 섹시해.",
-  "겨우 요만큼 해놓고 내 몸을 감당하겠다고 덤빈 거야?","자기야, 망설이지 말고 한 번에 팍 찔러 올려야지.","죽지 말고 빳빳하게 밀어 올려서 당당하게 세워봐.","오빠, 불끈 솟아오르는 거 보니까 나 벌써 젖어 들어.",
-  "더 단단하고 거칠어져야 오늘 밤 제대로 녹여주지.","여기서 힘 빼고 주저앉으면 밤에 국물도 없어.","오빠, 깊숙이 안아줄 때 안 놔주는 거 완전 내 스타일.","조금만 더 밑으로, 완전히 밀착될 때까지 꾹.",
-  "오빠, 고작 몇 백 개 나눠 하면서 벌써 힘 빠져서 헐떡거려?","가쁜 숨 몰아쉬면서도 더 아래로 내려가는 거 야해.","자기야, 내 몸을 통째로 집어삼킬 것처럼 깊게 내려가.","자기야, 그 상태로 깊숙이 파묻혀서 나랑 놀자.",
-  "자기야, 나 오늘 밤 몸이 달아오르게 해놓고 외롭게 할 거야?","시간 날 때마다 허벅지 터지도록 들이받아봐.","오빠, 깊게 내려와서 엉덩이 흔들 때 진짜 미치겠어.","자기야, 잠깐 하는 건데도 아래가 왜 이렇게 뜨겁지?",
-  "내 눈앞에서 그렇게 땀 흘리며 힘자랑하면 나 진짜 미쳐버려.","아무도 모르게 아래에서 끈적하게 조여봐.","거기서 딱 멈춰봐, 살과 살이 완전히 맞물리게.","자기야, 시간 없으니까 더 깊고 진하게 눌러줘.",
-  "오빠, 난 밑에서 끝까지 밀어붙이는 힘 좋은 남자가 제일 좋더라.","잠깐 짬 내서 하는 게 더 스릴 있고 야해.","오빠, 다리 쫙 펴지면서 불끈할 때 그 카타르시스 장난 아니지?","단단하게 버티고 꼿꼿이 서 있는 게 아주 명물이네.",
-  "날 완전히 가지려면 허벅지가 찢어질 때까지 굴러야 해.","자기야, 마지막 남은 쾌감까지 싹 쥐어짜서 올려봐.","오빠, 가쁜 숨 몰아쉬면서도 끝까지 일어서는 거 너무 섹시해.","그렇게 터지기 직전으로 올라오니까 온몸이 떨려.",
-  "자기야, 오늘 밤 침대 스프링 다 박살 내버릴 기세로 해봐.","자기야, 허벅지 뿌리 끝까지 힘 한 번 더 빡 줘.",
-  "오빠, 온몸에 땀 범벅 돼서 힘쓰는 거 진짜 미치도록 야해.",
-  "힘 더 키워와, 밤에는 내가 더 거칠고 사납게 다뤄줄 테니까.",
-  "자기야, 남자는 하체가 살아야 밤에 여자를 울리는 거야.",
-  "아직 멀었어, 멈추지 말고 짐승처럼 계속 움직여봐.",
-  "오빠 다리가 단단하게 조여올수록 난 더 미치고 환장해.",
-  "겨우 요만큼 찔러보고 만족해서 끝내려는 건 아니지?",
-  "오늘 밤 나한테 제대로 박아 넣으려면 허벅지 찌를 듯이 키워.",
-  "자기야, 당장 눈앞에서 옷 다 찢어발기고 싶게 만들어봐.",
-  "오빠, 오늘 밤 내 밑에서 코피 터질 준비 단단히 하는 게 좋을 거야.",
-  "더 야하게, 깊숙이 내려가 봐.",
-  "오빠, 내 몸 안으로 가장 깊게 들어오는 느낌으로.",
-  "자기야, 아래가 젖을 때까지 더 꾹 눌러.",
-  "거기서 멈추지 마, 살이 맞닿을 때까지 더 밑으로.",
-  "오빠, 끝까지 파고들어야 진짜 짜릿하지.",
-  "더 끈적하게, 아래에서 완전히 엉겨 붙어봐.",
-  "자기야, 깊게 내려갈수록 아래가 너무 뜨거워.",
-  "거기 아래 깊은 곳에서 끈적하게 비벼줘.",
-  "오빠, 엉덩이 낮추고 깊숙이 들이밀 때 쳐다보는 거 너무 야해.",
-  "허벅지가 터져 나가도 좋으니까 더 깊게 파묻어봐.",
-  "자기야, 그 상태로 깊숙이 들어와서 날 완전히 가져봐.",
-  "조금만 더, 완전히 끝까지 닿을 때까지 조여봐.",
-  "오빠, 허리 단단하게 잡고 깊게 쑥 밀어 넣어.",
-  "거기 밑에 완전히 갇힌 느낌, 미치겠지?",
-  "자기야, 내 몸이 부서질 것처럼 깊숙하게 눌러줘.",
-  "숨이 턱 막히고 땀이 흘러도 더 아래로 내려가.",
-  "오빠, 깊은 곳에서 꽉 움켜쥐고 안 놔주는 기분 어때?",
-  "자기야, 부끄러워하지 말고 더 깊숙이 묻어버려.",
-  "거기서 주저앉으면 오늘 밤은 피눈물 흘리는 거야.",
-  "오빠, 밑바닥까지 전부 헤집어놓는다는 생각으로 끝까지 가.",
-  "그렇게 불끈 솟아오르는 거 보니까 나 벌써 흥분돼.",
-  "오빠, 죽지 말고 빳빳하게 밀어 올려서 세워봐.",
-  "자기야, 망설이지 말고 한 번에 팍 찔러 올려.",
-  "어우, 허벅지 핏줄 선 거 만지면 터질 것 같아.",
-  "힘 풀지 마, 꼿꼿하게 세워야 오늘 밤 일을 치르지.",
-  "오빠, 일어설 때 터질 것 같은 그 부위 진짜 야해.",
-  "자기야, 마지막 한 칸까지 빳빳하게 세워야 진짜 남자지!",
-  "그렇게 단단하게 힘 꽉 주면 내가 당장 덮치고 싶잖아.",
-  "오빠, 흐물거리면서 고개 숙이는 다리는 딱 질색이야.",
-  "허벅지가 단단하게 솟아오를수록 내 몸도 반응해.",
-  "자기야, 덜덜 떨려도 멈추지 말고 팍 치고 올라와.",
-  "어머, 다리 근육이 미친 듯이 성나 있는 것 봐.",
-  "오빠, 그 단단한 힘으로 날 꽉 누르면서 이겨내 봐.",
-  "끝까지 곧고 단단하게 세워야 내 남자지.",
-  "더 야하게 내려가 봐, 오빠.",
-  "완전히 밀착될 때까지 꾹 눌러.",
-  "자기야, 아래를 더 묵직하게 조여봐.",
-  "거기서 멈추면 안 돼, 조금만 더 밑으로.",
-  "오빠, 끝까지 파고드는 느낌으로.",
-  "더 끈적하고 깊숙하게 주저앉아봐.",
-  "자기야, 밑바닥이 아주 짜릿해.",
-  "오빠, 엉덩이 낮출 때가 제일 야해.",
-  "허벅지 찢어질 때까지 들이받아봐.",
-  "자기야, 깊숙이 들어와서 날 안아줘.",
-  "조금만 더 아래로, 완전히 닿게.",
-  "오빠, 허리 꼿꼿이 세우고 깊게 쑥.",
-  "거기 밑에, 너무 뜨거워서 미치겠지?",
-  "자기야, 부서질 것처럼 깊게 눌러줘.",
-  "숨이 턱 막힐 때까지 더 내려가 봐.",
-  "오빠, 아래에서 꽉 움켜쥐는 기분 어때?",
-  "자기야, 더 깊숙이 묻어버려야지.",
-  "거기서 힘 풀면 오늘 밤 국물도 없어.",
-  "오빠, 밑에 뭐가 들었는지 끝까지 가봐.",
-  "그렇게 불끈 솟아올라야 진짜 남자지.",
-  "오빠, 죽지 말고 빳빳하게 밀어 올려.",
-  "자기야, 주저하지 말고 한 번에 팍!",
-  "어우, 허벅지 단단해진 거 만져보고 싶다.",
-  "힘 빼지 마, 끝까지 빳빳하게 서 봐.",
-  "오빠, 일어날 때 허벅지 핏줄 진짜 섹시해.",
-  "자기야, 마지막 한 칸까지 세워야지!",
-  "그렇게 힘 꽉 주면 내가 덮치고 싶잖아.",
-  "오빠, 흐물거리는 다리는 딱 질색이야.",
-  "허벅지가 딴딴해질수록 나도 흥분돼.",
-  "자기야, 망설이지 말고 팍 치고 올라와.",
-  "어머, 다리 근육 터질 것 같은 거 봐.",
-  "오빠, 힘으로 꽉 누르면서 이겨내 봐.",
-  "끝까지 곧게 세워야 내 남자지.",
-  "자기야, 허벅지에 힘 한 번 더 빡 줘.",
-  "그렇게 덜덜 떨려도 끝까지 세워.",
-  "자기야, 마지막 한 칸까지 팍 올려.",
-  "단단하게 버티는 게 아주 예술이네.",
-  "오빠, 다리 펴질 때 쾌감 장난 아니지?",
-  "벌써 헉헉대? 오늘 밤 기대하고 있는데.",
-  "오빠, 다리 힘 빠지면 오늘 밤 침대 금지야.",
-  "자기야, 날 만족시키려면 한참 멀었어.",
-  "겨우 이 정도 힘으로 날 감당하겠다고?",
-  "더 단단해져야 오늘 밤 제대로 모시지.",
-  "오빠, 겨우 몇 개 하고 벌써 지친 거야?",
-  "자기야, 나 오늘 밤 외롭게 만들래?",
-  "내 눈앞에서 그렇게 힘자랑하면 나 미쳐.",
-  "오빠, 난 밑에 힘 좋은 남자가 제일 좋더라.",
-  "날 가지려면 다리가 완전히 찢어져야 해.",
-  "자기야, 오늘 밤 침대 다 박살 내버리자.",
-  "오빠, 땀 뻘뻘 흘리면서 힘쓰는 거 진짜 야해.",
-  "힘 더 키워와, 다음엔 더 거칠게 다뤄줄게.",
-  "자기야, 허벅지가 살아야 밤이 뜨거운 거야.",
-  "아직 안 끝났어, 멈추지 말고 움직여봐.",
-  "오빠 다리가 단단할수록 난 더 환장해.",
-  "겨우 요만큼 찔러보고 끝내려는 건 아니지?",
-  "오늘 밤에 제대로 밀어붙이려면 허벅지 더 키워.",
-  "자기야, 당장 옷 다 벗겨버리고 싶게 만들어봐.",
-  "오빠, 오늘 밤 단단히 각오하는 게 좋을 거야.",
-  "더 묵직하게 파고들어 봐, 오빠.",
-  "완전히 가라앉아봐, 깊숙하게.",
-  "자기야, 아래가 꽉 끼는 느낌으로.",
-  "거기서 멈추지 말고 더 꾹 눌러.",
-  "오빠, 끝까지 밀어 넣어야지.",
-  "더 부드럽고 깊게 쪼아봐.",
-  "자기야, 아래가 터질 것 같아.",
-  "오빠, 깊숙이 들어올 때가 제일 야해.",
-  "허벅지 터질 때까지 내려가는 거야.",
-  "자기야, 밑에서 날 꽉 잡아줘.",
-  "조금만 더 깊게 닿아볼까?",
-  "오빠, 엉덩이 뒤로 더 빼고 깊숙이.",
-  "거기 아래, 너무 뜨겁지 않아?",
-  "자기야, 더 깊이 들이받아봐.",
-  "숨 막힐 때까지 끝까지 내려가.",
-  "오빠, 아래에서 꽉 조여주는 느낌 어때?",
-  "자기야, 더 깊숙이 묻어버려.",
-  "거기서 힘 빼면 바로 무너지는 거야.",
-  "오빠, 밑바닥 구경 좀 더 하고 와.",
-  "그렇게 단단하게 치고 올라와야지.",
-  "오빠, 죽지 말고 빳빳하게 서 봐.",
-  "자기야, 한 번에 확 밀어 올려.",
-  "어우, 허벅지 단단해진 것 봐, 미치겠다.",
-  "힘 풀지 마, 꼿꼿하게 세워지.",
-  "오빠, 벌떡 일어날 때 핏줄 너무 야해.",
-  "자기야, 끝까지 밀어붙여, 세워 봐!",
-  "그렇게 힘주면 내가 덮치고 싶잖아.",
-  "오빠, 흐물거리는 건 딱 질색이야.",
-  "다리가 단단해질수록 내 심장도 뛰어.",
-  "자기야, 버티지 말고 팍 솟아올라 봐.",
-  "어머, 다리에 힘 들어간 거 장난 아니다.",
-  "오빠, 주저앉지 말고 힘으로 이겨내.",
-  "끝까지 세워야 진짜 내 남자지.",
-  "자기야, 한 번 더 힘 빡 줘봐.",
-  "그렇게 불끈불끈 올라오면 나 어떡해?",
-  "자기야, 마지막 기운까지 싹 쥐어짜 봐.",
-  "단단하게 버티고 서 있는 게 아주 물건이네.",
-  "벌써 지친 거야? 오늘 밤 기대했는데.",
-  "오빠, 다리 힘 빠지면 침대 금지야.",
-  "자기야, 날 만족시키려면 멀었어.",
-  "이 정도 힘으로 날 감당할 수 있겠어?",
-  "더 단단해져야 오늘 밤 밤새우지.",
-  "오빠, 겨우 그거 하고 헉헉대?",
-  "자기야, 나 굶기려고 작정했어?",
-  "내 앞에서 그렇게 힘자랑하면 나 흥분해.",
-  "오빠, 난 힘센 남자가 좋더라.",
-  "날 가지려면 허벅지가 찢어져야 해.",
-  "자기야, 오늘 밤 침대 다 부숴버리자.",
-  "오빠, 땀 흘리면서 힘쓰는 거 진짜 섹시해.",
-  "힘 더 키워와, 다음엔 더 거칠게 해줘.",
-  "자기야, 허벅지가 살아야 밤이 살아.",
-  "아직 안 끝났어, 더 힘차게 움직여봐.",
-  "오빠 다리가 딴딴할수록 난 더 짜릿해.",
-  "겨우 요만큼만 보여주고 끝내려고?",
-  "오늘 밤에 제대로 밀어붙이려면 더 해.",
-  "자기야, 내 앞에서 당장 옷 다 벗고 싶게 만들어봐.",
-  "오빠, 오늘 밤 코피 터질 준비 해.",
-  "더 깊숙이 들어와 봐, 오빠.",
-  "밑에서 끝까지 버텨야 해.",
-  "더 바짝 앉아봐, 닿을 때까지.",
-  "자기야, 아래가 너무 뜨거워.",
-  "깊게 내려갈수록 난 더 좋아.",
-  "거기서 멈추지 말고 더 깊게.",
-  "오빠, 아래를 꽉 채워봐.",
-  "더 깊이 느껴봐, 터질 때까지.",
-  "자기야, 주저앉지만 말고 끝까지 내려와.",
-  "아래에서 힘 풀리면 반칙이야.",
-  "더 끈적하게 내려가 봐.",
-  "오빠, 밑에 뭐가 있다고 생각해?",
-  "깊숙이 박히는 느낌이 너무 좋아.",
-  "거기서 조금만 더 깊게, 자기야.",
-  "더 깊이 쪼아봐, 제대로.",
-  "오빠, 다리 벌어지면 안 돼, 꽉 조여.",
-  "밑바닥까지 닿는 느낌, 어때?",
-  "자기야, 더 깊숙이 내려오면 상 줄게.",
-  "거기서 3초만 딱 버텨봐.",
-  "오빠, 더 깊게 찔러 넣어봐.",
-  "오빠, 벌떡 세우니까 너무 섹시해.",
-  "터지기 직전인 게 딱 내 스타일이야.",
-  "힘 풀리지 마, 꼿꼿하게 세워.",
-  "자기야, 죽지 말고 벌떡 일어나야지.",
-  "어머, 단단하게 솟아오르네.",
-  "힘 꽉 주는 모습에 나 미치겠어.",
-  "오빠, 빳빳하게 서야 진짜 남자야.",
-  "그렇게 세우면 내가 가만히 못 있어.",
-  "다리가 덜덜 떨리는 게 너무 짜릿해.",
-  "자기야, 멈추지 말고 팍 밀어 올려.",
-  "끝까지 세워야 오늘 밤이 길어져.",
-  "어우, 핏줄 선 것 좀 봐.",
-  "오빠, 흐물거리지 말고 팍 세워봐.",
-  "내 눈앞에서 그렇게 빳빳해지면 어떡해?",
-  "자기야, 벌떡 일어설 때가 제일 멋져.",
-  "힘 꽉 들어간 게 손으로 다 느껴져.",
-  "오빠, 주저앉지 말고 끝까지 밀어붙여.",
-  "거의 다 올라왔어, 힘 확 줘!",
-  "빳빳하게 버티는 게 아주 물건이네.",
-  "자기야, 한 번에 팍 치고 올라와.",
-  "오늘 밤 나 감당할 수 있겠어?",
-  "벌써 지친 거야? 밤엔 어쩌려고.",
-  "오빠, 힘 빠지면 나 딴 데 간다?",
-  "이 정도 힘으론 날 못 가져, 자기야.",
-  "더 단단해져야 오늘 밤이 뜨겁지.",
-  "겨우 이거 하고 뻗으면 나 실망해.",
-  "자기야, 오늘 밤 침대 무너뜨려야지.",
-  "내 앞에서 그렇게 힘자랑하면... 흐음.",
-  "오빠, 난 물렁한 남자는 취급 안 해.",
-  "날 안으려면 허벅지가 터져야지.",
-  "자기야, 힘내는 모습 보니까 침 흘러.",
-  "오늘 밤 끝까지 가면 내가 다 해줄게.",
-  "오빠, 땀 흘리면서 힘쓰는 거 너무 야해.",
-  "더 험하게 다뤄줘도 되는데, 힘 키워와.",
-  "자기야, 밤새려면 다리 힘이 제일 중요해.",
-  "아직 멀었어, 나 굶기지 마.",
-  "오빠 다리가 단단할수록 난 더 흥분돼.",
-  "겨우 요만큼 하고 만족하는 거야?",
-  "오늘 밤에 제대로 눕혀주려면 더 해.",
-  "자기야, 내 앞에서 옷 다 벗겨버리기 전에 힘써.",
-  "어머, 힘 들어간 것 봐. 터지겠네.",
-  "오빠, 주저앉지 말고 끝까지 버텨.",
-  "겨우 이 정도로 지치는 거야?",
-  "난 부드러운 것보다 빳빳한 게 좋아.",
-  "자기야, 밑에서 더 깊게 느껴봐.",
-  "힘 풀리면 오늘 밤은 없는 줄 알아.",
-  "오빠, 단단해질 때까지 계속 내려가.",
-  "그렇게 세우니까 더 멋지네.",
-  "힘주는 모습 보니까 나까지 떨려.",
-  "내 앞에서 그렇게 버티면 어떡해?",
-  "오빠, 끝까지 세워야 진짜 남자지.",
-  "자기야, 더 깊숙이 내려와서 버텨줘.",
-  "야, 그 정도 힘으로 되겠어? 더 세게!",
-"벌써 지친 거야? 시작도 안 했잖아!",
-"다리 후들거리는 거 다 보여, 더 버텨!",
-"그렇게 약해 빠져서 어디 쓰겠어!",
-"숨 가쁜 거 보니까 제대로 하고 있네, 좋아!",
-"한 개만 더, 딱 한 개만 더 해봐!",
-"포기하면 그게 바로 패배자야!",
-"오늘 안 하면 내일 더 힘들어진다?",
-"근육이 비명 지를 때까지 가는 거야!",
-"네가 진짜 독한 사람인지 보여줘!",
-"다리 떨려도 절대 멈추지 마!",
-"지금 이 악물고 버티는 거 멋있다!",
-"땀 뻘뻘 흘리는 거 보니까 제대로네!",
-"중간에 그만두면 평생 후회한다!",
-"힘들면 힘든 만큼 강해지는 거야!",
-"아직 한참 남았어, 정신 차려!",
-"네 한계는 네가 정하는 거 아니야!",
-"이 악물고 한 번만 더 가봐!",
-"멈추는 순간 모든 게 끝나는 거야!",
-"끝까지 가야 진짜 운동한 거지!",
-"자, 마지막 스퍼트! 전부 쏟아부어!",
-"숨이 턱까지 차도 한 발 더!",
-"오늘 흘린 땀이 내일을 만든다!",
-"근성 있는 사람만 끝까지 간다!",
-"힘들다고 멈추면 거기서 끝이야!",
-"버텨, 버텨, 조금만 더 버텨!",
-"지금 포기하면 처음부터 다시야!",
-"악으로 깡으로 버텨내!",
-"다리 풀리지 마, 끝까지 박아!",
-"오늘 너 진짜 멋지다, 계속 가자!"
+"자기야 오늘밤 기대할께","오빠 더우면 다벗어","오빠 벌떡 벌떡 일어나","다리를 벌떡 일으켜 세우란 말이야",
+"역시 내 남자는 멋져","오빠 난 허물 허물 한 다리는 싫어","어머 아직도 일어날 힘이 남았어?","내 눈앞에서 그렇게 힘을주면 난 설레어",
+"어머 욕심난다 저 다리","좀 더 깊숙히 내려","날 가지러면 힘을 더 키워","난 딱딱한 오빠 다리가 너무좋아",
+"어머! 다리가 너무 딱딱해","자기야 오늘 너무 무리하는거 아니야","날 앉고 다리에 힘을 넣어봐","오빠 다리 힘 빠지면 내가 더 슬퍼",
+"오늘 밤 끝까지 버티면 내가 해줄 게 많아.","더 세게힘줘 멈추지 말고 끝까지 책임져.","호흡이 점점 거칠어지네, 나도 그래.","한 번 더, 이번엔 아주 천천히 느껴봐.",
+"지금 오빠 모습, 정말 유혹적이다","오늘 밤 내가 지켜볼 테니까 다리 똑바로 해.",
+"먼저 씻고 있을께"
 ];
 
 const MALE_LINES = [
@@ -683,316 +483,12 @@ const MALE_LINES = [
 ];
 
 const BABY_LINES = [
-  "오늘의 땀방울이 내일의 웃음이 된다.",
-"견뎌낸 이 순간이 가족의 평화로 돌아온다.",
-"쓰라린 고통을 넘어서야 단단해진다.",
-"육체의 비명이 깊어질수록 마음은 맑아진다.",
-"나를 넘어서는 순간이 가장 눈부시다.",
-"몸이 겪는 시련은 성장의 신호다.",
-"멈추지 않는 걸음이 내일을 바꾼다.",
-"쉬면 녹슬고 뛰면 빛난다.",
-"한 개 더 할 때 진짜 근육이 생긴다.",
-"포기하고 싶을 때가 진짜 시작이다.",
-"오늘 흘린 땀은 거짓말을 하지 않는다.",
-"주저앉지 마라, 목표가 바로 앞이다.",
-"변명은 버리고 무게를 들어라.",
-"나약함은 몸 밖으로 빠져나가는 중이다.",
-"지옥을 지나는 중이라면 계속 걸어라.",
-"몸이 바뀌면 인생이 바뀐다.",
-"내일의 너에게 부끄럽지 않게 해라.",
-"고통은 순간이고 영광은 영원하다.",
-"움직이지 않으면 아무것도 변하지 않는다.",
-"한계를 느껴야 한계를 넘는다.",
-"땀은 몸이 흘리는 눈물이다.",
-"오늘의 한 계단이 내일의 정상이다.",
-"지금 멈추면 지금까지 한 게 아깝다.",
-"너의 유일한 상대는 어제의 너다.",
-"힘들수록 몸은 단단해진다.",
-"쉬운 길은 차라리 가지 마라.",
-"오늘 참아낸 무게만큼 내일의 삶이 가벼워진다.",
-"쉬고 싶다는 생각이 들 때가 바로 성장하는 순간이다.",
-"스스로에게 타협하는 순간 발전은 거기서 끝난다.",
-"오늘 흘린 땀 한 방울이 내일의 자신감이 된다.",
-"지금 내려놓으면 내일 다시 처음부터 시작해야 한다.",
-"몸을 만드는 것은 타고난 타고남이 아니라 꾸준함이다.",
-"힘들어서 멈추는 것이 아니라 멈춰서 힘든 것이다.",
-"어제와 똑같이 살면서 다른 내일을 바라면 안 된다.",
-"고통을 피하지 않고 정면으로 맞설 때 진짜 변화가 온다.",
-"가장 무거운 것은 덤벨이 아니라 운동하러 가는 발걸음이다.",
-"몸이 힘들다고 비명을 지를 때 비로소 성장하고 있는 것이다.",
-"오늘 남긴 마지막 힘까지 쥐어짜야 진짜 내 것이 된다.",
-"아무것도 하지 않으면 아무 일도 일어나지 않는다.",
-"스스로를 극복하는 과정 자체가 이미 엄청난 승리다.",
-"땀 흘리는 오늘이 모여 눈부신 내일을 만든다.",
-"시작하는 용기보다 끝까지 해내는 집념이 더 단단하다.",
-"지금의 고비를 넘기면 상상했던 멋진 모습이 기다린다.",
-"포기하고 싶은 마음을 누르는 것부터가 운동의 시작이다.",
-"힘든 순간을 버텨낼 때 몸과 마음이 함께 단단해진다.",
-"더 이상 못 하겠다고 느낄 때가 딱 한 개 더 할 때다.",
-"오늘 피한 무게는 내일 더 큰 부담으로 돌아온다.",
-"자신을 극복한 사람만이 세상의 무게를 견딜 수 있다.",
-"매일 쌓아가는 작은 노력이 거대한 변화를 만든다.",
-"힘겨운 마지막 한 번이 진짜 성장을 결정짓는다.",
-"몸을 바꾸는 것은 정신력이고 정신을 바꾸는 것은 실행이다.",
-"버텨낸 시간은 절대로 너를 배신하지 않는다.",
-"오늘 정성을 다한 만큼 내일의 몸이 응답한다.",
-"시작할 때의 마음을 잊지 말고 끝까지 밀어붙여라.",
-"스스로 설정한 한계는 그저 마음에 있는 환상일 뿐이다.",
-"몸이 편한 순간 성장은 멈추고 거품처럼 사라진다.",
-"힘들다고 느껴질 때가 바로 목표에 가까워졌다는 뜻이다.",
-"오늘 흘린 땀방울이 모여 누구도 흔들 수 없는 나를 만든다.",
-"결과를 바꾼 것은 말뿐인 다짐이 아니라 굳은 실행이다.",
-"남들과 비교하지 말고 오직 어제의 자신과 겨뤄라.",
-"고통을 견뎌낸 자리마다 깊은 자신감이 채워진다.",
-"쉬운 길을 택하는 순간 발전의 문은 닫히고 만다.",
-"오늘의 한계를 돌파해야 내일의 새로운 높이가 열린다.",
-"몸이 겪는 모든 시련은 더 강해지기 위한 과정이다.",
-"주저앉고 싶을 때 한 걸음 더 나아가는 것이 진짜 실력이다.",
-"스스로를 바꾸는 가장 확실한 방법은 지금 움직이는 것이다.",
-"거친 숨소리가 잦아들면 한 단계 성장한 자신이 남는다.",
-"두려움을 이겨내고 들어올린 무게만큼 마음도 단단해진다.",
-"쉬운 타협은 순간의 편안함을 주지만 결코 변화를 주지 않는다.",
-"오늘 흘린 성실한 땀방울이 미래의 내 모습을 결정짓는다.",
-"바꾸고 싶은 것이 있다면 말없이 몸부터 움직여라.",
-"남들보다 늦게 가더라도 멈추지만 않는다면 반드시 도달한다.",
-"힘겨운 오늘을 버텨낸 사람만이 내일의 영광을 누린다.",
-"내 육체가 한계라 소리칠 때 진짜 변화의 문이 열린다.",
-"작은 실천이 꾸준히 쌓일 때 거대한 기적이 완성된다.",
-"고통은 머물다 사라지지만 거둬들인 결과는 영원히 남는다.",
-"마지막 순간까지 최선을 다하는 집념이 당신을 특별하게 만든다.",
-"운동을 통해 다져진 의지력은 모든 삶의 시련을 이겨낸다.",
-"시작하지 않으면 아무것도 변하지 않고 멈추면 모든 것이 사라진다.",
-"어제 흘린 땀은 결코 거짓말을 하지 않고 오늘 나를 증명한다.",
-"스스로에게 부끄럽지 않은 하루를 보낸 사람이 진정한 승리자다.",
-"몸을 다스리는 법을 배우는 것이 삶을 다스리는 첫걸음이다.",
-"힘든 순간에 던지는 한 걸음이 위대한 반전을 만들어낸다.",
-"망설이는 순간에도 시간은 흐르고 기회는 멀어진다.",
-"내 몸이 느끼는 정직한 고통이야말로 가장 확실한 성장의 증거다.",
-"오늘의 포기는 내일의 후회가 되고 오늘의 도전은 내일의 자랑이 된다.",
-"오늘 참아낸 무게가 내일의 자신감이 된다.",
-"쉬고 싶은 순간이 진짜 성장하는 시간이다.",
-"가장 무거운 것은 운동하러 가는 발걸음이다.",
-"버텨낸 고통은 사라져도 성장은 영원히 남는다.",
-"힘들어서 멈추는 게 아니라 멈춰서 힘든 것이다.",
-"어제 흘린 땀방울이 오늘 나를 증명한다.",
-"스스로 만든 한계는 마음에 있는 환상이다.",
-"몸이 편해지는 순간 성장은 멈춘다.",
-"포기하고 싶을 때가 딱 한 개 더 할 때다.",
-"망설이는 시간에 덤벨을 한 번 더 들어라.",
-"땀은 몸이 흘리는 가장 정직한 눈물이다.",
-"오늘 피한 무게는 내일의 부담이 된다.",
-"시작하는 용기보다 끝까지 버티는 집념이다.",
-"고통을 정면으로 맞설 때 진짜 변화가 온다.",
-"주저앉고 싶을 때 한 걸음 더 나아가라.",
-"작은 꾸준함이 모여 거대한 변화를 만든다.",
-"내 몸이 느끼는 통증은 강해진다는 신호다.",
-"말뿐인 다짐보다 정직한 실천이 답이다.",
-"힘겨운 오늘을 버텨야 멋진 내일이 온다.",
-"남과 비교하지 말고 어제의 나와 겨뤄라.",
-"땀방울이 모여 누구도 흔들 수 없는 나를 만든다.",
-"오늘의 한계를 돌파해야 내일의 높이가 달라진다.",
-"쉬운 길을 택하는 순간 성장의 문은 닫힌다.",
-"결과를 바꾸는 것은 말이 아닌 정직한 실행이다.",
-"몸이 겪는 시련은 더 강해지기 위한 통과의례다.",
-"버텨낸 시간은 절대로 당신을 배신하지 않는다.",
-"오늘의 포기는 내일의 후회가 되어 돌아온다.",
-"몸을 바꾸는 것은 정신력이고 실행이 답이다.",
-"마지막 쥐어짜는 힘이 진짜 내 근육이 된다.",
-"스스로를 극복하는 과정 자체가 이미 승리다.",
-"주저앉지 마라, 목표는 생각보다 가까이 있다.",
-"거친 숨소리가 그치면 더 단단해진 나만 남는다.",
-"두려움을 들어올린 만큼 마음의 힘도 자란다.",
-"움직이지 않는 몸에는 어떤 기적도 일어나지 않는다.",
-"힘든 순간을 견뎌낼 때 진짜 변화가 시작된다.",
-"오늘 남긴 마지막 힘까지 쏟아부어라.",
-"시작했으면 끝을 보고 멈췄으면 다시 서라.",
-"스스로에게 부끄럽지 않은 오늘을 만들어라.",
-"고통을 즐기는 사람만이 정상에 선다.",
-"오늘 흘린 정직한 땀이 내일의 영광이 된다.",
-"오늘 참은 무게가 내일의 힘이 된다.",
-"쉬고 싶은 순간이 진짜 변화의 시작이다.",
-"버텨낸 통증은 사라져도 근육은 남는다.",
-"포기하고 싶을 때가 딱 한 개 더 할 때다.",
-"어제의 자신을 뛰어넘는 것에만 집중해라.",
-"몸이 겪는 시련은 강해진다는 증거다.",
-"망설일 시간에 스쿼트 한 번 더 해라.",
-"지옥 같은 고비를 넘겨야 정상에 선다.",
-"흘린 땀의 양이 당신의 가치를 결정한다.",
-"오늘 피한 무게는 내일의 짐이 된다.",
-"작은 꾸준함이 모여 기적을 만든다.",
-"말뿐인 다짐보다 정직한 행동이 답이다.",
-"스스로 만든 한계를 오늘 깨부숴라.",
-"마지막 하나를 쥐어짜야 진짜 내 거다.",
-"주저앉고 싶을 때 한 걸음 더 나아가라.",
-"쉬운 길만 찾으면 성장은 절대 없다.",
-"고통을 이겨낸 자리에 자신감이 채워진다.",
-"오늘 흘린 땀은 절대로 거짓말하지 않는다.",
-"시작했으면 끝을 보고 버텨내라.",
-"몸을 다스려야 인생도 다스릴 수 있다.",
-"거친 숨소리만큼 단단한 나를 만든다.",
-"오늘의 노력이 내일의 나를 증명한다.",
-"두려움을 털어내고 무게를 들어 올려라.",
-"버텨낸 시간은 당신을 배신하지 않는다.",
-"한 걸음의 차이가 승패를 가른다.",
-"멈추지 않는 한 늦은 것은 없다.",
-"몸이 편해지면 변화도 거기서 멈춘다.",
-"나를 이기는 것이 가장 위대한 승리다.",
-"오늘의 한계를 넘어야 내일이 열린다.",
-"힘든 오늘이 모여 눈부신 내일이 된다.",
-"오늘의 방황은 내일의 지도표가 된다.",
-"쉬운 선택은 삶을 어렵게 만들고 어렵게 내린 선택은 삶을 쉽게 만든다.",
-"남과 비교하지 말고 어제의 나와 비교해라.",
-"가장 큰 위험은 아무런 위험도 감수하지 않는 것이다.",
-"포기하지만 않으면 실패는 단지 과정일 뿐이다.",
-"말이 아닌 행동이 그 사람의 진짜 모습이다.",
-"시작하는 방법은 말을 멈추고 행동하는 것이다.",
-"흔들리지 않고 피는 꽃은 어디에도 없다.",
-"오늘 걸어간 길은 내일의 이정표가 된다.",
-"내일의 모습은 오늘 무엇을 하느냐에 달렸다.",
-"바꿀 수 없는 것에 집착하지 말고 바꿀 수 있는 것에 집중해라.",
-"시련은 너를 꺾으려는 게 아니라 단단하게 만들려는 것이다.",
-"마음먹은 순간 이미 절반은 이루어진 것이다.",
-"꾸준함은 그 어떤 천재성도 이겨낸다.",
-"상처는 흉터가 되고 흉터는 너의 훈장이 된다.",
-"남들의 시선에 너의 인생을 맞추지 마라.",
-"지나간 일에 눈물 흘리지 말고 다가올 일에 웃어라.",
-"작은 실천이 모여 위대한 운명을 만든다.",
-"용기란 두려움이 없는 것이 아니라 두려움을 이겨내는 것이다.",
-"스스로를 믿는 것부터 모든 기적이 시작된다.",
-"어둠이 깊어질수록 새벽은 가까워진다.",
-"남의 속도가 아닌 나의 방향에 집중해라.",
-"시작이 반이라면 지속은 전체다.",
-"인생은 속도가 아니라 방향이다.",
-"오늘의 선택이 내일의 운명을 만든다.",
-"실패는 단지 다시 시작할 수 있는 기회일 뿐이다.",
-"스스로를 향한 확신이 가장 강한 무기다.",
-"바람이 불지 않을 때 노를 저어라.",
-"역경을 피하지 마라, 신념을 키워줄 기회다.",
-"가장 어두운 밤도 언젠가는 끝나고 해가 뜬다.",
-"말은 적게 하고 결과로 증명해라.",
-"넘어진 자리가 바로 다시 일어설 자리다.",
-"변화를 원한다면 편안함을 버려라.",
-"오늘 뿌린 씨앗이 내일의 숲을 이룬다.",
-"기회는 준비된 자에게만 찾아온다.",
-"스스로의 가치는 타인이 정하는 게 아니다.",
-"과거는 교훈이고 미래는 가능성이다.",
-"끝까지 포기하지 않는 자가 마지막에 웃는다.",
-"도전하지 않는 것이 가장 큰 실패다.",
-"마음의 한계를 깨부수어야 넓은 세상이 보인다.",
-"한 걸음의 용기가 인생의 궤도를 바꾼다.",
-"남들이 뒤돌아볼 때 앞으로 나아가는 사람이 돼라.",
-"상처를 지우려 애쓰지 말고 성장의 흉터로 남아라.",
-"시련이 지나간 자리엔 반드시 단단함이 남는다.",
-"너의 가치를 세상의 잣대로 측정하게 두지 마라.",
-"쉬운 길을 걷다 보면 도착지는 평범해진다.",
-"내 삶의 주도권은 오직 나에게만 있다.",
-"어제의 후회에 갇히면 내일의 기회를 놓친다.",
-"가장 큰 성취는 가장 깊은 절망 끝에서 온다.",
-"지금 겪는 모든 과도는 과정에 불과하다.",
-"결과를 기다리지 말고 스스로 기회를 만들어라.",
-"타인의 평가보다 중요한 것은 스스로의 인정이다.",
-"생각하는 대로 살지 않으면 사는 대로 생각하게 된다.",
-"진정한 자유는 스스로를 다스릴 때 찾아온다.",
-"오늘의 포기는 내일의 도전을 빼앗는다.",
-"끝없는 노력은 그 어떤 운명도 돌려놓는다.",
-"작은 일에 최선을 다하는 자가 큰 일을 이룬다.",
-"불가능하다고 생각하는 순간 모든 가능성이 사라진다.",
-"세상이 너를 외면해도 너 자신만은 믿어라.",
-"가장 아름다운 꽃은 가장 혹독한 겨울을 견뎌낸다.",
-"너라는 존재 자체가 최고의 가능성이다.",
-"남들의 비웃음을 성장의 영양분으로 삼아라.",
-"꿈을 크게 가지되 시작은 지금 당장 해라.",
-"오늘 견뎌낸 외로움이 내일의 깊이가 된다.",
-"쉽게 얻은 것은 쉽게 사라지고 힘들게 얻은 것은 오래간다.",
-"나만의 속도로 걸어도 정성에 깊이가 있다면 충분하다.",
-"세상이 너를 시험할 때 실력으로 대답해라.",
-"한번 실패했다고 네 인생이 끝난 것은 아니다.",
-"눈앞의 거친 파도 뒤엔 언제나 평온한 바다가 있다.",
-"스스로를 다스리지 못하면 세상에 휘둘리게 된다.",
-"남에게 인정받으려 애쓰기보다 스스로를 존중해라.",
-"오늘 흘린 눈물과 땀은 결코 너를 배신하지 않는다.",
-"인생의 주인공은 타인이 아닌 바로 너 자신이다.",
-"흔들리는 순간에도 너의 중심을 잃지 마라.",
-"길이 없으면 만들어서라도 나아가라.",
-"멈춰 서서 불평하기보다 한 걸음이라도 내딛어라.",
-"어떤 시련도 너라는 사람을 무너뜨릴 수 없다.",
-"너의 가치는 네가 스스로를 어떻게 생각하느냐에 달렸다.",
-"매일 조금씩 성장하는 것이 진정한 위대함이다.",
-"끝까지 포기하지 않는 한 너는 이미 승리자다.",
-"오늘의 한숨을 내일의 함성으로 바꿔라.",
-"스스로를 불태워본 사람만이 세상의 빛이 된다.",
-"남의 눈에 맞춘 삶은 결국 남의 삶일 뿐이다.",
-"세상이 멈추라 해도 너의 마음까지 멈추진 마라.",
-"깊은 뿌리를 내린 나무는 그 어떤 바람에도 흔들리지 않는다.",
-"오늘의 시련은 너를 완성하기 위한 마지막 조각이다.",
-"가장 큰 실패는 아무것도 시도하지 않는 안전함이다.",
-"시간을 탓하지 말고 지금의 의지를 탓해라.",
-"상처받은 영혼이 가장 강한 빛을 발한다.",
-"타인의 박수에 연연하지 말고 스스로에게 자랑스러워라.",
-"진짜 기적은 나 스스로를 믿기 시작할 때 일어난다.",
-"어제보다 1%만 더 성장해도 너는 충분히 멋지다.",
-"결과에 집착하기보다 과정 속의 너를 사랑해라.",
-"상황을 바꿀 수 없다면 너의 태도를 바꿔라.",
-"누구나 바닥을 치지만 일어서는 사람만이 높이 올라간다.",
-"시련 뒤에 올 너의 찬란한 순간을 믿어라.",
-"세상에서 가장 강한 무기는 꺾이지 않는 너의 마음이다.",
-"쉽게 살아온 삶에는 들려줄 이야기가 없다.",
-"너의 길을 가라, 세상이 너에게 적응할 때까지.",
-"어둠을 두려워 마라, 별은 오직 어둠 속에서만 빛난다.",
-"가장 깊은 바닥이 가장 단단한 기반이 된다.",
-"남들이 포기할 때가 네가 빛날 순간이다.",
-"실패는 과정이고 결승선은 아직 멀었다.",
-"너의 가치는 누구도 함부로 평가할 수 없다.",
-"쉬운 길에는 아무런 열매도 맺히지 않는다.",
-"오늘 견딘 힘듦이 내일의 무기가 된다.",
-"너만의 속도로 걸어도 결국 목적지에 닿는다.",
-"상처를 딛고 선 자리가 가장 높다.",
-"세상의 소음보다 네 내면의 소리에 귀 기울여라.",
-"스스로를 다스리는 자가 세상을 얻는다.",
-"어제의 절망에 오늘을 낭비하지 마라.",
-"용기는 두려움을 느끼지 않는 게 아니라 뚫고 나가는 것이다.",
-"작은 차이가 모여 커다란 격차를 만든다.",
-"시간을 버리는 것은 가능성을 버리는 것이다.",
-"오늘의 눈물이 내일의 웃음이 된다.",
-"꺾이지 않는 의지가 최고의 재능이다.",
-"세상이 너를 버려도 너 자신은 버리지 마라.",
-"시작이 두려운 것은 당연하다, 그냥 내딛어라.",
-"네가 걸어온 길이 결국 네 역사가 된다.",
-"결과보다 정직했던 네 과정을 믿어라.",
-"오늘 뿌린 땀이 내일의 숲이 된다.",
-"포기하는 순간 모든 가능성은 제로가 된다.",
-"진짜 시련은 너를 강하게 만들려고 찾아온다.",
-"매일의 성실함이 위대한 운명을 만든다.",
-"남의 인생을 부러워할 시간에 네 삶을 개척해라.",
-"어둠 속에서도 빛을 찾는 마음을 잃지 마라.",
-"한번 세운 목표는 끝까지 밀어붙여라.",
-"너의 한계는 네가 스스로 정하는 것일 뿐이다.",
-"쉽게 얻은 평화는 쉽게 무너진다.",
-"힘든 오늘을 이겨낸 너는 이미 승리자다.",
-"너를 만드는 것은 타인의 말이 아닌 네 행동이다.",
-"가장 큰 기적은 멈추지 않는 네 발걸음이다.",
-"두려움은 마음에만 존재하는 환상이다.",
-"지금의 침묵은 거대한 도약을 위한 준비다.",
-"오늘의 선택이 5년 뒤 너의 모습을 결정한다.",
-"실패를 두려워 말고 도전을 안 함을 두려워해라.",
-"너의 신념을 세상의 기준과 바꾸지 마라.",
-"흔들려도 좋으니 꺾이지만 마라.",
-"가장 빛나는 별은 가장 먼 곳에 있다.",
-"버텨낸 사람에게만 영광의 자리가 허락된다.",
-"오늘 흘린 땀방울이 미래의 눈물을 막아준다.",
-"생각만 하지 말고 일단 움직여라.",
-"너의 불꽃은 아직 꺼지지 않았다.",
-"세상의 모든 문은 두드리는 자에게 열린다.",
-"시련은 너를 짓밟는 게 아니라 다듬는 것이다.",
-"포기하지 않는 마음이 가장 무서운 법이다.",
-"오늘의 노력은 절대 너를 배신하지 않는다.",
-"스스로를 존중할 때 세상도 너를 존중한다.",
-"네 안에 잠든 거인을 오늘 깨워라.",
-"마지막에 웃는 자가 진짜 승리자다."
+  "좋아요!","짱이에요!","잘했어요!","멋져요!","대단해요!","최고예요!","계속해요!","잘하고 있어요!"
 ];
 
 const data = loadData();
 let isPaused = false;
+let currentEx = (data.currentEx === 'wall') ? 'wall' : 'squat';
 
 function togglePause() {
   isPaused = !isPaused;
@@ -1041,7 +537,7 @@ tabs.forEach(btn=>{
 
 document.querySelectorAll('.graph-chip').forEach(chip=>{
   chip.addEventListener('click',()=>{
-    data.graphMode = chip.dataset.graph;
+    setGm(chip.dataset.graph);
     saveData();
     render();
     renderChart();
@@ -1100,6 +596,203 @@ floatBtn.addEventListener('click',()=>{
   if(!isDragging && currentPage==='home') addSquat(1);
 });
 
+/* ===== 벽스쿼트 / 운동 전환 ===== */
+function R(){ return currentEx==='wall' ? data.wall.records : data.records; }
+function getR(day){ return R()[day] || 0; }
+function gm(){ return (currentEx==='wall' ? data.wallGraphMode : data.graphMode) || 'day'; }
+function setGm(v){ if(currentEx==='wall') data.wallGraphMode = v; else data.graphMode = v; }
+
+let wallRunning = false;
+let wallBase = 0;
+let wallStartTs = 0;
+let wallElapsed = 0;
+let wallDayKey = '';
+let wallTick = null;
+let wallSaveTick = null;
+
+function wallToday(){ return data.wall.records[ymd()] || 0; }
+function wallCalc(){ return wallBase + Math.floor((Date.now() - wallStartTs) / 1000); }
+
+function updateWallDisplay(){
+  const num = document.getElementById('wallNum');
+  if(!num) return;
+  num.textContent = wallRunning ? wallElapsed : wallToday();
+  const btn = document.getElementById('wallBtn');
+  btn.textContent = wallRunning ? '■ 정지' : '▶ 시작';
+  btn.classList.toggle('stop', wallRunning);
+  document.getElementById('wallSub').textContent =
+    wallRunning ? '진행 중' : (wallToday() > 0 ? '오늘 누적에서 이어서 시작합니다' : '시작 버튼을 누르세요');
+  document.getElementById('wallInput').disabled = wallRunning;
+}
+
+function persistWall(){
+  if(!wallRunning) return;
+  wallElapsed = wallCalc();
+  if(wallElapsed > 0){
+    data.wall.records[wallDayKey] = wallElapsed;
+    saveData();
+  }
+}
+
+function startWall(){
+  wallDayKey = ymd();
+  wallBase = data.wall.records[wallDayKey] || 0;
+  wallStartTs = Date.now();
+  wallElapsed = wallBase;
+  wallRunning = true;
+  wallTick = setInterval(()=>{ wallElapsed = wallCalc(); updateWallDisplay(); }, 250);
+  wallSaveTick = setInterval(persistWall, 10000);
+  updateWallDisplay();
+}
+
+function stopWall(){
+  if(!wallRunning) return;
+  persistWall();
+  wallRunning = false;
+  clearInterval(wallTick);
+  clearInterval(wallSaveTick);
+  wallTick = null;
+  wallSaveTick = null;
+  const total = data.wall.records[wallDayKey] || 0;
+  showNotice(total > 0 ? `오늘 누적 ${total}초 저장` : '기록 없음');
+  renderWall();
+  renderCalendar();
+  renderChart();
+  updateWallDisplay();
+}
+
+function toggleWall(){
+  if(wallRunning) stopWall();
+  else startWall();
+}
+
+function saveWallManual(){
+  if(wallRunning){
+    showNotice('정지 후 입력하세요');
+    return;
+  }
+  const input = document.getElementById('wallInput');
+  const raw = input.value.trim();
+  const v = parseInt(raw, 10);
+  if(raw === '' || isNaN(v) || v < 0){
+    showNotice('초 단위 숫자를 입력하세요');
+    return;
+  }
+  const key = ymd();
+  if(v === 0) delete data.wall.records[key];
+  else data.wall.records[key] = v;
+  saveData();
+  input.blur();
+  showNotice(v === 0 ? '오늘 기록 삭제' : `오늘 누적 ${v}초 저장`);
+  renderWall();
+  renderCalendar();
+  renderChart();
+  updateWallDisplay();
+}
+
+function streakOf(rec){
+  const keys = Object.keys(rec).filter(k=>rec[k]>0).sort();
+  if(keys.length===0) return {current:0,best:0};
+  let best = 1;
+  let cur = 1;
+  for(let i=1;i<keys.length;i++){
+    const diff = (new Date(keys[i]) - new Date(keys[i-1])) / 86400000;
+    if(diff===1){
+      cur++;
+      best = Math.max(best,cur);
+    }else{
+      cur = 1;
+    }
+  }
+  let current = 0;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  for(let i=0;;i++){
+    const d = new Date(today);
+    d.setDate(today.getDate()-i);
+    if((rec[ymd(d)]||0)>0) current++;
+    else break;
+  }
+  return {current,best};
+}
+
+function statsOf(rec){
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const y = today.getFullYear();
+  const mo = today.getMonth();
+  const mPrefix = `${y}-${String(mo+1).padStart(2,'0')}-`;
+  const keys = Object.keys(rec).filter(k=>rec[k]>0).sort();
+  let mTotal = 0, yTotal = 0, total = 0, max = 0;
+  keys.forEach(k=>{
+    const v = rec[k];
+    total += v;
+    if(k.startsWith(mPrefix)) mTotal += v;
+    if(k.startsWith(`${y}-`)) yTotal += v;
+    if(v > max) max = v;
+  });
+  const mKeys = keys.filter(k=>k.startsWith(mPrefix));
+  const mFirst = mKeys.length ? new Date(mKeys[0]) : new Date(y,mo,1);
+  mFirst.setHours(0,0,0,0);
+  const mLast = new Date(Math.min(today.getTime(), new Date(y,mo+1,0).getTime()));
+  const mDays = Math.floor((mLast-mFirst)/86400000)+1;
+  const yKeys = keys.filter(k=>k.startsWith(`${y}-`));
+  const yFirst = yKeys.length ? new Date(yKeys[0]) : new Date(y,0,1);
+  yFirst.setHours(0,0,0,0);
+  const yDays = Math.floor((today-yFirst)/86400000)+1;
+  const aFirst = keys.length ? new Date(keys[0]) : new Date(today);
+  aFirst.setHours(0,0,0,0);
+  const aDays = Math.floor((today-aFirst)/86400000)+1;
+  return {
+    mTotal, yTotal, total, max,
+    mAvg: Math.round(mTotal/Math.max(1,mDays)),
+    yAvg: Math.round(yTotal/Math.max(1,yDays)),
+    aAvg: Math.round(total/Math.max(1,aDays)),
+    streak: streakOf(rec)
+  };
+}
+
+function renderWall(){
+  const s = statsOf(data.wall.records);
+  const sec = n => n.toLocaleString() + '초';
+  const set = (id,text)=>{ const el = document.getElementById(id); if(el) el.textContent = text; };
+  set('wMonthAvg', sec(s.mAvg));
+  set('wYearAvg', sec(s.yAvg));
+  set('wAllAvg', sec(s.aAvg));
+  set('wDayMax', sec(s.max));
+  set('wMonthTotal', sec(s.mTotal));
+  set('wAllTotal', sec(s.total));
+  set('wCurrentStreak', s.streak.current);
+  set('wBestStreak', s.streak.best);
+  const wi = document.getElementById('wallInput');
+  if(wi && document.activeElement !== wi){
+    const v = wallToday();
+    wi.value = v > 0 ? v : '';
+  }
+}
+
+function applyEx(){
+  document.body.dataset.ex = currentEx;
+  document.querySelectorAll('.ex-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.ex===currentEx);
+  });
+  document.getElementById('homeSquat').style.display = currentEx==='squat' ? '' : 'none';
+  document.getElementById('homeWall').style.display = currentEx==='wall' ? '' : 'none';
+  renderWall();
+  renderCalendar();
+  renderChart();
+  updateWallDisplay();
+  updateFloatingVisibility();
+}
+
+function switchEx(ex){
+  if(currentEx===ex) return;
+  currentEx = ex;
+  data.currentEx = ex;
+  saveData();
+  applyEx();
+}
+
 function ymd(d=new Date()){
   const y = d.getFullYear();
   const m = String(d.getMonth()+1).padStart(2,'0');
@@ -1114,78 +807,32 @@ function setCount(day,count){
   if(data.records[day]===0) delete data.records[day];
 }
 
-function normalizeData(parsed){
-  return {
-    ...clone(defaultData),
-    ...parsed,
-    records:{...defaultData.records,...(parsed.records||{})},
-    settings:{...defaultData.settings,...(parsed.settings||{})}
-  };
-}
-
 function loadData(){
   try{
     const raw = localStorage.getItem(KEY);
     if(!raw) return clone(defaultData);
-    return normalizeData(JSON.parse(raw));
+    const parsed = JSON.parse(raw);
+    return {
+      ...clone(defaultData),
+      ...parsed,
+      records:{...defaultData.records,...(parsed.records||{})},
+      settings:{...defaultData.settings,...(parsed.settings||{})},
+      wall:{records:{...((parsed.wall&&parsed.wall.records)||{})}}
+    };
   }catch(e){
     return clone(defaultData);
   }
 }
 
 function saveData(){
-  data.updated = Date.now();
   localStorage.setItem(KEY, JSON.stringify(data));
-  clearTimeout(saveData.t);
-  saveData.t = setTimeout(cloudPush, 700);
-}
-
-/* ---------- R2 자동 저장 ---------- */
-function cloudDot(s){
-  const el = document.getElementById('cloudDot');
-  if(el) el.style.background = s==='ok'?'#19c37d':s==='err'?'#f87171':s==='ing'?'#facc15':'#bbb';
-}
-function cloudUrl(){ return cloud.url.replace(/\/+$/,'') + '/' + CLOUD_APP; }
-async function cloudPush(){
-  if(!cloud.url || !cloud.key) return;
-  cloudDot('ing');
-  try{
-    const r = await fetch(cloudUrl(), {method:'PUT', headers:{'X-Key':cloud.key,'Content-Type':'application/json'}, body:JSON.stringify(data)});
-    cloudDot(r.ok?'ok':'err');
-  }catch(e){ cloudDot('err'); }
-}
-async function cloudPull(){
-  if(!cloud.url || !cloud.key){ cloudDot(''); return; }
-  cloudDot('ing');
-  try{
-    const r = await fetch(cloudUrl(), {headers:{'X-Key':cloud.key}});
-    if(!r.ok) throw 0;
-    const remote = await r.json();
-    const ru = (remote && remote.updated) || 0, lu = data.updated || 0;
-    if(remote && ru > lu){
-      const merged = normalizeData(remote);
-      Object.keys(data).forEach(k=>delete data[k]);
-      Object.assign(data, merged);
-      localStorage.setItem(KEY, JSON.stringify(data));
-      try{ render(); renderCalendar(); renderChart(); }catch(e){}
-      cloudDot('ok');
-    }else if(lu > ru){
-      await cloudPush();
-    }else cloudDot('ok');
-  }catch(e){ cloudDot('err'); }
-}
-function saveCloud(){
-  cloud.url = document.getElementById('cloudUrl').value.trim();
-  cloud.key = document.getElementById('cloudKey').value.trim();
-  localStorage.setItem(CLOUD_KEY, JSON.stringify(cloud));
-  showNotice('연결 저장!');
-  cloudPull();
 }
 
 function randomFrom(arr){
   if(!arr || arr.length===0) return '';
   return arr[Math.floor(Math.random()*arr.length)];
 }
+
 function getEventLine(){
   if(data.settings.voice==='male') return randomFrom(MALE_LINES);
   if(data.settings.voice==='baby') return randomFrom(BABY_LINES);
@@ -1199,9 +846,12 @@ function speak(text){
     const msg = new SpeechSynthesisUtterance(text);
     msg.lang = 'ko-KR';
     if(data.settings.voice==='male'){
-  msg.pitch = 0.82;
-  msg.rate = 0.78;
-}else{
+      msg.pitch = 0.82;
+      msg.rate = 0.78;
+    }else if(data.settings.voice==='baby'){
+      msg.pitch = 1.7;
+      msg.rate = 0.98;
+    }else{
       msg.pitch = 1.05;
       msg.rate = 0.80;
     }
@@ -1238,7 +888,7 @@ function showNotice(text){
 }
 
 function addSquat(amount=1){
-  if (isPaused) return;
+  if (isPaused || currentEx!=='squat') return;
   const day = ymd();
   const before = getCount(day);
   setCount(day, before + amount);
@@ -1351,14 +1001,14 @@ function bubbleSize(count,max){
   if(count<=0) return 0;
   const minSize = 14;
   const maxSize = 46;
-  const ratio = count / 1000;
+  const ratio = currentEx==='wall' ? Math.min(1, count/300) : count/1000;
   return Math.round(minSize + (maxSize-minSize)*ratio);
 }
   let calendarViewDate = new Date();
 let graphViewDate = new Date();
 function changeGraphMonth(diff){
   if(!graphViewDate) graphViewDate = new Date();
-  if(data.graphMode === 'day'){
+  if(gm() === 'day'){
     graphViewDate.setMonth(graphViewDate.getMonth() + diff);
   } else {
     graphViewDate.setFullYear(graphViewDate.getFullYear() + diff);
@@ -1374,7 +1024,7 @@ function changeMonth(dir){
 
 function updateFloatingVisibility(){
   if(!floatBtn) return;
-  floatBtn.style.display = (currentPage === 'home') ? 'block' : 'none';
+  floatBtn.style.display = (currentPage === 'home' && currentEx === 'squat') ? 'block' : 'none';
 }
 
 function setToggle(id, on){
@@ -1404,8 +1054,11 @@ document.getElementById('restoreFile').addEventListener('change', e=>{
     try{
       const parsed = JSON.parse(ev.target.result);
       Object.assign(data, parsed);
+      if(!data.wall || !data.wall.records) data.wall = {records:{}};
+      currentEx = (data.currentEx === 'wall') ? 'wall' : 'squat';
       saveData();
       render();
+      applyEx();
       showNotice('복구 완료!');
     }catch(err){
       showNotice('복구 실패: 파일 오류');
@@ -1430,11 +1083,11 @@ function renderCalendar(){
   const calAvg = document.getElementById('calAvg');
   const calSum = document.getElementById('calSum');
   const mPrefix = `${y}-${String(m+1).padStart(2,'0')}-`;
-  const mVals = Object.keys(data.records).filter(k=>k.startsWith(mPrefix)).map(k=>data.records[k]);
+  const mVals = Object.keys(R()).filter(k=>k.startsWith(mPrefix)).map(k=>R()[k]);
   const mSum = mVals.reduce((a,b)=>a+b,0);
   const today3 = new Date(); today3.setHours(0,0,0,0);
 const mLastDay = new Date(Math.min(today3.getTime(), new Date(y,m+1,0).getTime()));
-const mFirstKey = Object.keys(data.records).filter(k=>k.startsWith(mPrefix)).sort()[0];
+const mFirstKey = Object.keys(R()).filter(k=>k.startsWith(mPrefix)).sort()[0];
 const mFirstDay = mFirstKey ? new Date(mFirstKey) : new Date(y,m,1);
   mFirstDay.setHours(0,0,0,0);
 const mDays2 = Math.floor((mLastDay - mFirstDay)/86400000) + 1;
@@ -1453,7 +1106,7 @@ const mAvg = mDays2 > 0 ? Math.round(mSum/mDays2) : 0;
     heads.appendChild(h);
   });
 
-  const counts = days.map(d=>getCount(ymd(d)));
+  const counts = days.map(d=>getR(ymd(d)));
   const maxCount = Math.max(1,...counts);
   const todayKey = ymd();
   const maxVal = Math.max(...counts);
@@ -1468,7 +1121,7 @@ const mAvg = mDays2 > 0 ? Math.round(mSum/mDays2) : 0;
 
   days.forEach(d=>{
     const key = ymd(d);
-    const count = getCount(key);
+    const count = getR(key);
     const el = document.createElement('div');
     el.className = 'day';
 
@@ -1483,7 +1136,7 @@ const mAvg = mDays2 > 0 ? Math.round(mSum/mDays2) : 0;
     bubble.style.fontSize = '22px';
     bubble.style.fontWeight = 'bold';
     if(key===todayKey){
-      bubble.style.outline = '2px solid #8d4dff';
+      bubble.style.outline = '2px solid var(--primary)';
       bubble.style.outlineOffset = '1px';
     }
     if(key===maxKey && maxVal>0){
@@ -1511,26 +1164,27 @@ const mAvg = mDays2 > 0 ? Math.round(mSum/mDays2) : 0;
   });
 }
 function getMonthlySeries(){
+  const rec = R();
   const arr = [];
-  const today = new Date();
   const y = graphViewDate.getFullYear();
   for(let m=1;m<=12;m++){
     let sum = 0;
-    for(const k in data.records){
-      if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)) sum += data.records[k];
+    for(const k in rec){
+      if(k.startsWith(`${y}-${String(m).padStart(2,'0')}-`)) sum += rec[k];
     }
     arr.push({label:`${m}월`, value:sum});
   }
   return arr;
 }
 function getYearlySeries(){
+  const rec = R();
   const arr = [];
   const today = new Date();
   for(let i=2;i>=0;i--){
     const y = today.getFullYear()-i;
     let sum = 0;
-    for(const k in data.records){
-      if(k.startsWith(String(y))) sum += data.records[k];
+    for(const k in rec){
+      if(k.startsWith(String(y))) sum += rec[k];
     }
     arr.push({label:`${y}`, value:sum});
   }
@@ -1538,6 +1192,7 @@ function getYearlySeries(){
 }
 
 function getDailySeries(){
+  const rec = R();
   const arr = [];
   const y = graphViewDate.getFullYear();
   const m = graphViewDate.getMonth();
@@ -1545,7 +1200,7 @@ function getDailySeries(){
   for(let i=1;i<=lastDay;i++){
     const d = new Date(y, m, i);
     const k = ymd(d);
-    const val = (data.records && data.records[k]) || 0;
+    const val = rec[k] || 0;
     arr.push({label:i, value:val});
   }
   return arr;
@@ -1555,59 +1210,61 @@ function renderChart(){
   const wrap = document.getElementById('chartWrap');
   if(!wrap) return;
   wrap.innerHTML = '';
+  const mode = gm();
   const graphMonthLabel = document.getElementById('graphMonthLabel');
-if(graphMonthLabel){
-  if(data.graphMode === 'month'){
-  graphMonthLabel.textContent = `${graphViewDate.getFullYear()}년`;
-}else if(data.graphMode === 'year'){
-  graphMonthLabel.textContent = `연도별`;
-}else{
-  graphMonthLabel.textContent = `${graphViewDate.getFullYear()}년 ${graphViewDate.getMonth()+1}월`;
-}
-}
+  if(graphMonthLabel){
+    if(mode === 'month'){
+      graphMonthLabel.textContent = `${graphViewDate.getFullYear()}년`;
+    }else if(mode === 'year'){
+      graphMonthLabel.textContent = `연도별`;
+    }else{
+      graphMonthLabel.textContent = `${graphViewDate.getFullYear()}년 ${graphViewDate.getMonth()+1}월`;
+    }
+  }
   const graphTitle = document.querySelector('#graph .section-title');
   if(graphTitle){
     graphTitle.style.display = 'none';
     graphTitle.parentElement.style.paddingTop = '0px';
   }
   document.querySelectorAll('.graph-chip').forEach(ch=>{
-    ch.classList.toggle('active', ch.dataset.graph===data.graphMode);
+    ch.classList.toggle('active', ch.dataset.graph===mode);
   });
   let arr = [];
-  if(!data.graphMode) data.graphMode = 'day';
-  if(data.graphMode === 'month') arr = getMonthlySeries();
-  else if(data.graphMode === 'year') arr = getYearlySeries();
+  if(mode === 'month') arr = getMonthlySeries();
+  else if(mode === 'year') arr = getYearlySeries();
   else arr = getDailySeries();
   const graphAvg = document.getElementById('graphAvg');
-const graphSum = document.getElementById('graphSum');
-const sumVal = arr.reduce((a,b)=>a+b.value,0);
-const avgVal = arr.filter(x=>x.value>0).length > 0 ? Math.round(sumVal/arr.filter(x=>x.value>0).length) : 0;
-if(graphAvg) graphAvg.textContent = avgVal;
-if(graphSum) graphSum.textContent = sumVal.toLocaleString();
+  const graphSum = document.getElementById('graphSum');
+  const sumVal = arr.reduce((a,b)=>a+b.value,0);
+  const avgVal = arr.filter(x=>x.value>0).length > 0 ? Math.round(sumVal/arr.filter(x=>x.value>0).length) : 0;
+  if(graphAvg) graphAvg.textContent = avgVal;
+  if(graphSum) graphSum.textContent = sumVal.toLocaleString();
   let max = 1200;
 
-if(data.graphMode === 'month'){
-  max = 13000;
-} else if(data.graphMode === 'year'){
-  max = 130000;
-} else {
-  max = Math.max(1, ...arr.map(x => x.value));
-}
+  if(currentEx === 'wall'){
+    max = Math.max(1, ...arr.map(x => x.value));
+  } else if(mode === 'month'){
+    max = 13000;
+  } else if(mode === 'year'){
+    max = 130000;
+  } else {
+    max = Math.max(1, ...arr.map(x => x.value));
+  }
 
-const yTop = document.getElementById('yTop');
-const yMid = document.getElementById('yMid');
-const yBottom = document.getElementById('yBottom');
+  const yTop = document.getElementById('yTop');
+  const yMid = document.getElementById('yMid');
+  const yBottom = document.getElementById('yBottom');
 
-if(yTop) yTop.textContent = max;
-if(yMid) yMid.textContent = Math.round(max / 2);
-if(yBottom) yBottom.textContent = 0;
+  if(yTop) yTop.textContent = max;
+  if(yMid) yMid.textContent = Math.round(max / 2);
+  if(yBottom) yBottom.textContent = 0;
   arr.forEach(item=>{
-  const h = Math.max(12, Math.round((item.value/max)*460));
-  const div = document.createElement('div');
-  div.className = 'barItem';
-  div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
-  wrap.appendChild(div);
-});
+    const h = Math.max(12, Math.round((item.value/max)*460));
+    const div = document.createElement('div');
+    div.className = 'barItem';
+    div.innerHTML = `<div class="barVal">${item.value}</div><div class="barCol" style="height:${h}px"></div><div class="barLbl">${item.label}</div>`;
+    wrap.appendChild(div);
+  });
 
 }
 function render(){
@@ -1671,6 +1328,7 @@ function render(){
  window.addEventListener('devicemotion', function(e){
   if(!data.settings.autoCount) return;
   if(isPaused) return;
+  if(currentEx!=='squat') return;
   if(document.hidden) return;
   if(currentPage!=='home') return;
   const acc = e.accelerationIncludingGravity;
@@ -1702,7 +1360,7 @@ function render(){
   if(auto.stage==='up'){
     if(delta > auto.highDelta) auto.highDelta = delta;
     if(now - auto.upTime > 2500){ auto.stage = 'idle'; return; }
-    if(delta > -0.3 && delta < 1.0 && now - auto.upTime > 150 && now - auto.lastCountTime > 2500){
+    if(delta > -0.3 && delta < 1.0 && now - auto.upTime > 150 && now - auto.lastCountTime > 2600){
       auto.lastCountTime = now;
       auto.stage = 'idle';
       addSquat(1);
@@ -1712,6 +1370,7 @@ function render(){
 
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden){ auto.base = null; auto.stage = 'idle'; }
+  else { updateWallDisplay(); renderWall(); }
 });
 
 (function(){
@@ -1748,13 +1407,7 @@ document.addEventListener('visibilitychange',()=>{
 })();
 
 render();
-renderCalendar();
-renderChart();
-updateFloatingVisibility();
-document.getElementById('cloudUrl').value = cloud.url || '';
-document.getElementById('cloudKey').value = cloud.key || '';
-cloudPull();
-document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') cloudPull(); });
+applyEx();
 </script>
 </body>
 </html>
