@@ -288,6 +288,7 @@ body[data-ex="wall"] .barCol{background:#19c37d}
     <div><span id="wallNum" class="hero-count wall-num">0</span><span class="wall-unit">초</span></div>
     <div id="wallSub" class="small" style="min-height:16px;margin-top:6px">시작 버튼을 누르세요</div>
     <button id="wallBtn" class="main-btn wall-btn" onclick="toggleWall()">▶ 시작</button>
+    <button id="wallPlus10" class="main-btn wall-btn" onclick="addWallSec(10)">+10초</button>
   </div>
   <div class="card">
     <div class="goal-head">오늘 누적 직접 입력</div>
@@ -664,6 +665,21 @@ function stopWall(){
 function toggleWall(){
   if(wallRunning) stopWall();
   else startWall();
+}
+
+function addWallSec(n){
+  if(wallRunning){
+    showNotice('정지 후 누르세요');
+    return;
+  }
+  const key = ymd();
+  data.wall.records[key] = (data.wall.records[key] || 0) + n;
+  saveData();
+  showNotice(`+${n}초 → 오늘 누적 ${data.wall.records[key]}초`);
+  renderWall();
+  renderCalendar();
+  renderChart();
+  updateWallDisplay();
 }
 
 function saveWallManual(){
